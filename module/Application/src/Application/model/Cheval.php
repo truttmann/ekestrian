@@ -119,7 +119,6 @@ class Cheval  implements InputFilterAwareInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'max' => '1024',
                         ),
                     ),
                 ),
@@ -136,7 +135,6 @@ class Cheval  implements InputFilterAwareInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'max' => '1024',
                         ),
                     ),
                 ),

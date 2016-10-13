@@ -12,11 +12,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-primary-collapse">
             <ul class="nav navbar-nav">
-                <li class="active separator-right"><a href="#section-purchase" class="menu-upper"><?php echo $this->translate("Le concept", $this->lang_id); ?></a></li>
-                <li class="separator-right"><a href="#section-selection" class="menu-upper"><?php echo $this->translate("LE SERVICE", $this->lang_id); ?></a></li>
+                <li class="active separator-right"><a href="<?php echo $this->url('home'); ?>#section-purchase" class="menu-upper"><?php echo $this->translate("Le concept", $this->lang_id); ?></a></li>
+                <li class="separator-right"><a href="<?php echo $this->url('home'); ?>#section-selection" class="menu-upper"><?php echo $this->translate("LE SERVICE", $this->lang_id); ?></a></li>
                 <li id="ekestrian-menu-logo"><a href="http://www.ekestrian.com" class="menu-upper"><img id="logo-navbar-middle" src="<?php echo $this->basePath() ?>/images/logo@2x-01.png" width="150" alt="Ekestrian"></a></li>
                 <li class="separator-left separator-right"><a href="<?php echo $this->url('home/partenaire'); ?>" class="menu-upper"><?php echo $this->translate("Partenaires", $this->lang_id); ?></a></li>
-                <li><a href="#section-auction" class="menu-upper"><img src="<?php echo $this->basePath() ?>/images/img_header.png" style="padding-right: 5px;padding-bottom: 2px;"/><?php echo $this->translate("Les ench&egrave;res", $this->lang_id); ?></a></li>
+                <li><a href="<?php echo $this->url('home'); ?>#section-auction" class="menu-upper"><img src="<?php echo $this->basePath() ?>/images/img_header.png" style="padding-right: 5px;padding-bottom: 2px;"/><?php echo $this->translate("Les ench&egrave;res", $this->lang_id); ?></a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

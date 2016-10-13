@@ -17,10 +17,10 @@
             <div class="row margin">
                 <div class="col-xs-12 main-info-horse" style="width: 340px; margin: auto;">
                     <div class="col-xs-12" style="text-align: center;padding:0px;margin:auto; ">
-                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Foal"); ?> : </div>
+                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Foal", $this->lang_id); ?> : </div>
                         <div class="" style="float: left;"><?php echo (($this->cheval->sex == "m")?"M&acirc;le":"Femelle"); ?></div>
                         <div style="float: left; width: 1px;border-right: solid 1px #a0a0a0;margin: 0 3px;line-height: 20.5pt;">&nbsp;</div>
-                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Né le"); ?> : </div>
+                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Né le", $this->lang_id); ?> : </div>
                         <div class="" style="float: left;"><?php echo $this->cheval->birthday ?></div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <?php echo $this->lot->video_link; ?>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate("Close"); ?></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate("Close", $this->lang_id); ?></button>
                     </div>
                 </div>
             </div>
@@ -251,12 +251,12 @@
             
             <div class="col-md-166 margin fiche_aff" style="text-align: center;margin-top: 13%;">
                 <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558">
-                    <span class="letter-spacing-1" style="font-family: Lato-bold; font-weight:bold;font-size:15pt;line-height:26pt; color: #e97266"><?php echo $this->translate("Enchère actuelle"); ?> </span>
+                    <span class="letter-spacing-1" style="font-family: Lato-bold; font-weight:bold;font-size:15pt;line-height:26pt; color: #e97266"><?php echo $this->translate("Enchère actuelle", $this->lang_id); ?> </span>
                 </div>
                 <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558; margin-bottom: 15px">
                     - <span>€</span> <sup>HT</sup>
                 </div>
-                <div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir"); ?></div>
+                <div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir", $this->lang_id); ?></div>
             </div>
        </div>
     </div>
@@ -265,18 +265,18 @@
 <?php if ($this->cheval->pere != null) { ?>
     <section class="section" id="section-auction" style="margin: 0 50px; background: white;margin-top:20px;padding-bottom:50px">
         <div class="shell">
-            <header class="section-head" style=";padding: 0px; margin: 0px"><h2><span><?php echo $this->translate("DESCRIPTION DU PÈRE"); ?></span></h2></header>
+            <header class="section-head" style=";padding: 0px; margin: 0px"><h2><span><?php echo $this->translate("DESCRIPTION DU PÈRE", $this->lang_id); ?></span></h2></header>
             <div class="section-body row">
-                <div class="col-xs-12 margin" style="">
+                <div class="col-xs-12" style="">
                     <h3 style="font-family: Lato;font-size:16pt;line-height:17pt; color: #585858;margin-top: 50px;"><?php echo $this->cheval->pere->name; ?></h3>
                         
-                    <div class="row" style="line-height: 1px; margin-bottom: 20px">
+                    <div class="row" style="margin-bottom: 20px;">
                         <div class="col-md-12">
                             <div style=" width: 25%; margin-bottom:15px">
                                 <img class="lot-filet" src="<?php echo $this->basePath() ?>/images/lot/lot-filet.png" alt="">
                             </div>
                         </div>
-                        <p class="letter-spacing-1 horse-description" style=""><?php echo $this->cheval->pere->description; ?></p>
+                        <div class="col-md-12 letter-spacing-1 horse-description" style=""><?php echo $this->cheval->pere->description; ?></div>
                     </div>
 
                 </div>
@@ -290,17 +290,17 @@ if ($this->cheval->mere != null) { ?>
     <section id="section-mother" class="section" style="margin: 0 50px; background: white;padding-bottom:40px; position: relative">
         <div class="shell">
             <header class="secition-head">
-                <h2><span><?php echo $this->translate("DESCRIPTION DES MÈRES"); ?></span></h2>
+                <h2><span><?php echo $this->translate("DESCRIPTION DES MÈRES", $this->lang_id); ?></span></h2>
             </header>
             <div class="section-body section-body-ply row" style="padding: 0px">
                 <div class="col-md-12" style="margin-top: 65px">
                     <div class="col-xs-12 margin">
-                        <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">1<sup>&egrave;re</sup><?php echo $this->translate("Mère"); ?></h3>
+                        <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">1<sup>&egrave;re</sup><?php echo $this->translate("Mère", $this->lang_id); ?></h3>
                         <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
                         <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere->name; ?></h4>
                         <p style="margin-bottom: 30px">
                             <span class="letter-spacing-1 horse-description">
-                                <?php echo $this->cheval->pere->description; ?>
+                                <?php echo $this->cheval->mere->description; ?>
                             </span>
                         </p>
                     </div>
@@ -309,7 +309,7 @@ if ($this->cheval->mere != null) { ?>
                 <?php if (property_exists($this->cheval, "mere_mere") && $this->cheval->mere_mere != null) { ?>
                     <div class="col-md-12" style="margin-top: 65px">
                         <div class="col-xs-12 margin">
-                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">2<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">2<sup>&egrave;me</sup><?php echo $this->translate("Mère", $this->lang_id); ?></h3>
                             <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
                             <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato; font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere->name; ?></h4>
                             <p style="margin-bottom: 30px">
@@ -327,7 +327,7 @@ if ($this->cheval->mere != null) { ?>
                 ?>
                     <div class="col-md-12" style="margin-top: 65px">
                         <div class="col-xs-12 margin">
-                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">3<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">3<sup>&egrave;me</sup><?php echo $this->translate("Mère", $this->lang_id); ?></h3>
                             <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
                             <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere_mere->name; ?></h4>
                             <p style="margin-bottom: 30px">
@@ -345,7 +345,7 @@ if ($this->cheval->mere != null) { ?>
                 ?>
                     <div class="col-md-12" style="margin-top: 65px">
                         <div class="col-xs-12 margin">
-                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">4<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">4<sup>&egrave;me</sup><?php echo $this->translate("Mère", $this->lang_id); ?></h3>
                             <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
                             <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere_mere_mere->name; ?></h4>
                             <p style="margin-bottom: 30px">
