@@ -1,0 +1,35 @@
+<?php if(!empty($this->items)):?>
+<div class="tabbable-custom <?php echo ($this->class_container)?$this->class_container:'' ?>" <?php echo ($this->id_container)?'id="'.$this->id_container.'"':'' ?> style="<?= $this->style_tab ?>">
+    <ul class="nav nav-tabs">
+        <?php $i = 0; foreach($this->items as $item):
+            if($i == 0){
+                $class = ' active';
+                $current_tab = $item['code'];
+            }else{
+                $class = '';
+            }
+            ?>
+            <li class="<?php echo $class ?>">
+                <a href="#tab_<?php echo $item['code'] ?>" data-current-tab="<?php echo $item['code'] ?>" data-toggle="tab" onclick="$('#current-tab').val($(this).attr('data-current-tab'));">
+                    <?php echo strtoupper($item['label']) ?>
+                    <?php if(isset($item['image_path'])):?>
+                        <img src="<?= $item['image_path'] ?>" />
+                    <?php endif; ?>
+                </a>
+            </li>
+        <?php $i++; endforeach; ?>
+    </ul>
+
+    <div class="tab-content no-space">
+        <?php echo $this->tabs ?>
+    </div>
+    <?php echo $this->content; ?>
+</div>
+<input type="hidden" id="current-tab" value="<?php echo $current_tab ?>" />
+<?php endif; ?>
+
+<script>
+    jQuery(document).ready(function() {
+        $('.selectpicker').selectpicker();
+    });
+</script>

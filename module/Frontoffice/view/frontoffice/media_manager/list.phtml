@@ -1,0 +1,301 @@
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+
+
+<?php 
+    $this->uploadRouteParams = array_merge($this->uploadRouteParams, array("lot_id" => ((isset($this->lot["lot_id"]) && is_numeric($this->lot["lot_id"]))?$this->lot["lot_id"]:0)));
+    $this->listRouteParams = array_merge($this->listRouteParams, array("lot_id" => ((isset($this->lot["lot_id"]) && is_numeric($this->lot["lot_id"]))?$this->lot["lot_id"]:0)));
+?>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td width="10%">
+            <span class="preview"></span>
+        </td>
+        <td width="20%">
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td width="40%">
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td width="30%" align="right">
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary btn-sm start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Télécharger</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning btn-sm cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Annuler</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td style="background-color: #d8fdd8;" width="10%">
+            <span class="preview">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img width="60px" height="60px" src="{%=file.url%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td{% if (file.status == 1) { %} style="background-color: #d8fdd8;"{% } %} width="20%">
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+
+        {% if (!file.error) { %}
+
+        <td{% if (file.status == 1) { %} style="background-color: #d8fdd8;"{% } %} width="70%" align="right" colspan="2">
+
+            {% if (file.ordering) { %}
+                <button class="btn btn-info btn-sm update" data-url="{%=file.updateUrl%}" data-id="{%=file.id%}" data-order="up">
+                    <i class="glyphicon glyphicon-arrow-up"></i>
+                </button>
+
+                <button class="btn btn-info btn-sm update" data-url="{%=file.updateUrl%}" data-id="{%=file.id%}" data-order="down">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                </button>
+            {% } %}
+
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger btn-sm delete" data-file-name="{%=file.name%}" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}id={%=file.id%}{% if (file.code) { %}&code={%=file.code%}{% } %}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Supprimer</span>
+                </button>
+                <!-- <input type="checkbox" name="delete" value="1" class="toggle"> -->
+            {% } else { %}
+                <button class="btn btn-warning btn-sm cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Annuler</span>
+                </button>
+            {% } %}
+
+            <?php
+            if (isset($this->captionsList)):
+            foreach ($this->captionsList as $key => $captionsListTmp): ?>
+                <div class="row-fluid caption_list_<?= $key ?>" style="margin-top: 5px; text-align: left; display: none;">
+                    <?php if ($captionsListTmp): ?>
+                        <select class="selectpicker show-tick" title="Choisissez une légende..." data-size="5" data-live-search="true" data-width="100%">
+                        <option></option>
+                            <?php foreach ($captionsListTmp as $caption): ?>
+                                <option value="<?=$caption['id']?>"{% if (file.captionId == <?=$caption['id']?>) { %} selected{% } %}><?=$caption['label']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach;
+            endif;
+            ?>
+
+        </td>
+        {% } else { %}
+            <td width="50%">
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+            </td>
+            <td width="20%" align="right">
+                <button class="btn btn-warning btn-sm cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Annuler</span>
+                </button>
+            </td>
+        {% } %}
+
+    </tr>
+{% } %}
+</script>
+<script>
+    $(function () {
+
+        // Initialize the jQuery File Upload widget:
+        $.each($('.fileupload'),function() {$(this).fileupload({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: '<?= $this->url($this->uploadRoute, $this->uploadRouteParams) ?>',
+            <?php if ($this->maxNumberOfFiles): ?>
+            maxNumberOfFiles: <?= $this->maxNumberOfFiles ?>,
+            <?php endif; ?>
+            sequentialUploads: true
+        }).bind('fileuploadcompleted', function (event, data) {
+            $(this).find('.caption_list_' + $(this).attr('data-id')).show();
+            $('.selectpicker').selectpicker();
+        }).bind('fileuploadalways', function (event, data) {
+            if (data.result.files[0].error) {
+                toastr["error"](data.result.files[0].error, 'Echec du téléchargement');
+            } else {
+                toastr["success"](data.result.files[0].name, 'Téléchargement terminé');
+            }
+        }).bind('fileuploaddestroy', function (event, data) {
+            if (event.originalEvent.isTrigger == undefined) {
+                event.preventDefault();
+            } else {
+                toastr["success"]('', 'Suppression terminé');
+            }
+        })});
+
+        // Load existing files:
+        function loadFilesList() {
+            $.each($('.fileupload'), function() {
+                $(this).find('tbody.files').empty();
+                loader($(this));
+                $.ajax({
+                    // Uncomment the following to send cross-domain cookies:
+                    //xhrFields: {withCredentials: true},
+                    url: '<?= $this->url($this->listRoute, $this->listRouteParams) ?>?' + $.param({id: $(this).attr('data-id'), code: $(this).attr('data-code')}),
+                    dataType: 'json',
+                    context: $(this)[0]
+                }).always(function () {
+                    unLoader($(this));
+                }).done(function (result) {
+                    $(this).fileupload('option', 'done')
+                        .call(this, $.Event('done'), {result: result});
+                    $(this).find('.caption_list_' + $(this).attr('data-id')).show();
+                    $('.selectpicker').selectpicker();
+                    $('button.selectpicker').addClass('btn-sm');
+                    $('button.selectpicker').parent().css('margin-bottom', '0px');
+                });
+            });
+        }
+
+        $('.fileupload').on('click', '.update', function (e) {
+            var currentBlock = $(this).parent().parent();
+            var previousBlock = currentBlock.prev();
+            var nextBlock = currentBlock.next();
+            var order = $(this).attr('data-order');
+
+            loader(currentBlock.parent().parent().parent());
+            updateBlock(currentBlock.parent().parent().parent(), $(this).attr('data-url'), {
+                id: $(this).attr('data-id'),
+                order: $(this).attr('data-order')
+            }, {
+                done: function(result) {
+                    var data = $.parseJSON(result);
+                    if (data && order == 'up') {
+                        currentBlock.hide({
+                            complete: function() {
+                                currentBlock.after(previousBlock);
+                                currentBlock.show();
+                                unLoader(currentBlock.parent().parent().parent());
+                                toastr["success"]('', 'Mise à jour terminée');
+                            }
+                        });
+                    } else if (data && order == 'down') {
+                        currentBlock.hide({
+                            complete: function() {
+                                currentBlock.before(nextBlock);
+                                currentBlock.show();
+                                unLoader(currentBlock.parent().parent().parent());
+                                toastr["success"]('', 'Mise à jour terminée');
+                            }
+                        });
+                    } else {
+                        unLoader(currentBlock.parent().parent().parent());
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+
+        $('.fileupload').on('click', '.delete', function (event, wasTrigerred) {
+            fileName = $(this).attr('data-file-name');
+            var $this = $(this);
+            if (wasTrigerred === undefined) {
+                bootbox.dialog({
+                    message: "Etes-vous sûr de vouloir supprimer '" + fileName + "' ?",
+                    buttons: {
+                        yes: {
+                            label: 'Oui',
+                            className: 'btn-success',
+                            callback: function() {
+                                $this.trigger('click', true);
+                            }
+                        },
+                        no: {
+                            label: 'Non',
+                            className: 'btn-danger'
+                        }
+                    }
+                });
+            }
+            event.preventDefault();
+            return false;
+        });
+
+        function loader(element)
+        {
+            var current_url  = $('#base-url').val();
+            element.block({
+                message: '<img style="" src="'+current_url+'/img/loading-spinner-grey.gif" align="">',
+                css: {
+                    'background-color': 'transparent',
+                    border: 'none'
+                },
+                overlayCSS: {
+                    opacity: 0.1
+                }
+            });
+        }
+
+        function unLoader(element){
+            element.unblock();
+        }
+
+        function updateBlock(element, url, data, callBacks)
+        {
+            loader(element);
+            $.ajax({
+                url: url + $.param(data),
+                dataType: 'json'
+            }).always(callBacks.always).done(callBacks.done);
+        }
+
+        $('.fileupload').on('click', 'div.col-lg-7>button.btn.btn-danger.delete', function (event, wasTrigerred) {
+            event.preventDefault();
+            return false;
+        });
+
+        $('.fileupload').on('click', 'ul.selectpicker', function(event) {
+            captionId = $(this).find('.selected').attr('rel');
+            block = $(this).parent().parent().parent().parent().parent().find('.update').first();
+            var element = $(this).parent().parent().parent().parent().parent().parent().parent().parent();
+            updateBlock(element, block.attr('data-url'), {
+                id: block.attr('data-id'),
+                captionId: captionId
+            }, {
+                always: function() {
+                    unLoader(element);
+                    toastr["success"]('', 'Mise à jour terminée');
+                }
+            });
+        });
+
+        loadFilesList();
+    });
+</script>

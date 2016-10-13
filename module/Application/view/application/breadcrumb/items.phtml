@@ -1,0 +1,19 @@
+<ul class="page-breadcrumb breadcrumb">
+    <?php foreach ($this->items as $key => $item):
+        if (!isset($item['params'])) {
+            $item['params'] = array();
+        }
+        $link = (isset($item['route']))?$this->url($item['route'], $item['params']):'#';
+        ?>
+        <li>
+            <?php if ($key === 0): ?>
+                <i class="fa fa-home"></i>
+            <?php endif; ?>
+            <a href="<?php echo $link ?>"><?php echo $item['label'] ?></a>
+            <?php if (isset($this->items[$key + 1])): ?>
+                <i class="fa fa-angle-right"></i>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    <?= $this->content ?>
+</ul>

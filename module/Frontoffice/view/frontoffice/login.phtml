@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<!-- 
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.1.1
+Version: 2.0.2
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Admin Move Publishing</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <meta name="robots" content="noindex,nofollow">
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <?php
+
+    echo $this->headLink()
+    ->appendStylesheet($this->basePath() . '/plugins/font-awesome/css/font-awesome.min.css')
+        ->appendStylesheet($this->basePath() . '/plugins/bootstrap/css/bootstrap.min.css')
+        ->appendStylesheet($this->basePath() . '/plugins/uniform/css/uniform.default.css')
+        ->appendStylesheet($this->basePath() . '/plugins/select2/select2.css')
+        ->appendStylesheet($this->basePath() . '/plugins/select2/select2-metronic.css')
+        ->appendStylesheet($this->basePath() . '/css/style-metronic.css')
+        ->appendStylesheet($this->basePath() . '/css/style.css')
+        ->appendStylesheet($this->basePath() . '/css/style-responsive.css')
+        ->appendStylesheet($this->basePath() . '/css/plugins.css')
+        ->appendStylesheet($this->basePath() . '/css/themes/default.css')
+        ->appendStylesheet($this->basePath() . '/css/pages/login.css')
+        ->appendStylesheet($this->basePath() . '/css/custom.css')
+        ->appendStylesheet($this->basePath() . '/css/style.css');
+
+    ?>
+
+    <!-- END THEME STYLES -->
+    <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<!-- BEGIN BODY -->
+<body class="login">
+    <!-- BEGIN LOGO -->
+    <?php /*<div class="logo">
+        <a href="index.html">
+            <img src="<?= $this->basePath() ?>/images/mp-france.png" alt=""/>
+        </a>
+    </div>*/ ?>
+    <!-- END LOGO -->
+    <!-- BEGIN LOGIN -->
+    <div class="content">
+        <!-- BEGIN LOGIN FORM -->
+        <form class="login-form" action="savelogin" method="post">
+            <h3 class="form-title">Entrer un login et un mot de passe</h3>
+            <div class="alert alert-danger display-hide">
+                <button class="close" data-close="alert"></button>
+                    <span>
+                        Entrer un login et un mot de passe
+                    </span>
+            </div>
+            <div class="form-group">
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                <label class="control-label visible-ie8 visible-ie9">Login</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Login" name="username"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Mot de passe</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Mot de passe" name="password"/>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn green pull-right">
+                    Se connecter <i class="m-icon-swapright m-icon-white"></i>
+                </button>
+            </div>
+        </form>
+        <!-- END LOGIN FORM -->
+        <?php /*<div class="forget-password">
+            <h4>Mot de passe oubli&eacute; ?</h4>
+            <p>
+                Pas de panique, cliquez
+                <a href="javascript:;" id="forget-password">
+                    ici
+                </a>
+                pour r&eacute;cup&eacute;rer votre mot de passe.
+            </p>
+        </div> 
+        <!-- BEGIN FORGOT PASSWORD FORM -->
+        <form class="forget-form" action="" method="post">
+            <h3>Mot de passe oubli&eacute; ?</h3>
+            <p>
+                Entrez votre adresse e-mail dans le champ coi-dessous
+            </p>
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fa fa-envelope"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="back-btn" class="btn">
+                    <i class="m-icon-swapleft"></i> Retour </button>
+                <button class="btn green pull-right">
+                    Soumettre <i class="m-icon-swapright m-icon-white"></i>
+                </button>
+            </div>
+        </form>
+        <!-- END FORGOT PASSWORD FORM -->
+        */ ?>
+    </div>
+    <!-- END LOGIN -->
+<!-- BEGIN COPYRIGHT -->
+<div class="copyright">
+    <?php echo Date('Y') ?> &copy; Ekestrian
+</div>
+<!-- END COPYRIGHT -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!-- BEGIN CORE PLUGINS -->
+
+<?php
+            echo $this->headScript()
+            ->appendFile($this->basePath() . '/plugins/respond.min.js')
+            ->appendFile($this->basePath() . '/plugins/excanvas.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery-1.10.2.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery-migrate-1.2.1.min.js')
+            ->appendFile($this->basePath() . '/plugins/bootstrap/js/bootstrap.min.js')
+            ->appendFile($this->basePath() . '/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery-slimscroll/jquery.slimscroll.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery.blockui.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery.cokie.min.js')
+            ->appendFile($this->basePath() . '/plugins/uniform/jquery.uniform.min.js')
+            ->appendFile($this->basePath() . '/plugins/jquery-validation/dist/jquery.validate.min.js')
+            ->appendFile($this->basePath() . '/plugins/select2/select2.min.js')
+            ->appendFile($this->basePath() . '/scripts/core/app.js')
+            ->appendFile($this->basePath() . '/scripts/custom/login.js');
+?>
+
+<script>
+    jQuery(document).ready(function() {
+        App.init();
+        Login.init();
+    });
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

@@ -1,0 +1,104 @@
+<div class="main">
+    <section id="section-concept" style="margin-top: 0px">
+        <div class="shell">
+            <div class="section-inner">
+                <header class="section-head">
+                    <h1><?php echo $this->translate("Le premier site d'enchères de "); ?><br/><strong><?php echo $this->translate("chevaux d'exception", $this->lang_id); ?></strong></h1>
+                        <img src="<?php echo $this->basePath() ?>/images/section-concept-filet.png" alt="" id="concept-filet">
+                </header>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="section-auction" style="margin: 0 50px; background: white;margin-top: -30px">
+        <div class="shell">
+            <div class="section-head" style=";padding: 0px; margin: 0px">
+                <h2 class="letter-spacing-10"><span><?php echo $this->translate("ench&egrave;res &agrave; venir", $this->lang_id); ?></span></h2>
+                <div class="col-md-12 sous-titre"><?php echo $this->translate("Première vente aux enchères en ligne de foals d’exception de CSO.", $this->lang_id); ?> <br/><?php echo $this->translate("Ouverture des ventes le 26 octobre 2016.", $this->lang_id); ?></div>
+            </div>
+            <div class="section-body section-body-ply row" style="padding: 0px; margin: 0 -15px">
+                <?php for($i = 0; $i < count($this->encheres); $i++) {
+                    if($i +1 == count($this->encheres)) {
+                ?>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;"></div>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;">
+                            <div class="img-wrapper">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
+                                </a>
+                            </div>
+                            <div class="col-md-12 margin">
+                                <h3 class="auction-name"><?php echo $this->translate("Foals Elites de CSO", $this->lang_id); ?></h3>
+                                <img class="line" src="<?php echo $this->basePath() ?>/images/auction-filet.png" alt="">
+                                <ul>
+                                    <li><?php echo $this->translate($this->encheres[$i]->description, $this->lang_id); ?></li>
+                                </ul>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;"></div>
+                <?php
+                    } else {
+                ?>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;">
+                            <div class="img-wrapper">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
+                                </a>
+                            </div>
+                            <div class="col-md-12 margin">
+                                <h3 class="auction-name"><?php echo $this->translate("Foals Elites de CSO", $this->lang_id); ?></h3>
+                                <img class="line" src="<?php echo $this->basePath() ?>/images/auction-filet.png" alt="">
+                                <ul>
+                                    <li><?php echo $this->translate($this->encheres[$i]->description, $this->lang_id); ?></li>
+                                </ul>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;">
+                            <?php if($i +1 <= count($this->encheres)) { ?>
+                            <div class="img-wrapper">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
+                                </a>
+                            </div>
+                            <div class="col-md-12 margin">
+                                <h3 class="auction-name"><?php echo $this->translate("Foals Elites de CSO", $this->lang_id); ?></h3>
+                                <img class="line" src="<?php echo $this->basePath() ?>/images/auction-filet.png" alt="">
+                                <ul>
+                                    <li><?php echo $this->translate($this->encheres[$i+1]->description, $this->lang_id); ?></li>
+                                </ul>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="col-md-4" style="margin-bottom: 3.5em;">
+                            <?php if($i +2 <= count($this->encheres)) { ?>
+                            <div class="img-wrapper">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
+                                </a>
+                            </div>
+                            <div class="col-md-12 margin">
+                                <h3 class="auction-name"><?php echo $this->translate("Foals Elites de CSO", $this->lang_id); ?></h3>
+                                <img class="line" src="<?php echo $this->basePath() ?>/images/auction-filet.png" alt="">
+                                <ul>
+                                    <li><?php echo $this->translate($this->encheres[$i+2]->description, $this->lang_id); ?></li>
+                                </ul>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                            </div>
+                            <?php } ?>
+                        </div>
+                <?php
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </section>
+
+    <?php echo $this->selection; ?>
+    <?php echo $this->purchase; ?>
+    <?php echo $this->services; ?>
+
+</div>

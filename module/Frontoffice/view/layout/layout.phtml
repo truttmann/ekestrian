@@ -1,0 +1,78 @@
+<?php
+
+$flashMessages = $this->flashMessages;//    flashMessenger()->getMessages();
+
+echo $this->doctype(); ?>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.1.1
+Version: 2.0.2
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="<?= Locale::getPrimaryLanguage(Locale::getDefault())?>" class="no-js">
+    <head>
+    <?php echo $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Back Office Ekestrian', $this->lang_id))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link rel="shortcut icon" type="image/x-icon" href="http://www.ekestrian.com/ekestrian/images/favicon.png" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+        <!--link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet" -->
+        <meta name="robots" content="noindex,nofollow">
+
+        <?php
+            echo $this->headLink()->appendStylesheet($this->basePath() . '/css/mainstyle.css');
+            echo $this->headLink()->appendStylesheet($this->basePath() . '/css/lightgallery.css'); 
+            echo $this->headLink()->appendStylesheet($this->basePath() . '/css/blueimp-gallery.min.css'); 
+        ?>
+        <!-- END THEME STYLES -->
+
+        <!-- Scripts -->
+        <?php
+        
+        $index = 0;
+        foreach($this->headScript()->getIterator() as $js) {
+            if(isset($js->attributes['src'])) {
+                $this->headScript()->offsetSetFile($index, $this->basePath() . $js->attributes['src']);
+            }
+            $index++;
+        }
+
+        echo $this->headScript();
+        ?>
+    </head>
+
+    <!-- BEGIN BODY -->
+    <body style="background-color:#f2f2f2">
+        <div class="wrapper"><?php echo $this->navbar; ?>
+            <?php echo $this->content; ?>
+            <?php echo $this->newsletter; ?>
+            <?php echo $this->footer; ?>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                if($.cookie('AuthCookie'))    {
+                    $("#authenticated").show();
+                } else {
+                        $("#anonymous").show();
+                    }
+                });
+
+                $("img.zoom").elevateZoom();
+            </script>            
+        </div>
+        
+        <input id="base-url" type="hidden" value="<?php echo $this->basePath() ?>" />
+    </body>
+    <!-- END BODY -->
+
+</html>

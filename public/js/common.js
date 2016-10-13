@@ -1,0 +1,1 @@
+var Common;(function(n){var t=function(){function n(){this.weburl="http://127.0.0.1/ekestrian/version_php/public/";this.apiUrl="http://127.0.0.1/ekestrian/version_php/public/"}return n}();n.BaseInfo=t})(Common||(Common={}))

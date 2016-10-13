@@ -1,0 +1,49 @@
+<?php
+namespace RepriseBatch\Model;
+
+class Department
+{
+    public $id;
+    public $region_id;
+    public $reference;
+    public $code;
+    public $insee;
+    public $label_origin;
+    public $coord_latitude;
+    public $coord_longitude;
+    public $coords_minimap;
+
+    public function __construct(){}
+    
+    public function exchangeArray($data)
+    {
+        $this->id = (isset($data['id'])) ? $data['id'] : null;
+        $this->region_id = (isset($data['region_id'])) ? $data['region_id'] : null;
+        $this->reference = (isset($data['reference'])) ? $data['reference'] : null;
+        $this->code = (isset($data['code'])) ? $data['code'] : null;
+        $this->insee = (isset($data['insee'])) ? $data['insee'] : null;
+        $this->label_origin = (isset($data['label_origin'])) ? $data['label_origin'] : null;
+        $this->coord_latitude = (isset($data['coord_latitude'])) ? $data['coord_latitude'] : null;
+        $this->coord_longitude = (isset($data['coord_longitude'])) ? $data['coord_longitude'] : null;
+        $this->coords_minimap = (isset($data['coords_minimap'])) ? $data['coords_minimap'] : null;
+    }
+
+    /**
+    * check is this object is different that parameter
+    * @param  Region $obj object for diff
+    * @return bool
+    */
+    public function isDiff(Department $obj) {
+        $return = false;
+        $return = ($this->id != $obj->id) ? true : $return;
+        $return = ($this->region_id != $obj->region_id) ? true : $return;
+        $return = ($this->reference != $obj->reference) ? true : $return;
+        $return = ($this->code != $obj->code) ? true : $return;
+        $return = ($this->insee != $obj->insee) ? true : $return;
+        $return = ($this->label_origin != $obj->label_origin) ? true : $return;
+        $return = ($this->coord_latitude != $obj->coord_latitude) ? true : $return;
+        $return = ($this->coord_longitude != $obj->coord_longitude) ? true : $return;
+        $return = ($this->coords_minimap != $obj->coords_minimap) ? true : $return;
+        return $return;
+    }
+}

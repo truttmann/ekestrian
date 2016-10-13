@@ -1,0 +1,32 @@
+<?php
+
+$form = $this->form;
+$form->prepare();
+$elements = $form->getElements();
+?>
+<div id="form-cheval-edit">
+    <div class="portlet box green-haze">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-shopping-cart"></i><?php echo $this->form_title ?>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <?php foreach ($elements as $element): 
+                echo "<div style='height: auto'>".$this->formRow($form->get($element->getName())).' <div style="clear: both">&nbsp;</div></div>';
+                if($element->getName() == "image_url" && !empty($this->lot['image_url'])) {
+                    echo "<div style='width: 100%'><img style='padding-left: 30%;' src='".$this->basePath()."/../".$this->lot['image_url']."' /></div>";
+                }
+            endforeach;
+            ?>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function() {
+
+    });
+</script>
+

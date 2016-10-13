@@ -1,0 +1,48 @@
+<?php
+$order = (isset($_GET['order']) && $_GET['order'] && isset($_GET['direction']) && $_GET['direction'])?'&order='.$_GET['order'] . '&direction=' . $_GET['direction']:'';
+?>
+
+
+<div class="col-md-9 col-sm-12">
+    <div class="dataTables_paginate paging_bootstrap_extended">
+        <div class="pagination-panel">
+            Page
+
+
+            <a title="Précédent" class="btn btn-sm default prev" href="<?php echo $this->current_url . '?page='.$this->link_previous . $order;?>">
+                <i class="fa fa-angle-left">
+
+                </i>
+            </a>
+
+            <input value="<?php echo $this->current_page ?>" type="text" style="text-align:center; margin: 0 5px;" maxlenght="5" class="pagination-panel-input form-control input-mini input-inline input-sm">
+
+            <a title="Suivant" class="btn btn-sm default next" href="<?php echo $this->current_url . '?page='.$this->link_next . $order;?>">
+                <i class="fa fa-angle-right"></i>
+            </a>
+            de
+            <span class="pagination-panel-total"><?php echo $this->nbr_page?></span>
+        </div>
+    </div>
+    <?php if ($this->nbr_items_per_page != 10): ?>
+    <div id="datatable_products_length" class="dataTables_length">
+        <label>
+            <span class="seperator">|</span>
+            Afficher
+            <select name="nbr_results_per_page" size="1" aria-controls="datatable_products" class="select-item-per-page form-control input-xsmall input-sm">
+                <?php
+                foreach (array('20', '50', '100', '150') as $nbr):?>
+                    <option
+                        value="<?php echo $nbr ?>" <?php echo (isset($this->nbr_items_per_page) && $this->nbr_items_per_page == $nbr) ? 'selected="selected"' : '' ?> ><?php echo $nbr ?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php // echo (isset($this->filters['nbr_results_per_page']))?$this->filters['nbr_results_per_page'] . ' enregistrements':'20 enregistrements'?>
+        </label>
+    </div>
+    <?php endif; ?>
+    <div id="datatable_ajax_info" class="dataTables_info">
+        <span class="seperator">|</span>
+       <?php echo $this->nbr_items ?> <?php echo ($this->nbr_items>1)?$this->title_items_plural:$this->title_items_only?>
+    </div>
+</div>
+<br /><br />

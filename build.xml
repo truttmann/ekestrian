@@ -1,0 +1,273 @@
+<!--
+/** **
+ * @package cdb
+ * @copyright Copyright (C) 2012 BROCELIA. All rights reserved.
+ */
+-->
+<project basedir=".">
+
+    <property file="local.properties" />
+    <property file="../local.properties" />
+    <property file="../../local.properties" />
+    <property file="default.properties" />
+    <property name="lib.src" value="//elbe/projets/lib/" />
+    <property name="lib.dir" value="C:\\lib\\" />
+    <property name="lib.php.dir" value="${lib.dir}php/" />
+    <property name="mysqldump" value="C:\\xampp\\mysql\\bin\\mysqldump.exe" />
+    <property name="mysql" value="C:\\xampp\\mysql\\bin\\mysql.exe" />
+    <property name="php54" value="C:\\xampp\\php\\php.exe" />
+    <property name="php" value="${php54}" />
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="${lib.dir}java/ant/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
+    <!-- copie des outils brocelia.joomla en local -->
+    <target name="copy-brc-utilities">
+        <copy file="${lib.src}java/ant/ant-contrib-1.0b3.jar" todir="${lib.dir}java/ant" />
+    </target>
+
+
+    <target name="init" depends="copy-brc-utilities,init.local-copy,init.sans-reseau" />
+
+    <target name="init.local-copy">
+        <copy file="${lib.src}php/tools/composer.phar" todir="." verbose="on" />
+    </target>
+
+    <target name="init.sans-reseau" depends="init.lib,init.db" />
+
+    <target name="force-init.lib" depends="clean-lib,init.lib" />
+
+    <target name="init.lib">
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="composer.phar" />
+            <arg value="self-update" />
+        </exec>
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="composer.phar" />
+            <arg value="update" />
+        </exec>
+    </target>
+
+    <target name="init.db" depends="clean-db,create.sql.type2engine">
+        <mysql-query query="CREATE DATABASE `${dev.db.name}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" />
+        <foreach param="file" target="mysql-file">
+            <path>
+                <fileset dir="_DB" includes="create.*.sql" />
+            </path>
+        </foreach>
+        <foreach param="file" target="mysql-file">
+            <path>
+                <fileset dir="_DB" includes="init.*.sql" />
+            </path>
+        </foreach>
+    </target>
+
+    <target name="init.db.from-elbe">
+        <mkdir dir="tmp" />
+        <copy file="${lastdump.path.gz}" tofile="tmp/lastdump.sql.gz" />
+        <gunzip src="tmp/lastdump.sql.gz" dest="tmp/lastdump.sql" />
+        <mysql-query query="DROP DATABASE IF EXISTS `${dev.db.name}`;" />
+        <mysql-query query="CREATE DATABASE `${dev.db.name}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" />
+        <mysql-file dbname="${dev.db.name}" file="tmp/lastdump.sql" />
+    </target>
+
+<!--
+    <target name="init.integration" depends="init,reprise,batch-import-xml,batch-index-search,batch-flat-camping" />
+--> <target name="init.integration" depends="init,init.db.from-elbe" />
+
+    <target name="insert-tests">
+        <foreach param="file" target="mysql-file">
+            <path>
+                <fileset dir="_DB" includes="test.*.sql" />
+            </path>
+        </foreach>
+    </target>
+
+    <target name="reprise-et-batches" depends="reprise-sql,reprise-photos,reprise-logos,batch-import-xml,batch-index-search,batch-logo-partenaire,batch-lien-reservation,batch-import-pays-acceuil,batch-contracts,batch-flat-camping" />
+
+    <target name="import-old-database">
+        <mkdir dir="tmp" />
+        <antcall target="echo-datetime" />
+        <copy file="${old.lastdump.path.gz}" tofile="tmp/old.lastdump.sql.gz" />
+        <antcall target="echo-datetime" />
+        <gunzip src="tmp/old.lastdump.sql.gz" dest="tmp/old.lastdump.sql" />
+        <antcall target="echo-datetime" />
+        <mysql-query query="DROP DATABASE IF EXISTS `${old.db.name}`;" />
+        <mysql-query query="CREATE DATABASE `${old.db.name}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" />
+        <antcall target="echo-datetime" />
+        <mysql-file dbname="${old.db.name}" file="tmp/old.lastdump.sql" />
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="reprise" depends="reprise-sql,reprise-photos,reprise-logos" />
+
+    <target name="reprise-sql">
+        <antcall target="echo-datetime" />
+        <mysql-file file="_REPRISE/reprise.sql" />
+        <mysql-file file="_REPRISE/reprise_lot2.sql" />
+        <foreach param="file" target="mysql-file">
+            <path>
+                <fileset dir="_DB/update" includes="*.sql" />
+            </path>
+        </foreach>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="reprise-photos">
+        <antcall target="echo-datetime" />
+        <mkdir dir="public/img/camping" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="_REPRISE/reprise_photo.php" />
+        </exec>
+        <antcall target="echo-datetime" />
+        <mysql-file file="_REPRISE/post-reprise-photo.sql" />
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="reprise-logos">
+        <antcall target="echo-datetime" />
+        <mkdir dir="public/img/logo" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="_REPRISE/reprise_contrat_logo.php" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-import-xml" depends="batch-import-xml.copy-from-elbe,batch-import-xml.sans-resau" />
+    <target name="batch-import-xml.copy-from-elbe">
+        <antcall target="echo-datetime" />
+        <copy file="${lastxml.path.gz}" tofile="import/lastxml.xml.gz" />
+        <antcall target="echo-datetime" />
+        <gunzip src="interfaces/depots/import-campings/lastxml.xml.gz" dest="interfaces/depots/import-campings/importCampings.xml" />
+    </target>
+    <target name="batch-import-xml.sans-resau">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="import_xml" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-index-search">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="batch_index_search" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-logo-partenaire">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="import_logo_partenaire" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-import-pays-acceuil">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="import_pays_acceuil" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-lien-reservation">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="import_lien_reservation" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-flat-camping">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="batch_flat_camping" />
+            <arg value="-f" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="batch-contracts">
+        <antcall target="echo-datetime" />
+        <exec executable="${php}" failifexecutionfails="true" failonerror="true">
+            <arg value="public/index.php" />
+            <arg value="batch_contract" />
+        </exec>
+        <antcall target="echo-datetime" />
+    </target>
+
+    <target name="clean" depends="clean-lib,clean-db">
+        <delete dir="tmp" />
+    </target>
+
+    <target name="clean-lib">
+        <delete verbose="false" includeemptydirs="true">
+            <fileset dir="vendor" defaultexcludes="no">
+            </fileset>
+        </delete>
+        <delete file="composer.lock" />
+    </target>
+
+    <target name="clean-db">
+        <mysql-query query="DROP DATABASE IF EXISTS `${dev.db.name}`;" />
+    </target>
+
+
+    <target name="create.sql.type2engine">
+        <replaceregexp match="\btype\b\s*=\s*(\w)" replace="engine = \1" flags="gi" encoding="UTF-8">
+            <fileset dir="_DB" includes="create.*.sql"/>
+        </replaceregexp>
+    </target>
+
+    <target name="echo-datetime">
+        <tstamp>
+            <format property="current.time" pattern="dd/MM/yyyy HH:mm:ss" />
+        </tstamp>
+        <echo message="${current.time}" />
+    </target>
+
+    <target name="mysql-file" if="file">
+        <mysql-file file="${file}" />
+    </target>
+
+    <macrodef name="mysql-file">
+        <attribute name="file" />
+        <attribute name="dbname" default="${dev.db.name}" />
+        <sequential>
+            <echo level="info" message="mysql @{dbname} &lt; @{file}" />
+            <exec executable="${mysql}" input="@{file}" failifexecutionfails="true" failonerror="true">
+                <arg value="--host=${dev.db.host}" />
+                <arg value="--user=${dev.db.user}" />
+                <arg value="--password=${dev.db.password}" />
+                <arg value="--default-character-set=utf8" />
+                <arg value="@{dbname}" />
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="mysql-query">
+        <attribute name="query" />
+        <sequential>
+            <echo level="info" message="mysql @{query}" />
+            <exec executable="${mysql}" failifexecutionfails="true" failonerror="true">
+                <arg value="--host=${dev.db.host}" />
+                <arg value="--user=${dev.db.user}" />
+                <arg value="--password=${dev.db.password}" />
+                <arg value="-e" />
+                <arg value="@{query}" />
+            </exec>
+        </sequential>
+    </macrodef>
+
+</project>

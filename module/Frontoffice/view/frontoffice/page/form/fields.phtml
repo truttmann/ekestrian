@@ -1,0 +1,48 @@
+<?php
+
+$form = $this->form;
+$form->prepare();
+$elements = $form->getElements();
+?>
+
+<div class="portlet box green-haze">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-shopping-cart"></i><?php echo $this->form_title ?>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <?php foreach ($elements as $element): ?>
+            <div class="form-group">
+                <label class="col-md-2 control-label"><?php echo $element->getLabel() ?>
+                    <?php if($element->getOption('required') === true):?>
+                        <span class="required">*</span>
+                    <?php endif; ?>
+                </label>
+                <div class="col-md-10">
+                    <?php
+                    switch ($element->getAttribute('type')):
+                        case 'text':
+                            echo $this->formInput($form->get($element->getName()));
+                            break;
+                        case 'hidden':
+                            echo $this->formHidden($form->get($element->getName()));
+                            break;
+                        case 'select':
+                            echo $this->formSelect($form->get($element->getName()));
+                            break;
+                        case 'textarea':
+                            echo $this->formTextarea($form->get($element->getName()));
+                            break;
+                        case 'checkbox':
+                            echo $this->formCheckbox($form->get($element->getName()));
+                            break;
+                        default:{
+                        echo $this->formInput($form->get($element->getName()));
+                        }
+                    endswitch;?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

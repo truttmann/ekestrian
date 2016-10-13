@@ -1,0 +1,104 @@
+<?php
+$items = array(
+    array(
+        'label' => "Tableau de bord",
+        'route' => 'home',
+        'class' => 'fa fa-home',
+        'childs'=> array(),
+    ),
+    array(
+        'label' => "Les clients",
+        'route' => 'clients',
+        'class' => 'fa fa-client',
+    ),
+    array(
+        'label' => "Les vendeurs",
+        'route' => 'sellers',
+        'class' => 'fa fa-seller'
+    ),
+    array(
+        'label' => "Les chevaux",
+        'route' => 'chevaux',
+        'class' => 'fa fa-horse',
+    ),
+    array(
+        'label' => "Les enchères",
+        'route' => 'encheres',
+        'class' => 'fa fa-sold',
+    ),
+    array(
+        'label' => "Newsletter",
+        'route' => 'newsletter',
+        'class' => 'fa fa-sold',
+    ),
+    
+);
+?>
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
+            <li class="sidebar-toggler-wrapper">
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler hidden-phone">
+                </div>
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li>&nbsp;</li>
+
+            <?php if (!empty($items)): ?>
+                <?php $i = 0; foreach ($items as $key => $item):
+                    $link = null;
+
+                    if($item['route']){
+                            $link = $this->url($item['route']);
+                    }else{
+                        $link = '#';
+                    }
+                    if($link): ?>
+                    <li class="<?php echo (!$key) ? 'start' : ''; ?> <?php echo ($this->current_route == $item['route']) ? 'active open' : ''; ?>">
+
+                        <a href="<?php echo $link ?>">
+                            <?php if (!empty($item['class'])): ?>
+                            <i class="<?= $item['class'] ?>"></i>
+                            <?php endif; ?>
+                            <span class="title">
+                                <?php echo $item['label'] ?>
+                            </span>
+                            <?php if ($this->current_route == $item['route']): ?>
+                                <span class="selected"></span>
+                            <?php endif; ?>
+                            <?php if (isset($item['childs']) && count($item['childs'])): ?>
+                                <span class="arrow"></span>
+                            <?php endif; ?>
+                        </a>
+                        <?php if (!empty($item['childs'])): ?>
+                            <ul class="sub-menu">
+                                <?php foreach ($item['childs'] as $child):
+                                    $params = (isset($child['params']))?$child['params']:array();
+
+                                if($this->layout()->getOption("aclHelper")->isAllowedUrl($child['route'], $params)):
+                                    $link = (isset($child['route']) && $child['route'])?$this->url($child['route'], $params):'#';
+                                ?>
+                                <li class="<?php echo ($this->current_route == $child['route']) ? 'active' : ''; ?>">
+
+                                    <a href="<?php echo $link ?>">
+                                        <?php echo $child['label'] ?>
+                                    </a>
+                                </li>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                <?php endif; ?>
+                <?php $i++; endforeach; ?>
+                </ul>
+                <!-- END SIDEBAR MENU -->
+            <?php endif; ?>
+    </div>
+</div>
+<!-- END SIDEBAR -->
+
+

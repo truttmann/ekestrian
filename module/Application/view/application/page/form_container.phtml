@@ -1,0 +1,14 @@
+<form id="form-validation" method="POST" action="<?php echo $this->action_route; ?>" class="form-horizontal form-row-seperated" enctype='multipart/form-data' autocomplete="off">
+    <?php echo $this->form ?>
+</form>
+
+<?php echo $this->content ?>
+
+<script>
+    jQuery(document).ready(function() {
+        // initiate layout and plugins
+        App.init();
+        FormValidation.init();
+        $('.selectpicker').selectpicker();
+    });
+</script>

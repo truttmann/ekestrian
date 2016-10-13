@@ -1,0 +1,22 @@
+{
+    "name": "motorpresse/mo-mmetier",
+    "description": "Motor Presse - Back Office Metier",
+    "license": "",
+    "keywords": [
+    ],
+    "homepage": "http://www.brocelia.fr/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "~2.3",
+        "bjyoungblood/bjy-authorize": "1.4.*",
+        "zf-commons/zfc-user": "~0.1",
+        "tf/string": "~1.4",
+        "slm/locale": ">=0.1.0,<1.2.0-dev"
+    },
+    "require-dev": {
+        "zendframework/zftool": "dev-master",
+        "zendframework/zend-developer-tools": "dev-master",
+        "zfcampus/zf-development-mode": "~2.0"
+
+    }
+}

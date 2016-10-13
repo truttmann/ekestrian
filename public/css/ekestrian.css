@@ -1,0 +1,110 @@
+.tabbable.contract_tab{
+    display:none;
+}
+
+#add-camping{
+    width:300px;
+}
+
+p.contract-notice{
+    display:block;
+    float:right;
+    font-style: italic;
+    color: #737373;
+}
+
+#camping-list{position:relative;}
+
+.camping-container{
+    right: 23px;
+    position: absolute;
+    top: 42px;
+    width: 81%;
+}
+
+#camping-list-specifique .input-group{
+    padding:0 15px;
+}
+
+.order-asc-table-on{
+    background-image:url(../img/brocelia/sort_asc.png);
+    display:block;
+    width:19px;
+    height:10px;
+}
+
+.order-asc-table-off{
+    background-image:url(../img/brocelia/sort_asc_disabled.png);
+    display:block;
+    width:19px;
+    height:10px;
+}
+.order-desc-table-on{
+    background-image:url(../img/brocelia/sort_desc.png);
+    display:block;
+    width:19px;
+    height:10px;
+}
+
+.order-desc-table-off{
+    background-image:url(../img/brocelia/sort_desc_disabled.png);
+    display:block;
+    width:19px;
+    height:10px;
+}
+
+.table-order-container{
+float:right;
+}
+
+.input-group .form-control.contract-thematic{
+    width:350px;
+}
+
+#camping-edit .bootstrap-select{
+    float:left;
+    width:300px;
+}
+
+
+.tt-dropdown-menu {
+    background-color:red;
+}
+
+.video-table-contract{
+    padding:10px;
+}
+.video-table-contract .contract-reservation-add{
+    margin-top:10px;
+}
+
+.print_language {
+    display: none;
+}
+
+
+#form-cheval-edit .form_input {
+    float: left;
+    width: 65% !important;
+    margin: 5px 0 !important;
+}
+#form-cheval-edit ul {
+    float: left;
+    width: 100%;
+    color: red;
+    padding-left: 30%;
+}
+
+#form-cheval-edit label {
+    float: left;
+    width: 30% !important;
+    margin: 5px 0px;
+    padding-left: 3%;
+}
+
+#form-cheval-edit div.help-block{
+    float: left;
+    width: 100%;
+    text-align: center;
+    color: red;
+}

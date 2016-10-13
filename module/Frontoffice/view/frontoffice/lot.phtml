@@ -1,0 +1,481 @@
+<section id="section-banner" style="margin-top: 0px;">
+    <div class="shell">
+        <div class="section-inner">
+            <header class="section-head">
+                <h2 class="menu-upper"><?php echo $this->enchere->title; ?></h2>
+                <img src="<?php echo $this->basePath() ?>/images/section-concept-filet.png")" alt="" id="concept-filet">
+            </header>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="section-horse" style="margin: 0 50px; background: white;margin-top: -30px; padding-bottom: 60px">
+    <div class="shell">
+        <header class="section-head">
+            <h2 ><span><?php echo $this->cheval->name?></span></h2>
+		<!-- @String.Concat("/Content/images/horse/",@Model.Horse.Name.ToString().ToUpper().Replace(" ", "_"), ".jpg") -->
+            <div class="row margin">
+                <div class="col-xs-12 main-info-horse" style="width: 340px; margin: auto;">
+                    <div class="col-xs-12" style="text-align: center;padding:0px;margin:auto; ">
+                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Foal"); ?> : </div>
+                        <div class="" style="float: left;"><?php echo (($this->cheval->sex == "m")?"M&acirc;le":"Femelle"); ?></div>
+                        <div style="float: left; width: 1px;border-right: solid 1px #a0a0a0;margin: 0 3px;line-height: 20.5pt;">&nbsp;</div>
+                        <div class="letter-spacing-2" style="float: left; font-family: Lato-bold;"><?php echo $this->translate("Né le"); ?> : </div>
+                        <div class="" style="float: left;"><?php echo $this->cheval->birthday ?></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</section>
+<section class="section" id="section-horses" style="margin: 0 50px; background: white;" >
+    <?php if($this->lot->video_link != "") { ?>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="display: none"></button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <?php echo $this->lot->video_link; ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate("Close"); ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
+    <div class="shell2">
+        <div class="section-body row" style="display: table">
+            <div class="col-md-04 fiche_aff">&nbsp;</div>
+            <div class="col-md-346 margin fiche_aff" style="vertical-align: middle">
+                <div class="row" style="margin: 0px;">
+                    <div class="col-md-144"  style="padding: 0px" id="slider-thumbs">
+                        <!-- Bottom switcher of slider -->
+                        <ul class="hide-bullets">
+                            <?php /* 1er temps => image principal du lot*/ ?>
+                            <?php
+                            $i = 0;
+                            if($this->lot->image_url != "" ){ ?>
+                                <li class="col-sm-12" style="padding: 0px">
+                                    <a href="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" class="thumbnail" id="carousel-selector-0" data-gallery>
+                                        <img src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" alt="" >
+                                    </a>
+                                </li>
+                            <?php 
+                                $i++;
+                            } ?>
+                            
+                            <?php 
+                            foreach ($this->lot->list_image as $image) { 
+                                if( $i <= 4) {
+                            ?>
+                                    <li class="col-sm-12" style="padding: 0px">
+                                        <a href="<?php echo $this->basePath()."/".$image; ?>" class="thumbnail" id="carousel-selector-<?php echo $i; ?>" data-gallery>
+                                            <img src="<?php echo $this->basePath()."/".$image; ?>" alt="">
+                                        </a>
+                                    </li>
+                            <?php  
+                                    $i++;
+                                } else {
+                            ?>
+                                    <li class="col-sm-12" style="padding: 0px; display: none">
+                                        <a href="<?php echo $this->basePath()."/".$image; ?>" class="thumbnail" id="carousel-selector-<?php echo $i; ?>" data-gallery>
+                                            <img src="<?php echo $this->basePath()."/".$image; ?>" alt="">
+                                        </a>
+                                    </li>
+                            <?php 
+                                    $i++;
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    <div class="col-md-855" style="padding: 0px">
+                        <div class="col-xs-12" id="slider">
+                            <!-- Top part of the slider -->
+                            <div class="row">
+                                <div class="col-sm-12" id="carousel-bounding-box">
+                                    <div class="carousel slide" id="carousel-horse">
+                                        <!-- Carousel items -->
+                                        <div class="carousel-inner">
+                                            <div class="item active" data-slide-number="1" data-src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>">
+                                                <img src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" alt="" style="width: 100%;">
+                                            </div>
+                                        </div>
+										<!-- div class="carousel-inner">
+											<div class="item active" data-slide-number="1" data-src="@String.Concat("/Content/images/horse/",@Model.Horse.Name.ToString().ToUpper().Replace(" ", "_"), ".jpg")">
+												<img src="@String.Concat("/Content/images/horse/",@Model.Horse.Name.ToString().ToUpper().Replace(" ", "_"), ".jpg")" alt="" style="width: 100%;">
+											</div>
+										</div -->
+                                        <div class="video_behind" style="display: none"><img src="<?php echo $this->basePath() ?>/images/picto_video.png" style="width:50%"/></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Slider-->
+                </div>
+            </div>
+            <div class="col-md-445 mobilehidden arbo_fiche" style="float: none">
+                <table class="family-tree" width="100%" border="0">
+                            <tbody>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_pere_pere && is_object($this->cheval->pere_pere_pere)){ echo $this->cheval->pere_pere_pere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_pere && is_object($this->cheval->pere_pere)){ echo $this->cheval->pere_pere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->mere_pere_pere && is_object($this->cheval->mere_pere_pere)){ echo $this->cheval->mere_pere_pere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere && is_object($this->cheval->pere)){ echo $this->cheval->pere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_mere_pere && is_object($this->cheval->pere_mere_pere)){ echo $this->cheval->pere_mere_pere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->mere_pere && is_object($this->cheval->mere_pere)){ echo $this->cheval->mere_pere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left tree-bottom">
+                                        <?php if($this->cheval->mere_mere_pere && is_object($this->cheval->mere_mere_pere)){ echo $this->cheval->mere_mere_pere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="family-separator tree-bottom">&nbsp;</td>
+                                    <td class="family-separator tree-left">&nbsp;</td>
+                                    <td class="family-separator">&nbsp;</td>
+                                    <td class="family-separator">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_pere_pere && is_object($this->cheval->pere_pere_pere)){ echo $this->cheval->pere_pere_pere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_pere_mere && is_object($this->cheval->pere_pere_mere)){ echo $this->cheval->pere_pere_mere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->pere_mere && is_object($this->cheval->pere_mere)){ echo $this->cheval->pere_mere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->mere && is_object($this->cheval->mere)){ echo $this->cheval->mere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-left">&nbsp;</td>
+                                    <td class="tree-bottom">
+                                        <?php if($this->cheval->pere_mere_mere && is_object($this->cheval->pere_mere_mere)){ echo $this->cheval->pere_mere_mere->name ;}?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->mere_mere && is_object($this->cheval->mere_mere)){ echo $this->cheval->mere_mere->name ;}?>
+                                    </td>
+                                    <td class="tree-left">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="tree-bottom tree-left">
+                                        <?php if($this->cheval->mere_mere_mere && is_object($this->cheval->mere_mere_mere)){ echo $this->cheval->mere_mere_mere->name ;}?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                </table>
+            </div>
+            
+            <div class="col-md-166 margin fiche_aff" style="text-align: center;margin-top: 13%;">
+                <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558">
+                    <span class="letter-spacing-1" style="font-family: Lato-bold; font-weight:bold;font-size:15pt;line-height:26pt; color: #e97266"><?php echo $this->translate("Enchère actuelle"); ?> </span>
+                </div>
+                <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558; margin-bottom: 15px">
+                    - <span>€</span> <sup>HT</sup>
+                </div>
+                <div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir"); ?></div>
+            </div>
+       </div>
+    </div>
+</section>
+
+<?php if ($this->cheval->pere != null) { ?>
+    <section class="section" id="section-auction" style="margin: 0 50px; background: white;margin-top:20px;padding-bottom:50px">
+        <div class="shell">
+            <header class="section-head" style=";padding: 0px; margin: 0px"><h2><span><?php echo $this->translate("DESCRIPTION DU PÈRE"); ?></span></h2></header>
+            <div class="section-body row">
+                <div class="col-xs-12 margin" style="">
+                    <h3 style="font-family: Lato;font-size:16pt;line-height:17pt; color: #585858;margin-top: 50px;"><?php echo $this->cheval->pere->name; ?></h3>
+                        
+                    <div class="row" style="line-height: 1px; margin-bottom: 20px">
+                        <div class="col-md-12">
+                            <div style=" width: 25%; margin-bottom:15px">
+                                <img class="lot-filet" src="<?php echo $this->basePath() ?>/images/lot/lot-filet.png" alt="">
+                            </div>
+                        </div>
+                        <p class="letter-spacing-1 horse-description" style=""><?php echo $this->cheval->pere->description; ?></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+<?php 
+}
+
+if ($this->cheval->mere != null) { ?>
+    <section id="section-mother" class="section" style="margin: 0 50px; background: white;padding-bottom:40px; position: relative">
+        <div class="shell">
+            <header class="secition-head">
+                <h2><span><?php echo $this->translate("DESCRIPTION DES MÈRES"); ?></span></h2>
+            </header>
+            <div class="section-body section-body-ply row" style="padding: 0px">
+                <div class="col-md-12" style="margin-top: 65px">
+                    <div class="col-xs-12 margin">
+                        <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">1<sup>&egrave;re</sup><?php echo $this->translate("Mère"); ?></h3>
+                        <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
+                        <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere->name; ?></h4>
+                        <p style="margin-bottom: 30px">
+                            <span class="letter-spacing-1 horse-description">
+                                <?php echo $this->cheval->pere->description; ?>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <?php if (property_exists($this->cheval, "mere_mere") && $this->cheval->mere_mere != null) { ?>
+                    <div class="col-md-12" style="margin-top: 65px">
+                        <div class="col-xs-12 margin">
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">2<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
+                            <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato; font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere->name; ?></h4>
+                            <p style="margin-bottom: 30px">
+                                <span class="letter-spacing-1 horse-description">
+                                    <?php echo $this->cheval->mere_mere->description; ?>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                <?php 
+                }
+                
+                if (property_exists($this->cheval, "mere_mere_mere") && $this->cheval->mere_mere_mere != null) { 
+                ?>
+                    <div class="col-md-12" style="margin-top: 65px">
+                        <div class="col-xs-12 margin">
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">3<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
+                            <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere_mere->name; ?></h4>
+                            <p style="margin-bottom: 30px">
+                                <span class="letter-spacing-1 horse-description">
+                                    <?php echo $this->cheval->mere_mere_mere->description; ?>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                <?php 
+                }
+                
+                if (property_exists($this->cheval, "mere_mere_mere_mere") && $this->cheval->mere_mere_mere_mere != null) { 
+                ?>
+                    <div class="col-md-12" style="margin-top: 65px">
+                        <div class="col-xs-12 margin">
+                            <h3 style="font-family: Lato; font-weight:regular;font-size:20pt;line-height:18pt; color: black">4<sup>&egrave;me</sup><?php echo $this->translate("Mère"); ?></h3>
+                            <img class="horse-filet" src="<?php echo $this->basePath() ?>/images/horse/horse-filet.png" alt="">
+                            <h4 class="letter-spacing-1" style="margin-bottom: 20px;font-family: Lato;font-size:15pt;line-height:22pt; color: #e76558"><?php echo $this->cheval->mere_mere_mere_mere->name; ?></h4>
+                            <p style="margin-bottom: 30px">
+                                <span class="letter-spacing-1 horse-description">
+                                    <?php echo $this->cheval->mere_mere_mere_mere->description; ?>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+        <div style="width: 100%; bottom: -30px; position: absolute; text-align: center">
+            <img src="<?php echo $this->basePath() ?>/images/bloc_bottom_img.png" />
+        </div>            
+    </section>
+<?php } ?>
+
+<!-- section class="section" id="section-other-lots" style="margin: 0 50px; margin-top: 50px; background: white;">
+    <div class="shell">
+        <header class="section-head" style=";padding: 0px; margin: 0px">
+            <h2><span>DÉCOUVREZ NOS AUTRES VENTES
+</span></h2>
+        </header>
+        <div class="section-body section-body-ply col-md-12" style="padding: 0px;margin-top: 70px; padding-bottom: 60px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-md-5-5" style="padding: 0px; position: relative">
+                        <div style="font-family: Raleway;font-size: 20pt;color: white;position: absolute; left: 31%; top: 40%; border-bottom: solid 1px white; padding-bottom: 20px"><a href="#">ENCH&Egrave;RE X</a></div>
+                        <img src="/Content/images/horse_1.png" style="width:100%;max-height: 368px" />
+                    </div>
+                    <div class="col-md-0-5" style="padding: 0px">&nbsp;</div>
+                    <div class="col-md-5-5" style="padding: 0px; position: relative">
+                        <div style="font-family: Raleway;font-size: 20pt;color: white;position: absolute; left: 31%; top: 40%; border-bottom: solid 1px white; padding-bottom: 20px"><a href="#">ENCH&Egrave;RE Y</a></div>
+                        <img src="/Content/images/horse_2.png" style="width:100%;max-height: 368px"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section -->
+
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <div class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#slider-thumbs li a').unbind('click').on('click', function(e){
+            e.preventDefault();
+            $('#blueimp-gallery').data('fullScreen', true);
+            $('#blueimp-gallery').data('hidePageScrollbars', false);
+            console.log($('#blueimp-gallery').data());
+            blueimp.Gallery($('#slider-thumbs a'), $('#blueimp-gallery').data());
+        });
+
+        if($( 'button[data-toggle="modal"]' ).length != 0) {
+            $('.carousel-inner > div, .video_behind').unbind('click').on('click', function(e){
+                e.preventDefault();
+                $( 'button[data-toggle="modal"]' ).trigger("click")
+            });
+
+
+            $('.carousel-inner > div').unbind('mouseover').on('mouseover', function(e){
+                $('.carousel-inner > div').attr('style', "background-color: black; opacity: 0.5; z-index: 1001");
+                $('.video_behind').show();
+            });
+            $('.carousel-inner > div').unbind('mouseout').on('mouseout', function(e){
+                $('.carousel-inner > div').attr('style', "");
+                $('.video_behind').hide();
+            });
+            $('#carousel-bounding-box').unbind('click').on('click', function(e){
+                e.preventDefault();
+            });
+            $('.carousel-inner').unbind('click').on('click', function(e){
+                e.preventDefault();
+            });
+        }
+    });
+    /*} else {
+        $(document).ready(function(){
+            //$('.carousel-inner').lightGallery({
+            //    selector: '.item',
+            //    autoplay : 'false',
+            //    videojs: true
+            //});
+            $('.carousel-inner').lightGallery(
+                {
+                    loadYoutubeThumbnail: true,
+                    youtubeThumbSize: 'default',
+                    selector: '.item',
+                    youtubePlayerParams: {
+                        modestbranding: 1,
+                        showinfo: 0,
+                        rel: 0,
+                        controls: 0
+                    },
+                }
+           );
+        });
+    }*/
+</script>

@@ -1,0 +1,239 @@
+<?php
+
+$flashMessages = $this->flashMessages;//    flashMessenger()->getMessages();
+
+echo $this->doctype(); ?>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.1.1
+Version: 2.0.2
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+    <head>
+    <?php echo $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Back Office Ekestrian'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+        <meta name="robots" content="noindex,nofollow">
+
+        <?php
+        /*** BROCELIA ***/
+        $this->headLink()
+            ->appendStylesheet($this->basePath() . '/css/ekestrian.css')
+        /*** BROCELIA ***/
+        ?>
+        <?php
+        echo $this->headLink()
+            ->appendStylesheet($this->basePath() . '/plugins/font-awesome/css/font-awesome.min.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap/css/bootstrap.min.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap-modal/css/bootstrap-modal.css')
+            //->appendStylesheet($this->basePath() . '/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css')
+            ->appendStylesheet($this->basePath() . '/plugins/silviomoreto-bootstrap-select/bootstrap-select.css')
+            ->appendStylesheet($this->basePath() . '/plugins/uniform/css/uniform.default.css') ?>
+        <!-- END GLOBAL MANDATORY STYLES -->
+
+        <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <?php echo $this->headLink()
+            ->appendStylesheet($this->basePath() . '/plugins/gritter/css/jquery.gritter.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css')
+            ->appendStylesheet($this->basePath() . '/plugins/fullcalendar/fullcalendar/fullcalendar.css')
+            ->appendStylesheet($this->basePath() . '/plugins/jqvmap/jqvmap/jqvmap.css')
+
+            ->appendStylesheet($this->basePath() . '/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+            ->appendStylesheet($this->basePath() . '/plugins/jquery-file-upload/css/jquery.fileupload.css')
+            ->appendStylesheet($this->basePath() . '/plugins/jquery-file-upload/css/jquery.fileupload-ui.css')
+
+            ->appendStylesheet($this->basePath() . '/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css')
+            ->appendStylesheet($this->basePath() . '/plugins/typeahead/typeahead.css')
+            ->appendStylesheet($this->basePath() . '/plugins/data-tables/DT_bootstrap.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap-toastr/toastr.min.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap-datepicker/css/datepicker.css')
+            ->appendStylesheet($this->basePath() . '/plugins/bootstrap-switch/css/bootstrap-switch.min.css')
+            ->appendStylesheet($this->basePath() . '/plugins/data-tables/DT_bootstrap.css')
+        ?>
+        <!-- END PAGE LEVEL PLUGIN STYLES -->
+
+        <!-- BEGIN THEME STYLES -->
+        <?php echo $this->headLink()
+            ->appendStylesheet($this->basePath() . '/css/themes/default.css')
+            ->appendStylesheet($this->basePath() . '/css/style-metronic.css')
+            ->appendStylesheet($this->basePath() . '/css/style.css')
+            ->appendStylesheet($this->basePath() . '/css/pages/tasks.css')
+            ->appendStylesheet($this->basePath() . '/css/components.css')
+            ->appendStylesheet($this->basePath() . '/css/style-responsive.css')
+            ->appendStylesheet($this->basePath() . '/css/plugins.css')
+            ->appendStylesheet($this->basePath() . '/css/custom.css')
+            ->appendStylesheet($this->basePath() . '/css/print.css', 'print')
+        ?>
+        <!-- END THEME STYLES -->
+
+        <!-- Scripts -->
+        <?php
+        
+        $index = 0;
+        foreach($this->headScript()->getIterator() as $js) {
+            if(isset($js->attributes['src'])) {
+                $this->headScript()->offsetSetFile($index, $this->basePath() . $js->attributes['src']);
+            }
+            $index++;
+        }
+
+        echo $this->headScript();
+        ?>
+    </head>
+
+    <!-- BEGIN BODY -->
+    <body class="page-header-fixed">
+        <?php echo $this->header; ?>
+
+        <?php echo $this->flashMessenger()
+            ->setMessageOpenFormat('<div%s><p>')
+            ->setMessageSeparatorString('</p><p>')
+            ->setMessageCloseString('</p></div>')
+            ->render('success'); ?>
+
+        <?php echo $this->search; ?>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+
+        <?php echo $this->menu; ?>
+
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content">
+
+                <?php if (isset($flashMessages)) : ?>
+                        
+                    <?php foreach ($flashMessages as  $messages) :
+    
+                        foreach ($messages as $error_type => $message) :
+                            foreach ($message as $m) :
+
+                                switch($error_type){
+                                        case $this->message_error:
+                                        $class = 'alert-danger';
+                                        break;
+                                        case $this->message_success:
+                                        $class = 'alert-success';
+                                        break;
+                                        case $this->message_warning:
+                                        $class = 'alert-warning';
+                                        break;
+                                        }
+                                        ?>
+                                <div class="app-alerts alert <?php echo $class ?> fade in">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button><?php echo $m ?>
+                                </div>
+                            <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+
+                <!-- BEGIN PAGE HEADER-->
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <!-- BEGIN BREADCRUMB -->
+                        <?php echo $this->breadcrumb; ?>
+                        <!-- END BREADCRUMB-->
+
+                        <!-- BEGIN PAGE TITLE -->
+                        <h3 class="page-title">
+                            <?php echo $this->page_title; ?>
+
+                            <?php if(!empty($this->buttons)) : ?>
+                                <div class="btn-toolbar pull-right">
+                                    <?php foreach($this->buttons as $button): ?>
+                                    <div class="btn-group">
+                                        <?php if (!empty($button['items'])): ?>
+                                            <button class="dropdown-toggle <?= $button['class'] ?>" data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" type="button">
+                                                <?= $button['label'] ?>
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right">
+                                                <?php foreach($button['items'] as $item): ?>
+                                                    <?php if (!empty($item['label'])): ?>
+                                                        <li>
+                                                            <?php $link = null;
+
+                                                            if(isset($item['url'])){
+                                                                $link = $item['url'];
+                                                            }elseif(isset($item['route'])){
+
+                                                                $params = (isset($item['params']))?$item['params']:array();
+
+                                                                if($this->layout()->getOption("aclHelper")->isAllowedUrl($item['route'], $params)){
+                                                                    $link = $this->url($item['route'], $params);
+                                                                }else{
+                                                                    $link = null;
+                                                                }
+
+
+                                                            }
+
+                                                            ?>
+
+                                                            <?php if($link): ?>
+                                                            <a href="<?php echo $link ?>" <?php if(isset($item['attributes'])){ echo $item['attributes'];} ?> <?php if(isset($item['data-toggle'])){ echo "data-toggle=".$item['data-toggle'];} ?>>
+                                                                <?php echo $item['label'] ?>
+                                                            </a>
+                                                            <?php endif; ?>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        <?php else:
+
+                                            if($button['url']):
+                                                if (!strstr($button['url'], 'http')) {
+                                                    $button['url'] = $this->url($button['url'], $button['params']);
+                                                }
+                                                ?>
+                                                <a href="<?= $button['url'] ?>" <?php if(isset($button['attributes'])){ echo $button['attributes'];} ?> class="<?= $button['class'] ?>"><?= $button['label'] ?></a>
+                                           <?php else:?>
+                                                <input type="button" value="<?= $button['label'] ?>" class="<?= $button['class'] ?>" />
+                                            <?php endif; ?>
+
+                                        <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                        </h3>
+                        <div id="message-potential"></div>
+                        <!-- END PAGE TITLE-->
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo $this->content; ?>
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+        <!-- END CONTENT -->
+        <?php echo $this->footer; ?>
+        <div id="ajax-modal" class="modal fade" tabindex="-1">
+        </div>
+        <!-- END FOOTER -->
+        <input id="base-url" type="hidden" value="<?php echo $this->basePath() ?>" />
+    </body>
+    <!-- END BODY -->
+
+</html>

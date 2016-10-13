@@ -1,0 +1,35 @@
+<div class="actions btn-set">
+    <?php if(in_array('back', $this->allowed_buttons)):?>
+        <button onclick="location.href='<?php echo $this->url($this->back_route)?>'" type="button" name="back" class="btn default"><i class="fa fa-angle-left"></i><?php echo $this->label_back_button?></button>
+        <!-- <button class="btn default"><i class="fa fa-reply"></i> Reset</button> -->
+    <?php endif; ?>
+
+    <?php if(in_array('save', $this->allowed_buttons)):?>
+        <button class="btn green"><i class="fa fa-check"></i> <?php echo $this->label_save_button?></button>
+        <!-- <button class="btn green"><i class="fa fa-check-circle"></i> Save & Continue Edit</button> -->
+    <?php endif; ?>
+
+    <?php if(!empty($this->buttons)):
+        foreach($this->buttons as $button): ?>
+            <div class="btn-group">
+                <a class="btn yellow" href="<?php echo (isset($button['url']) && $button['url'])?$button['url']:'# data-toggle="dropdown"'?>">
+                    <i class="fa fa-share"></i> <?php echo $button['label']?> <i class="fa fa-angle-down"></i>
+                </a>
+                <?php if(isset($button['items']) && !empty($button['items'])):?>
+                    <ul class="dropdown-menu pull-right">
+                        <?php foreach($button['items'] as $item):?>
+                            <li>
+
+
+                                <a href="<?php echo (isset($item['url']) && $item['url'])?$item['url']:'#'?>">
+                                    <?php echo $item['label']?>
+                                </a>
+
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>

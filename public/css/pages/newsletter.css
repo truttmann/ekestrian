@@ -1,0 +1,36 @@
+.bloc_general {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.add {
+    background-image:  url("../../img/portlet-add.png") !important;
+    margin-bottom: 2px;
+    background-repeat: no-repeat;
+    width: 12px;
+    display: inline-block;
+    height: 16px;
+    margin-left: 5px;
+}
+
+.add_gp {
+    background-image:  url("../../img/portlet-add.png") !important;
+    margin-bottom: 2px;
+    background-repeat: no-repeat;
+    width: 12px;
+    display: inline-block;
+    height: 16px;
+    margin-left: 5px;
+}
+
+.bloc-image {
+    width: 200px;
+    height: 160px;
+}
+
+.bloc-img {
+    margin: auto;
+}
+
+.right {
+    float: right;
+}

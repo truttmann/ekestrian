@@ -1,0 +1,23 @@
+<section id="section-newsletter">
+    <div class="shell">
+        <div class="section-inner">
+            <header class="section-head">
+                <h2 class="letter-spacing-10" style="font-family:Lato; font-weight: regular; font-size:23pt; line-height: 31pt;"><?php echo $this->translate("Restez informé", $this->lang_id); ?></h2>
+            </header>
+            <div class="section-body">
+                <p class="newsletter-feature letter-spacing-5" style="font-family:Lato-light; font-weight: lighter; font-size:17pt; line-height: 21pt;text-align: center"><?php echo $this->translate("Inscrivez-vous et recevez", $this->lang_id) ?><br/><?php echo $this->translate("les dernières enchères", $this->lang_id); ?></p>
+                <div class="newsletter-container">
+                    <form id="ekestrian-newsletter" class="form-inline">
+                        <div class="form-group">
+                            <input type="email" data-bind="value:email" class="form-control" id="email" placeholder="<?php echo $this->translate("Inscrivez votre adresse mail...", $this->lang_id); ?>">
+                        </div>
+                        <button type="button" class="btn btn-ekestrian-fill" data-bind="click:register"><?php echo $this->translate("Envoyer", $this->lang_id); ?></button>
+                        <div data-bind="text:alertMessage" ></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>	
+
+

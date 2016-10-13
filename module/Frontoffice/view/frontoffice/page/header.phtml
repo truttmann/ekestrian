@@ -1,0 +1,103 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: rco
+ * Date: 13/06/14
+ * Time: 16:28
+ */
+?>
+
+<div class="header navbar navbar-fixed-top">
+	<!-- BEGIN TOP NAVIGATION BAR -->
+	<div class="header-inner">
+		<!-- BEGIN LOGO -->
+		<a class="navbar-brand" href="<?php echo $this->url('home') ?>" style="color:white;padding-left:10px;" >
+			EKESTRIAN
+            <!--
+			<img src="<?php echo $this->basePath() ?>/img/logo.png" alt="logo" class="img-responsive"/>
+			-->
+
+		</a>
+		<!-- END LOGO -->
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<img src="<?php echo $this->basePath() ?>/img/menu-toggler.png" alt=""/>
+		</a>
+		<!-- END RESPONSIVE MENU TOGGLER -->
+		<!-- BEGIN TOP NAVIGATION MENU -->
+
+		<ul class="nav navbar-nav pull-right">
+
+			<!-- BEGIN USER LOGIN DROPDOWN -->
+			<li class="dropdown user">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<img class="img-circle" alt="" src="<?php echo $this->basePath() ?>/img/avatar_small.jpg"/>
+					<span class="username">
+                        <?php $user = $_SESSION["ekestrian_web_session"]->storage['logged_user']; ?>
+                        <?php if (!empty($user->name)): ?>
+                        <?= $user->name ?>
+                        <?php endif; ?>
+                    </span>
+					<i class="fa fa-angle-down"></i>
+				</a>
+				<ul class="dropdown-menu">
+                    <?php /*
+					<li>
+						<a href="extra_profile.html">
+							<i class="fa fa-user"></i> My Profile
+</a>
+					</li>
+					<li>
+						<a href="page_calendar.html">
+							<i class="fa fa-calendar"></i> My Calendar
+</a>
+					</li>
+					<li>
+						<a href="inbox.html">
+							<i class="fa fa-envelope"></i> My Inbox
+<span class="badge badge-danger">
+3
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-tasks"></i> My Tasks
+<span class="badge badge-success">
+7
+							</span>
+						</a>
+					</li>
+					<li class="divider">
+					</li>
+                    */ ?>
+					<li>
+						<a href="javascript:;" id="trigger_fullscreen">
+							<i class="fa fa-arrows"></i> Plein &eacute;cran
+</a>
+					</li>
+                    <?php /*
+					<li>
+						<a href="extra_lock.html">
+							<i class="fa fa-lock"></i> Lock Screen
+</a>
+					</li>
+                    */ ?>
+					<li>
+						<a href="<?php echo $this->url('logout');?>">
+							<i class="fa fa-key"></i> Se d&eacute;connecter
+</a>
+					</li>
+				</ul>
+			</li>
+			<!-- END USER LOGIN DROPDOWN -->
+		</ul>
+		<!-- END TOP NAVIGATION MENU -->
+	</div>
+	<!-- END TOP NAVIGATION BAR -->
+
+</div>
+<!-- END HEADER -->
+
+<div class="clearfix">
+</div>

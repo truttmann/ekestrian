@@ -1,0 +1,291 @@
+<?php
+
+$_is_searchable = false;
+
+foreach($this->cols as $col){
+    if((isset($col['searchable']) && $col['searchable'] === true)){
+        $_is_searchable = true;
+        break;
+    }
+}
+?>
+<!-- Begin: life time stats -->
+<div class="portlet">
+    <div class="portlet-title" <?php if (empty($this->title)): ?>style="border-bottom:none;"<?php endif; ?>>
+        <?php if($this->title): ?>
+            <div class="caption">
+                <i class="fa fa-gift"></i><?php echo $this->title ?>
+            </div>
+        <?php endif; ?>
+        <?php if($links = $this->links):?>
+            <div class="actions">
+                <div class="btn-group">
+                    <a class="btn default yellow-stripe" href="#" data-toggle="dropdown">
+                        <i class="fa fa-share"></i> Outils <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <?php foreach($links as $link):?>
+                            <li>
+                                <?php
+                                $url = (isset($link['route']))?$this->url($link['route']):'#';
+                                ?>
+
+                                <a <?php echo (isset($link['attributes']))? $link['attributes'] : ''; ?> href="<?php echo $url ?>">
+                                    <?php echo $link['label']?>
+                                </a>
+                            </li>
+                        <?php endforeach?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+
+
+    <?php if($this->actions):?>
+        <?php foreach($this->actions as $action):
+
+            if(isset($action['route']) && $action['route']){
+                $params = (isset($action['params']) && !empty($action['params']))?$action['params']: array();
+                if($this->layout()->getOption("aclHelper")->isAllowedUrl($action['route'], $action['params'])){
+                    $link = $this->url($action['route'], $params);
+                }else{
+                    $link = null;
+                }
+            }else{
+                $link = '#';
+            }
+
+
+            ?>
+            <?php if($link):?>
+            <a style="float: right;margin-bottom: 10px;margin-right: 16px;" href="<?php echo $link ?>" <?php echo (isset($action['id']))?'id="'.$action['id'].'"':''; ?> <?php echo (isset($action['attributes']))? $action['attributes']:'' ?>  class="btn btn-sm yellow"><i class="fa fa-check"></i> <?php echo $action['label']?></a>
+        <?php endif;?>
+        <?php  endforeach;  ?>
+    <?php  endif;  ?>
+
+    <?php if(!empty($this->cols)):?>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <table id="<?php echo ($this->id_list)?$this->id_list:'dataTable'?>" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr role="row" class="heading">
+                    <?php if($this->mass_update_available):?>
+                        <th width="1%">
+                            <input type="checkbox" class="group-checkable">
+                        </th>
+                    <?php endif; ?>
+
+                    <?php foreach($this->cols as $col): ?>
+                        <th style="width: <?php echo ($col['width'])?$col['width']:'50'?>% !important" width="<?php echo ($col['width'])?$col['width']:'50'?>%">
+
+                            <?php if(isset($col['sortable']) && $col['sortable'] === true):?>
+                                <div class="table-order-container">
+                                    <a class="<?php echo (isset($_GET['direction']) && $_GET['direction'] == 'ASC' && isset($_GET['order']) && $_GET['order'] == $col['code'])?'order-asc-table-on':'order-asc-table-off'?>" href="<?php echo $this->current_url . '?order='.$col['code'].'&direction=ASC' ;?>"></a>
+                                    <a class="<?php echo (isset($_GET['direction']) && $_GET['direction'] == 'DESC' && isset($_GET['order']) && $_GET['order'] == $col['code'])?'order-desc-table-on':'order-desc-table-off'?>" href="<?php echo $this->current_url . '?order='.$col['code'].'&direction=DESC' ;?>"></a>
+                                </div>
+                            <?php endif; ?>
+
+
+                            <?php echo $col['label'] ?>
+
+
+                        </th>
+                    <?php endforeach;?>
+                </tr>
+
+                </thead>
+                <tbody>
+
+                <?php foreach($this->items as $item): ?>
+
+                    <tr>
+
+                        <?php  foreach($this->cols as $col):
+
+                            if(isset($col['index']) && $col['index']){
+                                $t = $item->$col['code'];
+
+                                $value = (isset($t[$col['index']]))?$t[$col['index']]:'';
+                            }else{
+                                if($col['type'] == 'date'){
+
+                                    switch ($col['option']){
+                                        case 'formated_current_date':
+                                            $value = $this->layout()->getOption("dataHelper")->formatedDateCurrent($item->$col['code']);
+                                            break;
+                                        default:{
+
+                                        }
+                                    }
+                                }else{
+                                    $value = $item->$col['code'];
+                                }
+
+                            }
+
+                            ?>
+                            <?php if($col['code'] == "action" && !empty($col['items'])): ?>
+                            <td>
+                                <?php  foreach($col['items'] as $action):
+
+                                    if(isset($action['type']) && $action['type'] == 'boolean'){
+                                        $params = array();
+
+                                        foreach($action['matching_params'] as $param){
+
+                                            if(isset($item->$param)) $params[$param] = $item->$param;
+                                        }
+
+                                        if(isset($action['params_sup']) && !empty($action['params_sup'])){
+                                            foreach($action['params_sup'] as $k=>$v){
+                                                $params[$k] = $v;
+                                            }
+                                        }
+
+
+
+                                        //
+                                        if($this->layout()->getOption("aclHelper")->isAllowedUrl($action['route'], $params)){
+                                            // var_dump((array) $item);die;
+                                            $link = $this->url($action['route'], $params);
+                                        }else{
+                                            $link = null;
+                                        }
+
+                                        ?>
+                                        <?php if($link):
+                                            if($item->$action['code']){
+                                                $label = ($item->$action['code'])?(isset($action['options'][1]['label']))?$action['options'][1]['label']:'Activé':'';
+                                                $class = (isset($action['options'][1]['class']))?$action['options'][1]['class']:'available';
+
+                                            }else{
+                                                $label = (isset($action['options'][0]['label']))?$action['options'][0]['label']:'Désactivé';
+                                                $class = (isset($action['options'][0]['class']))?$action['options'][0]['class']:'unavailable';
+                                            }?>
+                                            <a <?php echo (isset($params['id']))?'id="'.$params['id'].'"':''?> class="<?php echo $action['route'] ?> <?php echo $class?>" href="<?php echo (!isset($action['click']) || $action['click'] == true)?$link:'#'?>"><?php echo $label ?></a>
+                                        <?php endif;
+                                    }else{
+                                        $params = array();
+
+                                        foreach($action['matching_params'] as $param){
+                                            if(isset($item->$param)) $params[$param] = $item->$param;
+                                        }
+
+                                        if(isset($action['params_sup']) && !empty($action['params_sup'])){
+                                            foreach($action['params_sup'] as $k=>$v){
+                                                $params[$k] = $v;
+                                            }
+                                        }
+
+                                        //var_dump($par$param);die;
+                                        if($this->layout()->getOption("aclHelper")->isAllowedUrl($action['route'], $params)){
+                                            // var_dump($params);die;
+                                            $link = $this->url($action['route'], $params);
+                                        }else{
+                                            $link = null;
+                                        }
+
+                                        ?>
+                                        <?php if($link):?>
+                                            <a <?php echo (isset($params['id']))?'id="'.$params['id'].'"':''?> class="<?php echo $action['route'] ?> btn btn-xs default btn-editable <?php echo (isset($action['class']))?$action['class']:'' ?>" href="<?php echo (!isset($action['click']) || $action['click'] == true)?$link:'#'?>"><i class="fa fa-pencil"></i> <?php echo $action['label'] ?></a>
+                                        <?php endif;
+                                    }
+
+                                endforeach; ?>
+                            </td>
+                        <?php elseif($value) :
+
+                            if(isset($col['clickable'])  && $col['clickable']== true):
+
+                                $params = array();
+
+                                if(isset($col['matching_params']) && !empty($col['matching_params']))
+                                {
+                                    foreach($col['matching_params'] as $key){
+                                        if(isset($item->$key))$params[$key] = $item->$key;
+                                    }
+                                }
+                                ?>
+                                <td>
+                                    <a href="<?php echo $this->url($col['route'], $params);?>">
+                                        <?php echo $value ?>
+                                    </a>
+                                </td>
+                            <?php else:?>
+                                <td>
+                                    <?php if($col['type'] == 'boolean'){
+
+                                        if($value == 1){?>
+                                            Oui
+                                        <?php }else{?>
+                                            Non
+                                        <?php }
+                                    }else{
+
+                                        echo $value;
+                                    } ?>
+                                </td>
+                            <?php endif; ?>
+
+                        <?php else :  ?>
+                            <td> <?php if($col['type'] == 'boolean'){
+                                    if($value == 0){?>
+                                        Non
+
+                                    <?php }}
+                                else {?>
+                                    N/A
+                                <?php }?>
+                            </td>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script>
+    jQuery(document).ready(function() {
+        var swidth = [];
+        var index = 0;
+        $('#<?php echo ($this->id_list)?$this->id_list:'dataTable'?> th').each( function(){
+            var obj = {};
+            obj.sWidth = $(this).attr("width");
+            obj.aTargets =  index++;
+            swidth.push(obj);
+        });
+
+        var table = $('#<?php echo ($this->id_list)?$this->id_list:'dataTable'?>').DataTable({
+            "bAutoWidth": false,
+            "bRetrieve": false,
+            "aoColumnDefs": swidth,
+            "oLanguage": {
+                "sEmptyTable": "Aucun donnée disponible",
+                "sInfo": "Afficher _START_ de _END_ sur _TOTAL_ entrées",
+                "sSearch": "Rechercher",
+                "sInfoEmpty": "Aucune donnée à afficher",
+                "sLengthMenu": 'Afficher <select>'+
+                '<option value="10">10</option>'+
+                '<option value="20">20</option>'+
+                '<option value="30">30</option>'+
+                '<option value="40">40</option>'+
+                '<option value="50">50</option>'+
+                '<option value="-1">Tous</option>'+
+                '</select> enregistrements'
+
+
+            }
+        } ).on('order.dt', function(){console.log('iiii');});
+    });
+</script>
+<!-- End: life time stats -->
