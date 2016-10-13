@@ -25,7 +25,10 @@ $elements = $form->getElements();
 </div>
 <script>
     jQuery(document).ready(function() {
-
+        CKEDITOR.config.height = 150;
+        CKEDITOR.config.width = 'auto';
+        
+        CKEDITOR.replace( 'cheval_form_desc' );
     });
 </script>
 

@@ -30,7 +30,7 @@ class TranslateForm extends CustomForm{
                 "required" => true,
                 "readOnly" => true
             ),
-            'type'  => 'Text',
+            'type'  => 'Textarea',
             'attributes'=>array("readOnly" => true, 'id' => 'translate_form_code', 'class'=>'form-control form_input', "required" => true),
         ));
         $this->add(array(

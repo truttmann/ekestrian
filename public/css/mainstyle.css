@@ -5691,7 +5691,7 @@ h3.auction-name{
 	text-align: center;
 	line-height: 19pt; 
 	margin-bottom: 20px;
-	color:#585858;"
+	color:#585858;
 }
 #section-lots .auction-name{
 	font-family: "Lato-bold";
@@ -6893,7 +6893,7 @@ section#section-lots > div.shell > div:last-child {
 /* I. Navbar */
 
 #navbar-primary .navbar-nav { 
-//  background: #ededed;
+/*  background: #ededed;*/
   width: 100%;
   text-align: center;
   > li {

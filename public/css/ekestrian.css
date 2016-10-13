@@ -108,3 +108,8 @@ float:right;
     text-align: center;
     color: red;
 }
+
+div#cke_translate_form_code, div#cke_cheval_form_desc, div#cke_translate_form_valeur {
+    width: 65% !important;
+    float: left !important;
+}
