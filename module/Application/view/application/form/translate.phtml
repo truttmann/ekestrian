@@ -24,6 +24,13 @@ $elements = $form->getElements();
     jQuery(document).ready(function() {
         CKEDITOR.config.height = 150;
         CKEDITOR.config.width = 'auto';
+        CKEDITOR.config.font_names =
+            'Lato-bold;' +
+            'Lato-light;' +
+            'Lato;' +
+            'Arial/Arial, Helvetica, sans-serif;' +
+            'Times New Roman/Times New Roman, Times, serif;' +
+            'Verdana';
         
         CKEDITOR.replace( 'translate_form_code' );
         CKEDITOR.replace( 'translate_form_valeur' );

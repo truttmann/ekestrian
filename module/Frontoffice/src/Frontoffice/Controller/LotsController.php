@@ -25,6 +25,7 @@ class LotsController extends InitController
         parent::initListJs();
         
         $viewModel = new ViewModel();
+        $viewModel->setVariable("lang_id", $this->lang_id);
         $viewModel->setTemplate('frontoffice/lots');
         
         /* recuperation de l'id enchere */

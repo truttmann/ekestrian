@@ -13,7 +13,7 @@ namespace Frontoffice\Controller;
 use Zend\View\Model\ViewModel;
 use Frontoffice\Controller\InitController;
 
-class PartenaireController extends InitController
+class CGUController extends InitController
 {
     public function __construct($service)
     {
@@ -26,7 +26,7 @@ class PartenaireController extends InitController
         
         $viewModel = new ViewModel();
         $viewModel->setVariable("lang_id", $this->lang_id);
-        $viewModel->setTemplate('frontoffice/partenaire');
+        $viewModel->setTemplate('frontoffice/cgu');
         return $viewModel;
     }
 }

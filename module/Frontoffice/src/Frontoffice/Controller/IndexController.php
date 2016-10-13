@@ -26,20 +26,24 @@ class IndexController extends InitController
         
 
         $viewModel = new ViewModel();
+        $viewModel->setVariable("lang_id", $this->lang_id);
         $viewModel->setTemplate('frontoffice/accueil');
         $viewModel->setVariable("lang_id", $this->lang_id);
         
         $selection = new ViewModel();
+        $selection->setVariable("lang_id", $this->lang_id);
         $selection->setTemplate('frontoffice/page/selection');
         $selection->setVariable("lang_id", $this->lang_id);
         $viewModel->addChild($selection, 'selection');
         
         $purchase = new ViewModel();
+        $purchase->setVariable("lang_id", $this->lang_id);
         $purchase->setTemplate('frontoffice/page/purchase');
         $purchase->setVariable("lang_id", $this->lang_id);
         $viewModel->addChild($purchase, 'purchase');
         
         $services = new ViewModel();
+        $services->setVariable("lang_id", $this->lang_id);
         $services->setTemplate('frontoffice/page/services');
         $services->setVariable("lang_id", $this->lang_id);
         $viewModel->addChild($services, 'services');
@@ -51,48 +55,6 @@ class IndexController extends InitController
             $t[] = $i;
         }
         $viewModel->setVariable("encheres", $t);
-/*
-        $isRight = false;
-
-        $viewModel->setVariable("info_user_accueil", $this->_getCurrentRoleInfo());
-
-        if ($this->getIsGestionnaire() === false && $this->getIsPartner() == false) {
-            // nbr campings
-            $mCampings = $this->getServiceLocator()->get('Application\Camping\Model\CampingTable')->fetchAll();
-            $viewModel->setVariable('nbr_campings', $mCampings->getTotalItemCount());
-
-            // nbr annonceurs
-            $mPartners = $this->getServiceLocator()->get('Application\Partner\Model\PartnerTable')->fetchAll();
-            $viewModel->setVariable('nbr_partners', $mPartners->getTotalItemCount());
-
-            // nbr membres
-            $mMembers = $this->getServiceLocator()->get('Application\Member\Model\MemberTable')->fetchAll();
-            $viewModel->setVariable('nbr_members', $mMembers->getTotalItemCount());
-
-            $isRight = true;
-
-            $viewModel->setVariable('isRight', $isRight);
-            $viewModel->setVariable('languages', $this->getLanguages());
-
-            
-            $list->setTitle('Move Publishing');
-
-
-                
-            $list->setTitle('Contrats');
-
-            $list->setIsPaginationAvailable(true);
-
-            $contractTable = $this->getServiceLocator()->get('Application\Contract\Model\ContractTable');
-
-            $aclPlugin = new Aclplugin($this->getServiceLocator());
-            $session = $aclPlugin->getSessContainer();
-            $role = $session->role_connexion;
-
-
-            $viewModel->addChild($list->toHtml(), 'partner');
-        }
-*/
         return $viewModel;
     }
 }

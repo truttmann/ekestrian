@@ -35,6 +35,26 @@ return array(
                             ),
                         ),
                     ),
+                    'cgu' =>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route'    => '/cgu',
+                            'defaults' => array(
+                                'controller' => 'CGU',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
+                    'politique_de_confidentialite' =>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route'    => '/MentionsLegales',
+                            'defaults' => array(
+                                'controller' => 'PolitiqueDeConfidentialite',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
                     'lots' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -93,6 +113,8 @@ return array(
             'Lots' => 'Frontoffice\Controller\Factory\LotsControllerFactory',
             'Lot' => 'Frontoffice\Controller\Factory\LotControllerFactory',
             'Partenaire' => 'Frontoffice\Controller\Factory\PartenaireControllerFactory',
+            'CGU' => 'Frontoffice\Controller\Factory\CGUControllerFactory',
+            'PolitiqueDeConfidentialite' => 'Frontoffice\Controller\Factory\PolitiqueDeConfidentialiteControllerFactory',
         ),
     ),
     'view_manager' => array(
