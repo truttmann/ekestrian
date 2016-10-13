@@ -25,6 +25,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'partenaire' =>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route'    => '/partenaire',
+                            'defaults' => array(
+                                'controller' => 'Partenaire',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
                     'lots' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -82,6 +92,7 @@ return array(
             'Index' => 'Frontoffice\Controller\Factory\IndexControllerFactory',
             'Lots' => 'Frontoffice\Controller\Factory\LotsControllerFactory',
             'Lot' => 'Frontoffice\Controller\Factory\LotControllerFactory',
+            'Partenaire' => 'Frontoffice\Controller\Factory\PartenaireControllerFactory',
         ),
     ),
     'view_manager' => array(
