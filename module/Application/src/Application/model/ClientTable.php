@@ -55,6 +55,16 @@ class ClientTable
         }
         return $row;
     }
+    
+    public function fetchOneByEmail($email){
+        $id  = (int) $id;
+        $rowset = $this->tableGateway->select(array('email' => $email));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $email");
+        }
+        return $row;
+    }
 
 
     /**
@@ -69,11 +79,20 @@ class ClientTable
             "firstname" => $client->firstname,
             "lastname" => $client->lastname,
             "email" => $client->email,
+            "password" => $client->password,
             "societe" => $client->societe,
             "phone" => $client->phone,
             "birthday" => $client->birthday,
+            "langue" => $client->langue,
             "country_id" => $client->country_id,
             "first_connexion" => $client->first_connexion,
+            "mangopay_id" => $client->mangopay_id,
+            "mangopay_wallet_id" => $client->mangopay_wallet_id,
+            "mangopay_carte_id" => $client->mangopay_carte_id,
+            "mangopay_card_id" => $client->mangopay_card_id,
+            "carte_numero" => $client->carte_numero,
+            "carte_date" => $client->carte_date,
+            "carte_cle" => $client->carte_cle,
             "card_id" => $client->card_id,
             "status" => $client->status
         );

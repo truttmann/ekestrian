@@ -89,9 +89,7 @@ class Client implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            $factory     = new InputFactory();
- 
-            
+            $factory     = new InputFactory();            
             
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'firstname',
@@ -112,6 +110,7 @@ class Client implements InputFilterAwareInterface
             )));
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'lastname',
+                'required' => TRUE,
                 'filters' => array(
                     array('name' => 'StripTags'),
                 ),
@@ -129,6 +128,7 @@ class Client implements InputFilterAwareInterface
         
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'societe',
+                'required' => TRUE,
                 'filters' => array(
                     array('name' => 'StripTags'),
                 ),
@@ -144,6 +144,42 @@ class Client implements InputFilterAwareInterface
                 ),
             )));
         
+            $inputFilter->add($factory->createInput(array(
+                'name' => $this->_name_prefix . 'phone',
+                'required' => TRUE,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => '2',
+                            'max' => '15',
+                        ),
+                    ),
+                ),
+            )));
+            
+            
+        
+            $inputFilter->add($factory->createInput(array(
+                'name' => $this->_name_prefix . 'birthday',
+                'required' => TRUE,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'Y-m-d',
+                        ),
+                    ),
+                ),
+            )));
+            
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'email',
                 'filters' => array(
@@ -163,7 +199,23 @@ class Client implements InputFilterAwareInterface
                     )
                 ),
             )));
-            
+            $inputFilter->add($factory->createInput(array(
+                'name' => $this->_name_prefix . 'password',
+                'required' => TRUE,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => '2',
+                            'max' => '255',
+                        ),
+                    ),
+                ),
+            )));
             $this->inputFilter = $inputFilter;
         }
  
