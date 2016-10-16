@@ -219,8 +219,8 @@ class ChevauxController extends InitController
                     $obj->exchangeArray($data);
                     
                     if (!empty($data['image_url']) && !empty($data['image_url']['tmp_name'])) {
-                        move_uploaded_file($data['image_url']['tmp_name'], __DIR__.'/../../../../../private/cheval/'.$data['image_url']['name']);
-                        $obj->image_url = '/private/cheval/'.$data['image_url']['name'];
+                        move_uploaded_file($data['image_url']['tmp_name'], __DIR__.'/../../../../../public/upload/cheval/'.$data['image_url']['name']);
+                        $obj->image_url = '/upload/cheval/'.$data['image_url']['name'];
                     }
                     
                     $obj = $chevalModel->save($obj);

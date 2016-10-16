@@ -391,8 +391,8 @@ class LotController extends InitController
                     $obj->exchangeArray($data);
                     
                     if (!empty($data['image_url']) && !empty($data['image_url']['tmp_name'])) {
-                        move_uploaded_file($data['image_url']['tmp_name'], __DIR__.'/../../../../../public/upload/lots/'.$data['image_url']['name']);
-                        $obj->image_url = '/upload/lots/'.$data['image_url']['name'];
+                        move_uploaded_file($data['image_url']['tmp_name'], __DIR__.'/../../../../../public/upload/lot/'.$data['image_url']['name']);
+                        $obj->image_url = '/upload/lot/'.$data['image_url']['name'];
                     }
                     
                     $obj->enchere_id = (int)$id_enchere;
@@ -449,8 +449,8 @@ class LotController extends InitController
             $scriptUrl = 'lots/media_upload';
             $updateUrl = 'lots/media_update';
             $deleteUrl = 'lots/media_delete';
-            $uploadDir = __DIR__.'/../../../../../public/img/lot/';
-            $uploadUrl = '/img/lot/';
+            $uploadDir = __DIR__.'/../../../../../public/upload/lots/';
+            $uploadUrl = '/upload/lots/';
             $minWidth = 1;
             $minHeight = 1;
 
