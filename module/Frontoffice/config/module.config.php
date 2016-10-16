@@ -31,11 +31,20 @@ return array(
                             'route'    => '/membre',
                             'defaults' => array(
                                 'controller' => 'Membre',
-                                'action'     => 'login',
+                                'action'     => 'authentification',
                             ),
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
+                            'login' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Literal',
+                                'options' => array(
+                                    'route'    => '/login',
+                                    'defaults' => array(
+                                        'action'     => 'login',
+                                    ),
+                                ),
+                            ),
                             'edit' =>  array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
@@ -44,7 +53,6 @@ return array(
                                         'membre_id' => '[0-9]+',
                                     ),
                                     'defaults' => array(
-                                        'controller' => 'Membre',
                                         'action'     => 'edit',
                                     ),
                                 ),
@@ -57,7 +65,6 @@ return array(
                                         'membre_id' => '[0-9]+',
                                     ),
                                     'defaults' => array(
-                                        'controller' => 'Membre',
                                         'action'     => 'save',
                                     ),
                                 ),
@@ -70,8 +77,31 @@ return array(
                                         'membre_id' => '[0-9]+',
                                     ),
                                     'defaults' => array(
-                                        'controller' => 'Membre',
-                                        'action'     => 'editCart',
+                                        'action'     => 'carte',
+                                    ),
+                                ),
+                            ),
+                            'register_cart' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/edit/:membre_id/register_carte',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'action'     => 'carteRegister',
+                                    ),
+                                ),
+                            ),
+                            'retour_cart' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/edit/:membre_id/carte_retour',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'action'     => 'carteRetour',
                                     ),
                                 ),
                             ),

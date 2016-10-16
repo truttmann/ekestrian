@@ -53,8 +53,39 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!-- BEGIN BODY -->
     <body style="background-color:#f2f2f2">
+        <?php echo $this->flashMessenger()
+            ->setMessageOpenFormat('<div%s><p>')
+            ->setMessageSeparatorString('</p><p>')
+            ->setMessageCloseString('</p></div>')
+            ->render('success'); ?>
+        
         <div class="wrapper">
             <?php echo $this->navbar; ?>
+            
+            <?php if (isset($flashMessages)) : ?>
+                <?php foreach ($flashMessages as  $messages) :
+                    foreach ($messages as $error_type => $message) :
+                        foreach ($message as $m) :
+                            switch($error_type){
+                                case $this->message_error:
+                                $class = 'alert-danger';
+                                break;
+                                case $this->message_success:
+                                $class = 'alert-success';
+                                break;
+                                case $this->message_warning:
+                                $class = 'alert-warning';
+                                break;
+                            }
+                            ?>
+                            <div class="app-alerts alert <?php echo $class ?> fade in">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button><?php echo $m ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            
             <?php echo $this->content; ?>
             <?php echo $this->newsletter; ?>
             <?php echo $this->footer; ?>

@@ -21,7 +21,7 @@ class MembreController extends InitController
         parent::__construct();
     }
 
-    public function loginAction(){
+    public function authentificationAction(){
         parent::initListJs();
         
         /* si l'utilisateur est déja connecté on le redirige vers la home */
@@ -163,59 +163,20 @@ class MembreController extends InitController
                     $obj->status = 0;
                     $obj = $clientModel->save($obj);
                     
-                    /* si c'est une creation, nous ajoutons l'utilisateur à mango pay */
-                    if(empty($id)){
-                        $mangopay_user = $this->_service_locator->get('mangopay_service')->createUser($obj);
-                        if(!empty($mangopay_user) && is_object($mangopay_user) && is_numeric($mangopay_user->Id)) {
-                            $obj->mangopay_id = $mangopay_user->Id;
-                            $obj = $clientModel->save($obj);
-                            
-                            /* creation du wallet user*/
-                            $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
-                            if(!is_object($result2)) {
-                                $obj->mangopay_wallet_id = $result2->Id;
-                                $obj = $clientModel->save($obj);
-                            }
-                        } else {
-                            $obj = $clientModel->delete($obj);
-                            throw new \Exception($mangopay_user);
-                        }
-                    } else {
-                        if($obj->mangopay_id == null) {
-                           $mangopay_user = $this->_service_locator->get('mangopay_service')->createUser($obj);
-                            if(!empty($mangopay_user) && is_object($mangopay_user) && is_numeric($mangopay_user->Id)) {
-                                $obj->mangopay_id = $mangopay_user->Id;
-                                $obj = $clientModel->save($obj);
-
-                                /* creation du wallet user*/
-                                $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
-                                if(!is_object($result2)) {
-                                    $obj->mangopay_wallet_id = $result2->Id;
-                                    $obj = $clientModel->save($obj);
-                                }
-                            } else {
-                                throw new \Exception($mangopay_user);
-                            } 
-                        } else {
-                            $mangopay_user = $this->_service_locator->get('mangopay_service')->updateUser($obj);
-                            if(!is_object($mangopay_user)) {
-                                throw new \Exception($mangopay_user);
-                            }
-                            
-                            /* creation du wallet user*/
-                            if($obj->mangopay_wallet_id == null){
-                                $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
-                                if(!is_object($result2)) {
-                                    $obj->mangopay_wallet_id = $result2->Id;
-                                    $obj = $clientModel->save($obj);
-                                }
-                            }
-                        }
-                    }
+                    $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+                    
+                    $carte_registration = $this->createUserMangopay($obj, $id);
+                    $this->_service_locator->get('user_service')->setCarteRegistration($carte_registration);
                     
                     $id = $obj->client_id;
                     $this->addSuccess('La sauvegarde a été effectuée avec succès');
                 } catch (Exception $e) {
+                    
+                    if(empty($id) && is_object($obj)) {
+                        $clientModel = $this->getServiceLocator()->get('clientTable');
+                        $clientModel->delete($obj);
+                    }
+                    
                     $this->addError('La sauvegarde a échouée');
                     $this->addError($e->getMessage());
                     $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $e->getMessage()));
@@ -227,12 +188,10 @@ class MembreController extends InitController
                 $this->addError('La sauvegarde a échouée');
                 if($messages = $form->getMessages()){
                     foreach($messages as $message){
-                        var_dump($message);
                         $this->addError($message);
                     }
                 }
                 $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $form->getMessages()));
-                var_dump("id = ".$id);exit;
                 return $this->redirect()->toRoute('home/membre/edit', array(
                     'membre_id' => $id,
                 ));
@@ -243,5 +202,150 @@ class MembreController extends InitController
         return $this->redirect()->toRoute('home/membre/edit_cart', array(
             'membre_id' => $id,
         ));
+    }
+    
+    public function carteAction(){
+        /* modification accessible que si nous sommes en mode connecté */
+        if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
+            return $this->redirect()->toRoute("home/membre");
+        }
+        /* Si nous tentons de modifier quelqu'un d'autre que nous */
+        if($this->params()->fromRoute('membre_id') != null){
+            $t = $this->_service_locator->get('user_service')->isMembreConnecte();
+            if($t->client_id != $this->params()->fromRoute('membre_id')) {
+                return $this->redirect()->toRoute("home");
+            }
+        }
+        
+        $clientModel = $this->getServiceLocator()->get('clientTable');
+        $obj = $clientModel->fetchOne($this->params()->fromRoute('membre_id'));
+        
+        $carte_reg = $this->_service_locator->get('user_service')->getCarteRegistration();
+        if(empty($carte_reg)) {
+            $this->addError("No carte registration en cours");
+            return $this->redirect()->toRoute('home/membre/edit', array(
+                'membre_id' => $this->params()->fromRoute('membre_id'),
+            ));
+        }
+        
+        /* sauvegarde de l'id de la carte */
+        $obj->mangopay_carte_id = $carte_reg->Id;
+        $clientModel->save($obj);
+            
+            
+        $this->mainView->setTemplate('frontoffice/member/carte');
+        $this->mainView->setVariable('carte_reg', $carte_reg);
+        $this->mainView->setVariable('membre_id', $this->params()->fromRoute('membre_id'));
+        return $this->mainView;
+    }
+    
+    public function carteRegisterAction(){
+        $clientModel = $this->getServiceLocator()->get('clientTable');
+        $obj = $clientModel->fetchOne($this->params()->fromRoute('membre_id'));
+        if(is_object($obj)) {
+            $obj->carte_numero = $_POST['cardNumber'];
+            $obj->carte_date = $_POST['cardExpirationDate'];
+            $obj->carte_cle = $_POST['cardCvx'];
+            $clientModel->save($obj);
+        }
+        echo "OK";
+        exit;
+    }
+    
+    public function carteRetourAction(){
+        /* modification accessible que si nous sommes en mode connecté */
+        if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
+            return $this->redirect()->toRoute("home/membre");
+        }
+        /* Si nous tentons de modifier quelqu'un d'autre que nous */
+        if($this->params()->fromRoute('membre_id') != null){
+            $t = $this->_service_locator->get('user_service')->isMembreConnecte();
+            if($t->client_id != $this->params()->fromRoute('membre_id')) {
+                return $this->redirect()->toRoute("home");
+            }
+        }
+        
+        try{
+            $clientModel = $this->getServiceLocator()->get('clientTable');
+            $obj = $clientModel->fetchOne($this->params()->fromRoute('membre_id'));
+
+            $carte_reg_f = $this->_service_locator->get('mangopay_service')->cardRegistrationFinish($obj, @$_GET["data"], @$_GET['errorCode']);
+            /* sauvegarde de l'id de la carte */
+            $obj->mangopay_card_id = $carte_reg_f->CardId;
+            $obj->status = 1;
+            $clientModel->save($obj);
+
+            $this->addSuccess('L\'édition du compte membre est finie.');
+            return $this->redirect()->toRoute("home");
+        }catch(\Exception $e) {
+            $this->addError($e->getMessage());
+            return $this->redirect()->toRoute('home/membre/edit', array(
+                'membre_id' => $this->params()->fromRoute('membre_id'),
+            ));
+        }
+    }
+    
+    public function loginAction() {
+        if(!isset($_POST['email']) || !isset($_POST['password']) 
+            || empty($_POST['email']) || empty($_POST['password'])) {
+            $this->addError('Le formulaire n\'est pas valide');
+            return $this->redirect()->toRoute('home/membre', array());
+        }
+        
+        $clientModel = $this->getServiceLocator()->get('clientTable');
+        $obj = null;
+        try {
+            $obj = $clientModel->fetchOneByEmail($_POST['email']);
+        }catch(\Exception $e) {}
+        
+        if(! is_object($obj)){
+            $this->addError('Login ou mot de passe invalide');
+            return $this->redirect()->toRoute('home/membre', array());
+        }
+        
+        if($obj->password != $_POST['password']) {
+            $this->addError('Login ou mot de passe invalide');
+            return $this->redirect()->toRoute('home/membre', array());
+        }
+        
+        $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+        
+        $this->addSuccess('Connexion réussie');
+        return $this->redirect()->toRoute('home');
+    }
+    
+    private function createUserMangopay($obj, $id) {
+        $clientModel = $this->getServiceLocator()->get('clientTable');
+        /* si c'est une creation, nous ajoutons l'utilisateur à mango pay */
+        if($obj->mangopay_id == null) {
+           $mangopay_user = $this->_service_locator->get('mangopay_service')->createUser($obj);
+            if(empty($mangopay_user) || !is_object($mangopay_user) || !is_numeric($mangopay_user->Id)) {
+                throw new \Exception("Membre created, but error with mangopay : ".$mangopay_user);
+            }
+            $obj->mangopay_id = $mangopay_user->Id;
+            $obj = $clientModel->save($obj);
+        } else {
+            $mangopay_user = $this->_service_locator->get('mangopay_service')->updateUser($obj);
+            if(!is_object($mangopay_user)) {
+                throw new \Exception("Membre updated, but error with mangopay : ".$mangopay_user);
+            }
+        }
+
+        /* creation du wallet user*/
+        if($obj->mangopay_wallet_id == null){
+            $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
+            if(!is_object($result2)) {
+                throw new \Exception("Membre updated, but error with mangopay : ".$result2);
+            }
+            $obj->mangopay_wallet_id = $result2->Id;
+            $obj = $clientModel->save($obj);
+        }
+
+        /* creation de la carte */
+        $result3 = $this->_service_locator->get('mangopay_service')->cardRegistration($mangopay_user);
+        if(!is_object($result3)) {
+            throw new \Exception("Membre updated, but error with mangopay : ".$result3);
+        }
+        return $result3;
     }
 }

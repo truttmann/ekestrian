@@ -44,6 +44,11 @@ class UserService
 		}
     }
     
+    public function setMembreConnecte($login) {
+        $userContainer = new Container(NAME_SESSION_USER);
+		$userContainer->logged_member = $login;
+	}
+    
     public function getInfoForm() {
 		$userContainer = new Container(NAME_SESSION_USER);
 		if ( $userContainer->offsetExists('info_form')) {
@@ -62,6 +67,21 @@ class UserService
 		$userContainer = new Container(NAME_SESSION_USER);
 		if ( $userContainer->offsetExists('messages')) {
 			$temp = $userContainer->messages;
+			return $temp;
+		} else {
+			return null;
+		}
+	}
+    
+    public function setCarteRegistration($mes) {
+        $userContainer = new Container(NAME_SESSION_USER);
+		$userContainer->carte_registration = $mes;
+	}
+    
+    public function getCarteRegistration() {
+		$userContainer = new Container(NAME_SESSION_USER);
+		if ( $userContainer->offsetExists('carte_registration')) {
+			$temp = $userContainer->carte_registration;
 			return $temp;
 		} else {
 			return null;

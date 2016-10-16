@@ -299,7 +299,7 @@ class InitController extends AbstractActionController
         if(!empty($this->_messages))
             $this->flashMessenger()->addMessage($this->_messages);
         
-  /*      $temp = $this->_service_locator->get('user_service')->getMessages();
+        $temp = $this->_service_locator->get('user_service')->getMessages();
         if(!empty($temp)) {
             $this->flashMessenger()->addMessage($temp);
             $this->_service_locator->get('user_service')->setMessages(null);
@@ -312,8 +312,6 @@ class InitController extends AbstractActionController
                 $e->getViewModel()->setVariable('flashMessages', $messages);
             }
         });
-
-    */
     }
 
     protected function getCurrentRoute(){

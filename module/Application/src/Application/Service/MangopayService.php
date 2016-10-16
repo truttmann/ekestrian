@@ -91,4 +91,17 @@ class MangopayService
             return $e->getMessage();
         }
     }
+    
+    public function cardRegistration(\MangoPay\UserNatural $user) {
+        $cardRegister = new \MangoPay\CardRegistration();
+        $cardRegister->UserId = $user->Id;
+        $cardRegister->Currency = "EUR";
+        return $this->api->CardRegistrations->Create($cardRegister);
+    }
+    
+    public function cardRegistrationFinish(Client $client, $data, $error) {
+        $cardRegisterPut = $this->api->CardRegistrations->Get($client->mangopay_carte_id);
+        $cardRegisterPut->RegistrationData = ((!empty($data)) ? 'data=' . $data : 'errorCode=' . $error);
+       return $this->api->CardRegistrations->Update($cardRegisterPut);
+    }
 }
