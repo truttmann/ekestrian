@@ -24,9 +24,9 @@ class LotController extends InitController
     public function indexAction(){
         parent::initListJs();
         
-        $viewModel = new ViewModel();
-        $viewModel->setVariable("lang_id", $this->lang_id);
-        $viewModel->setTemplate('frontoffice/lot');
+        $this->mainView->setTemplate('frontoffice/lot');
+        $this->mainView->setVariable('enchere_id', $this->params()->fromRoute('enchere_id'));
+        $this->mainView->setVariable('lot_id', $this->params()->fromRoute('lot_id'));
         
         /* recuperation de l'id enchere */
         $id_e = $this->params()->fromRoute('enchere_id');
@@ -40,7 +40,7 @@ class LotController extends InitController
         if(! is_object($en)) {
             return $this->redirect()->toRoute('home');
         }
-        $viewModel->setVariable("enchere", $en);
+        $this->mainView->setVariable("enchere", $en);
         
         /* recuperation de l'id lot */
         $id = $this->params()->fromRoute('lot_id');
@@ -63,7 +63,7 @@ class LotController extends InitController
         }
         $t->list_image = $tab;
         
-        $viewModel->setVariable("lot", $t);
+        $this->mainView->setVariable("lot", $t);
         
         /* recuperation du cheval en question */
         $che = $this->_service_locator->get('chevalTable')->fetchOne($t->cheval_id);
@@ -196,8 +196,95 @@ class LotController extends InitController
         $che->mere_mere_pere = $mmp;
         $che->pere_mere_pere = $pmp;
         
-        $viewModel->setVariable("cheval", $che);
+        $this->mainView->setVariable("cheval", $che);
         
-        return $viewModel;
+        return $this->mainView;
+    }
+    
+    public function validationAction(){
+        $return = array('data'=>"", "status" => 0);
+        try {
+            /* verification de l'existance de l'enchere */
+            $id_e = $this->params()->fromRoute('enchere_id');
+            $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
+
+            /* vérification de l'existance du lot */
+            $id = $this->params()->fromRoute('lot_id');
+            $t = $this->_service_locator->get('lotTable')->fetchOne($id);
+
+            /* verification de la connection du membre */
+            $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
+            if($membre ==  false) {
+                throw new \Exception("Vous n'êtes pas connecté, veuillez d'abord vous connecter.");
+            }
+
+            /* verification des informations du membre (card_id) => sinon message pour redirection modificaiton du compte */
+            $obj_member = $this->_service_locator->get('clientTable')->fetchOne($membre->client_id);
+            if(!is_object($obj_member)) {
+                $this->_service_locator->get('user_service')->setMembreConnecte(null);
+                throw new \Exception("Vous n'êtes pas connecté, veuillez d'abord vous connecter.");
+            }
+
+            /* appel Banque et pré-auth */
+            
+            /* sauvegarde en bdd */
+            $obj = new \Application\Model\ClientAuction();
+            $obj->lot_id = $id;
+            $obj->client_id = $membre->client_id;
+            $obj->value = $_REQUEST['value'];
+            
+            $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
+            
+            var_dump($obj);exit;
+            
+            $return['data']["auction"] = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
+            $return["status"] = 1;
+        
+        /* return */
+        } catch (\Exception $e) {
+            $return['status'] = 0;
+            $return['data'] = $e->getMessage();
+        }
+        
+        return new \Zend\View\Model\JsonModel($return);
+    }
+    
+    public function informationAction(){
+        $return = array('data'=>"", "status" => 0);
+        try {
+            /* verification de l'existance de l'enchere */
+            $id_e = $this->params()->fromRoute('enchere_id');
+            $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
+
+            /* vérification de l'existance du lot */
+            $id = $this->params()->fromRoute('lot_id');
+            $t = $this->_service_locator->get('lotTable')->fetchOne($id);
+
+            /* verification de la connection du membre */
+            $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
+            if($membre ==  false) {
+                throw new \Exception("Vous n'êtes pas connecté, veuillez d'abord vous connecter.");
+            }
+
+            /* verification des informations du membre (card_id) => sinon message pour redirection modificaiton du compte */
+            $obj_member = $this->_service_locator->get('clientTable')->fetchOne($membre->client_id);
+            if(!is_object($obj_member)) {
+                $this->_service_locator->get('user_service')->setMembreConnecte(null);
+                throw new \Exception("Vous n'êtes pas connecté, veuillez d'abord vous connecter.");
+            }
+
+            /* récupération de la dernière enchère du lot */
+            $return['data']["lot"] = $t;
+            $return['data']["enchere"] = $en;
+            $return['data']["auction"] = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
+            $return["status"] = 1;
+        
+        /* return */
+        } catch (\Exception $e) {
+            $return['status'] = 0;
+            $return['data'] = $e->getMesage();
+        }
+        
+        return new \Zend\View\Model\JsonModel($return);
     }
 }

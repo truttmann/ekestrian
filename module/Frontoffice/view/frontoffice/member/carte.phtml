@@ -7,7 +7,7 @@
                         <div class="portlet box green-haze">
                             <div class="portlet-title" style="text-align: center; margin: 40px 0 20px 0;">
                                 <h1 class="caption" style="font-size: 30px;font-family: Lato-bold;margin-top: 0px;">
-                                    Modification de votre carte de crédit
+                                    <?php echo $this->translate("Modification de votre carte de crédit", $this->lang_id); ?>
                                 </h1>
                             </div>
                             <div class="portlet-body form">
@@ -15,11 +15,9 @@
                                     <div class="col-xs-12">
                                         <div class="row" style="margin-bottom: 50px">
                                             <div class="col-xs-8" style="margin: auto; float: none;font-size: 15px;font-family: Lato-bold;line-height: 21px;">
-                                                Je renseigne mon empreinte bancaire en toute sécurité via le formulaire ci-dessous: <br/>
-                                                <div style="padding-left: 15px; padding-top: 7px;padding-bottom: 7px">- &nbsp;Aucune somme ne sera prélevée définitivement à partir de cette empreinte : les chevaux se règlent par virement bancaire
-                                                à la clôture de la vente aux enchères pour les personnes ayant les enchères les plus hautes</div>
-                                                <div style="padding-left: 15px">- &nbsp;Seule une pré-autorisation de 200€ est prélevée et rtorunée sur votre compte dans un délai de 2h.
-                                                Suivant les pays, cette pré-autorisation est remplacée par un prélèvement définitif d'1€</div>
+                                                <?php echo $this->translate("Je renseigne mon empreinte bancaire en toute sécurité via le formulaire ci-dessous", $this->lang_id); ?>: <br/>
+                                                <div style="padding-left: 15px; padding-top: 7px;padding-bottom: 7px">- &nbsp;<?php echo $this->translate("Aucune somme ne sera prélevée définitivement à partir de cette empreinte : les chevaux se règlent par virement bancaire à la clôture de la vente aux enchères pour les personnes ayant les enchères les plus hautes", $this->lang_id); ?></div>
+                                                <div style="padding-left: 15px">- &nbsp;<?php echo $this->translate("Seule une pré-autorisation de 200€ est prélevée et rtorunée sur votre compte dans un délai de 2h. Suivant les pays, cette pré-autorisation est remplacée par un prélèvement définitif d'1€", $this->lang_id); ?></div>
                                             </div>
                                         </div>
                                         <form action="<?php echo $this->carte_reg->CardRegistrationURL; ?>" method="post">	
@@ -27,19 +25,19 @@
                                             <input type="hidden" name="accessKeyRef" value="<?php echo $this->carte_reg->AccessKey; ?>" />
                                             <input type="hidden" name="returnURL" value="<?php echo "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$this->url('home/membre/retour_cart', array('membre_id'=>$this->membre_id)); ?>" />
                                             <div class="col-xs-5" style="text-align: right">
-                                                Numéro de carte:
+                                                <?php echo $this->translate("Numéro de carte", $this->lang_id); ?>:
                                             </div>
                                             <div class="col-xs-7">
                                                 <input type="text" name="cardNumber" size="20" maxlength="30" value="4970100000000154">
                                             </div>
                                             <div class="col-xs-5" style="text-align: right">
-                                                Date d'expiration:
+                                                <?php echo $this->translate("Date d'expiration", $this->lang_id); ?>:
                                             </div>
                                             <div class="col-xs-7">
                                                 <input type="text" name="cardExpirationDate" maxlength="4" size="4" placeholder="MMYY" value="1217">
                                             </div>
                                             <div class="col-xs-5" style="text-align: right">
-                                                CVV:
+                                                <?php echo $this->translate("CVV", $this->lang_id); ?>:
                                             </div>
                                             <div class="col-xs-7">
                                                 <input type="text" name="cardCvx" size="3" maxlength="5"  value="123">

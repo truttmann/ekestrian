@@ -163,6 +163,27 @@ return array(
                                         'action'     => 'index',
                                     ),
                                 ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'information' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route'    => '/information',
+                                            'defaults' => array(
+                                                'action'     => 'information',
+                                            ),
+                                        ),
+                                    ),
+                                    'validation' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route'    => '/validation',
+                                            'defaults' => array(
+                                                'action'     => 'validation',
+                                            ),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     ),

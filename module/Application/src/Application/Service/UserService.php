@@ -36,7 +36,7 @@ class UserService
 
     public function isMembreConnecte(){
         $userContainer = new Container(NAME_SESSION_USER);
-		if ( $userContainer->offsetExists('logged_member')) {
+		if ( $userContainer->offsetExists('logged_member') && $userContainer->logged_member != null) {
 			$temp = $userContainer->logged_member;
 			return $temp;
 		} else {

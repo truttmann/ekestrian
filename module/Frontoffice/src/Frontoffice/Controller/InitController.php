@@ -117,7 +117,8 @@ class InitController extends AbstractActionController
             ->appendFile('/js/newsletters.js')
             ->appendFile('/js/jquery.elevateZoom.min.js')
             ->appendFile('/js/light/jquery.mousewheel.min.js')
-            ->appendFile('/js/jquery.blueimp-gallery.min.js');
+            ->appendFile('/js/jquery.blueimp-gallery.min.js')
+            ->appendFile('/js/jquery-ui.min.js');
     }
 
     protected function initListJs(){
