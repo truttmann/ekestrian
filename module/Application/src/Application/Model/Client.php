@@ -89,15 +89,7 @@ class Client implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            $factory     = new InputFactory();
- 
-            password
-            password_confirm
-            condition_vente
-            reglement
-            confidence
-            submit
-            
+            $factory     = new InputFactory();            
             
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'firstname',
