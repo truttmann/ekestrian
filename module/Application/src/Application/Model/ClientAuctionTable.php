@@ -55,10 +55,23 @@ class ClientAuctionTable
     */
     public function fetchOne($id){
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('cheval_id' => $id));
+        $rowset = $this->tableGateway->select(array('user_auction_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
+        }
+        return $row;
+    }
+    
+    public function getLastEnchere(Lot $lot){
+        $rowset = $this->tableGateway->select(function(Select $select) use ($lot){
+            $select->where(array('lot_id' => $lot->lot_id));
+            $select->order("value DESC");
+            $select->limit(1);
+        });
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
         }
         return $row;
     }
@@ -69,56 +82,29 @@ class ClientAuctionTable
     * @param  User $pays object
     * @return User
     */
-    public function save(Cheval $cheval)
+    public function save(ClientAuction $auction)
     {
         $data = array(
-            "name" => $cheval->name,
-            "father_id" => (((int)$cheval->father_id === 0)?NULL:(int)$cheval->father_id),
-            "mother_id" => (((int)$cheval->mother_id ===0 )?NULL:(int)$cheval->mother_id),
-            "creation_date" => (($cheval->creation_date != null)?$cheval->creation_date:date('Y-m-d')),
-            "status" => $cheval->status,
-            "sex" => $cheval->sex,
-            "race" => $cheval->race,
-            "quality" => $cheval->quality,
-            "birthday" => $cheval->birthday,
-            "description" => $cheval->description,
-            "description_en" => $cheval->description_en,
-            "image_url" => $cheval->image_url
+            "client_id" => $auction->client_id,
+            "lot_id" => $auction->lot_id,
+            "value" => $auction->value,
+            "card_id" => $auction->card_id,
+            "authorization_id" => $auction->authorization_id,
         );
 
-        $id = (int)$cheval->cheval_id;
+        $id = (int)$auction->user_auction_id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
-            $cheval->cheval_id = $this->tableGateway->getLastInsertValue();
+            $auction->user_auction_id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->fetchOne($id)) {
-                $this->tableGateway->update($data, array('cheval_id' => $id));
+                $this->tableGateway->update($data, array('user_auction_id' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
         }
-        return $cheval;
+        return $auction;
     }
-    
-    public function delete(Cheval $cheval) {
-        /* Faire la suppression des pères */
-        $this->tableGateway->getAdapter()
-            ->createStatement('UPDATE cheval SET father_id = NULL where father_id = '.$cheval->cheval_id)
-            ->execute();
-        
-        /* Faire la suppression des lots */
-        $this->tableGateway->getAdapter()
-            ->createStatement('DELETE FROM lot where cheval_id = '.$cheval->cheval_id)
-            ->execute();
-        
-        /* Suppression du cheval */
-        $this->tableGateway->delete(array('cheval_id' => $cheval->cheval_id));
-        return ;
-    }
-
-    
-    
-    
     /**
      * Créer un objet Paginator en fonction de l'objet Select $select et du prototype par défaut de la TableGateway.
      * @param Select $select
