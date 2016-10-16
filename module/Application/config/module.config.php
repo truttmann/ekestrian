@@ -505,6 +505,9 @@ return array(
             },
             'user_service' => function($sm) { 
 				return new Application\Service\UserService($sm); 
+			},
+            'mangopay_service' => function($sm) { 
+				return new Application\Service\MangopayService($sm); 
 			}
             /*'Aclplugin' => function($sm) {
                 return new Application\Plugin\Aclplugin($sm);
@@ -570,16 +573,16 @@ return array(
 
     ),
     'form_elements' => array(
-    'invokables' => array(
-        'client_edit' => 'Application\Form\ClientForm',
-        'vendeur_edit' => 'Application\Form\VendeurForm',
-        'chevaux_edit' => 'Application\Form\ChevalForm',
-        'encheres_edit' => 'Application\Form\EnchereForm',
-        'lots_edit' => 'Application\Form\LotForm',
-        'newsletter_edit' => 'Application\Form\NewsletterForm',
-        'translate_edit' => 'Application\Form\TranslateForm',
+        'invokables' => array(
+            'client_edit' => 'Application\Form\ClientForm',
+            'vendeur_edit' => 'Application\Form\VendeurForm',
+            'chevaux_edit' => 'Application\Form\ChevalForm',
+            'encheres_edit' => 'Application\Form\EnchereForm',
+            'lots_edit' => 'Application\Form\LotForm',
+            'newsletter_edit' => 'Application\Form\NewsletterForm',
+            'translate_edit' => 'Application\Form\TranslateForm',
+        )
     )
-)
     /*'controller_plugins' => array(
         'invokables' => array(
            'Aclplugin' => 'Application\Core\Plugin\Aclplugin',

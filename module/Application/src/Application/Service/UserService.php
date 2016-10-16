@@ -33,6 +33,16 @@ class UserService
         $userContainer = new Container(NAME_SESSION_USER);
 		$userContainer->logged_user = $login;
 	}
+
+    public function isMembreConnecte(){
+        $userContainer = new Container(NAME_SESSION_USER);
+		if ( $userContainer->offsetExists('logged_member')) {
+			$temp = $userContainer->logged_member;
+			return $temp;
+		} else {
+			return false;
+		}
+    }
     
     public function getInfoForm() {
 		$userContainer = new Container(NAME_SESSION_USER);
@@ -62,7 +72,21 @@ class UserService
         $userContainer = new Container(NAME_SESSION_USER);
 		$userContainer->info_form = $info;
 	}
-
+    
+    public function getInfoFormMembre() {
+		$userContainer = new Container(NAME_SESSION_USER);
+		if ( $userContainer->offsetExists('info_form_membre')) {
+			$temp = $userContainer->info_form_membre;
+			return $temp;
+		} else {
+			return null;
+		}
+	}
+    public function setInfoFormMembre($info) {
+        $userContainer = new Container(NAME_SESSION_USER);
+		$userContainer->info_form_membre = $info;
+	}
+    
 	/**
 	* function to check if user is logged
 	* @return bool

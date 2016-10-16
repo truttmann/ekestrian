@@ -6916,3 +6916,126 @@ section#section-lots > div.shell > div:last-child {
 .menu-upper{
     text-transform:uppercase;
 }
+.corps_member {
+    background: white;
+    padding-bottom: 60px;
+}
+
+.input_member_login {
+    border: none;
+    background: transparent;
+    width: 70%;
+    border-bottom: solid 1px lightgrey;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.tite_member_login {
+    font-size: 30px;
+    padding: 15px 0;
+}
+.part_ident {
+    float: right;
+    width: 70%;
+    background-color:#f2f2f2;
+    padding: 10px;
+}
+.part_crea {
+    background: #69686c;
+    width: 70%;
+    padding: 10px;
+    color: white;
+}
+.part_crea .btn_connection_member {
+    width: 170px;
+    border: solid 2px white;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+.btn_connection_member {
+    margin: 15px 0px;
+    border: solid 2px black;
+    width: 112px;
+    padding: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.part_ident a {
+    font-size: 12px;
+    text-decoration: underline;
+}
+.part_ident a:hover, .part_ident a {
+    color: black;
+}
+
+.text_left_form {
+    font-family: "Lato-light";
+    font-size: 14pt;
+    line-height: 17pt;
+    margin-bottom: 20px;
+    color: #585858;
+    text-align: right;
+}
+
+#form-membre-edit .form_ele {
+    width: 80%;
+}
+
+#form-membre-edit .form_input {
+    float: left;
+    width: 65% !important;
+    margin: 5px 0 !important;
+}
+#form-membre-edit select#client_form_phone_ind {
+    width: 15% !important;
+}
+#form-membre-edit input#client_form_phone {
+    width: 50% !important;
+}
+#form-membre-edit label {
+    float: left;
+    width: 30% !important;
+    margin: 5px 0px;
+    /* padding-left: 3%;*/
+    font-weight: 500;
+}
+#form-membre-edit fieldset legend{
+    float: left;
+    width: 30%;
+    margin: 5px 0px;
+    /* padding-left: 3%;*/
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+}
+#form-membre-edit fieldset input.form_input {
+    border: none !important;
+    width: 20px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    vertical-align: top;
+    height: 20px;
+}
+#form-membre-edit input.form_input.input_checkbox {
+    border: none !important;
+    width: 20px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    vertical-align: top;
+    height: 20px;
+}
+
+#form-membre-edit .submit{
+    text-align: center;
+    margin-top: 60px;
+}
+
+#form-membre-edit input#submitbutton{
+    padding: 5px;
+}
+
+#form-membre-edit ul {
+    float: left;
+    width: 100%;
+    color: red;
+    padding-left: 30%;
+}

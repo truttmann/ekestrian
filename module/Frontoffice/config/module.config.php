@@ -25,6 +25,58 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'membre' =>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route'    => '/membre',
+                            'defaults' => array(
+                                'controller' => 'Membre',
+                                'action'     => 'login',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'edit' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/edit[/:membre_id]',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'controller' => 'Membre',
+                                        'action'     => 'edit',
+                                    ),
+                                ),
+                            ),
+                            'save' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/save[/:membre_id]',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'controller' => 'Membre',
+                                        'action'     => 'save',
+                                    ),
+                                ),
+                            ),
+                            'edit_cart' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/edit/:membre_id/carte',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'controller' => 'Membre',
+                                        'action'     => 'editCart',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),                    
                     'partenaire' =>  array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
@@ -115,6 +167,7 @@ return array(
             'Partenaire' => 'Frontoffice\Controller\Factory\PartenaireControllerFactory',
             'CGU' => 'Frontoffice\Controller\Factory\CGUControllerFactory',
             'PolitiqueDeConfidentialite' => 'Frontoffice\Controller\Factory\PolitiqueDeConfidentialiteControllerFactory',
+            'Membre' => 'Frontoffice\Controller\Factory\MembreControllerFactory',
         ),
     ),
     'view_manager' => array(
@@ -146,6 +199,11 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'translate' => 'Frontoffice\Helper\Factory\TranslateFactory'
+        )
+    ),
+    'form_elements' => array(
+        'invokables' => array(
+            'membre_edit' => 'Frontoffice\Form\MembreForm',
         )
     )
     /*'controller_plugins' => array(

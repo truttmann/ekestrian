@@ -68,7 +68,8 @@ class InitController extends AbstractActionController
             'route' =>  'home',
             'label' =>  'Accueil'
         )));
-        $this->mainView = new ViewModel();
+        $this->mainView = new ViewModel();        
+        $this->mainView->setVariable("lang_id", $this->lang_id);
     }
 
     protected function getEnv(){
