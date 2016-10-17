@@ -35,6 +35,73 @@ class MembreController extends InitController
         return $viewModel;
     }
     
+    public function logoutAction(){
+        $this->_service_locator->get('user_service')->setMembreConnecte(null);
+        return $this->redirect()->toRoute("home");
+    }
+    
+    public function listenchereAction(){
+        /* si l'utilisateur est déja connecté on le redirige vers la home */
+        $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
+        if($membre == false) {
+            return $this->redirect()->toRoute('home');
+        }
+        
+        if($membre->client_id != $this->params()->fromRoute('membre_id')) {
+            $this->_service_locator->get('user_service')->setMembreConnecte(null);
+            return $this->redirect()->toRoute('home');
+        }
+        
+        parent::initListJs();
+        
+        $viewModel = new ViewModel();
+        $viewModel->setVariable("lang_id", $this->lang_id);
+        $viewModel->setTemplate('frontoffice/lots');
+        
+        /* recuperation de l'id enchere */
+        $id = $this->params()->fromRoute('enchere_id');
+
+        /* récupération des lots */
+        $e = array();
+        $l = $this->_service_locator->get('lotTable')->fetchAllAuction(array("client_id" => $membre->client_id, "lot.status" => 1),  'number');
+        foreach ($l as $i) {
+            /* recuperation du cheval en question */
+            $che = $this->_service_locator->get('chevalTable')->fetchOne($i->cheval_id);
+            
+            /* récupération du père */
+            $p = null;
+            try{
+                if(is_object($che) && $che->father_id != null){
+                    $p = $this->_service_locator->get('chevalTable')->fetchOne($che->father_id);
+                }
+            } catch (Exception $ex) {}
+            
+            /* récupération de la mère */
+            $m = null;
+            try{
+                if(is_object($che) && $che->father_id != null){
+                    $m = $this->_service_locator->get('chevalTable')->fetchOne($che->mother_id);
+                }
+            } catch (Exception $ex) {}
+            
+            /* récupération du père de la mère */
+            $pm = null;
+            try{
+                if(is_object($m) && $m->father_id != null){
+                    $pm = $this->_service_locator->get('chevalTable')->fetchOne($m->father_id);
+                }
+            } catch (Exception $ex) {}
+            $i->pere = $p;
+            $i->mere = $m;
+            $i->pere_mere = $pm;
+            
+            $e[] = $i;
+        }
+        $viewModel->setVariable("lots", $e);
+        
+        return $viewModel;
+    }
+    
     public function editAction(){
         /* modification accessible que si nous sommes en mode connecté */
         if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){

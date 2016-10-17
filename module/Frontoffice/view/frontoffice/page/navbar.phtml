@@ -1,4 +1,26 @@
-<nav id="navbar-primary" class="navbar navbar-default" role="navigation" style="max-height: 120px;background: white;margin-bottom: 0px; padding-bottom: 40px;">
+<div class="row" style="min-height: 30px;background: white; margin: 0">
+    <div class="col-xs-12">
+        <div style="padding: 0 2em;">
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home').(($this->lang == 1)?"":"en"); ?>"><?php echo(($this->lang == 1)?"FR":"EN"); ?></a></div>
+            <div style="float: right;line-height: 30px;">|</div>
+            <?php if($this->is_membre_co == false) { ?>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre'); ?>"><?php echo $this->translate("Identification", $this->lang_id); ?></a></div>
+            <?php } else { ?>
+            
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre/logout', array("membre_id" => $this->is_membre_co->client_id)); ?>"><?php echo $this->translate("Se déconnecter", $this->lang_id); ?></a></div>
+            <div style="float: right;line-height: 30px;">|</div>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre/enchere', array("membre_id" => $this->is_membre_co->client_id)); ?>"><?php echo $this->translate("Mes enchères", $this->lang_id); ?></a></div>
+            <div style="float: right;line-height: 30px;">|</div>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre/edit', array("membre_id" => $this->is_membre_co->client_id)); ?>"><?php echo $this->translate("Mon compte", $this->lang_id); ?></a></div>
+            <div style="float: right;line-height: 30px;">|</div>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><?php echo $this->translate("Bienvenue", $this->lang_id); ?> <?php echo $this->is_membre_co->firstname." ".$this->is_membre_co->laststname; ?></div>
+            <?php } ?>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</div>
+
+<nav id="navbar-primary" class="navbar navbar-default" role="navigation" style="max-height: 150px;background: white;margin-bottom: 0px; padding-bottom: 40px;border: 0px;">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -10,7 +32,7 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-primary-collapse">
+        <div class="collapse navbar-collapse" id="navbar-primary-collapse" style="border: 0px;">
             <ul class="nav navbar-nav">
                 <li class="active separator-right"><a href="<?php echo $this->url('home'); ?>#section-purchase" class="menu-upper"><?php echo $this->translate("Le concept", $this->lang_id); ?></a></li>
                 <li class="separator-right"><a href="<?php echo $this->url('home'); ?>#section-selection" class="menu-upper"><?php echo $this->translate("LE SERVICE", $this->lang_id); ?></a></li>

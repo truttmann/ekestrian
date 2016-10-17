@@ -280,6 +280,7 @@ class InitController extends AbstractActionController
         $navbar = new ViewModel();
         $navbar->setTemplate('frontoffice/page/navbar');
         $navbar->setVariable("lang_id", $this->lang_id);
+        $navbar->setVariable("is_membre_co", $this->_service_locator->get('user_service')->isMembreConnecte());
         $this->layout()->addChild($navbar, 'navbar2');
         
         $newsletter = new ViewModel();

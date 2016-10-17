@@ -45,6 +45,30 @@ return array(
                                     ),
                                 ),
                             ),
+                            'enchere' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/:membre_id/enchere',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'action'     => 'listenchere',
+                                    ),
+                                ),
+                            ),
+                            'logout' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/:membre_id/logout',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'action'     => 'logout',
+                                    ),
+                                ),
+                            ),
                             'edit' =>  array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(

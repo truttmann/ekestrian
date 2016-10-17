@@ -30,6 +30,17 @@ class LotTable
         return $resultSet;
     }
     
+    public function fetchAllAuction($where = array(), $order = "lot_id")
+    {
+        $resultSet = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use($where, $order){
+            $select->join("client_auction", "lot.lot_id = client_auction.lot_id", array(), "inner");
+            $select->where($where);
+            $select->group("lot.lot_id");
+            $select->order($order);
+        });
+        return $resultSet;
+    }    
+    
     /**
     * list all object
     * @return resultSet
