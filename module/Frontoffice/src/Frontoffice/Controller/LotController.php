@@ -103,7 +103,7 @@ class LotController extends InitController
         $mm = null;
         try{
             if(is_object($m) && $m->mother_id != null){
-                $pm = $this->_service_locator->get('chevalTable')->fetchOne($m->mother_id);
+                $mm = $this->_service_locator->get('chevalTable')->fetchOne($m->mother_id);
             }
         } catch (Exception $ex) {}
         /* récupération du père du père */
@@ -235,7 +235,7 @@ class LotController extends InitController
             
             $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
             
-            var_dump($obj);exit;
+            
             
             $return['data']["auction"] = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
             $return["status"] = 1;

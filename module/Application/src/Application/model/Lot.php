@@ -246,10 +246,10 @@ class Lot  implements InputFilterAwareInterface
                             'min' => '2',
                             'max' => '255',
                         ),
-                    ),
+                    )/*,
                     array(
                         'name' => "Uri"
-                    )
+                    )*/
                 ),
             )));
             
@@ -258,17 +258,17 @@ class Lot  implements InputFilterAwareInterface
                     'name' => 'image_url',
                     'required' => false,
                     'validators' => array(
-                        array(
+                       /* array(
                             'name' => 'Zend\Validator\File\Size',
                             'options' => array(
                                 'min' => 120,
                                 'max' => 5000000,
                             ),
-                        ),
+                        ),*/
                         array(
                             'name' => 'Zend\Validator\File\Extension',
                             'options' => array(
-                                'extension' => array('png','jpg')
+                                'extension' => array('png','jpg', 'jpeg')
                             ),
                         ),
                     ),

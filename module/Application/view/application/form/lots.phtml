@@ -15,7 +15,7 @@ $elements = $form->getElements();
             <?php foreach ($elements as $element): 
                 echo "<div style='height: auto'>".$this->formRow($form->get($element->getName())).' <div style="clear: both">&nbsp;</div></div>';
                 if($element->getName() == "image_url" && !empty($this->lot['image_url'])) {
-                    echo "<div style='width: 100%'><img style='margin-left: 30%;max-width: 200px' src='".$this->basePath()."/../".$this->lot['image_url']."' /></div>";
+                    echo "<div style='width: 100%'><img style='margin-left: 30%;max-width: 200px' src='".$this->basePath().$this->lot['image_url']."' /></div>";
                 }
             endforeach;
             ?>

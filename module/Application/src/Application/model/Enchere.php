@@ -200,17 +200,17 @@ class Enchere  implements InputFilterAwareInterface
                     'name' => 'image_url',
                     'required' => false,
                     'validators' => array(
-                        array(
+                        /*array(
                             'name' => 'Zend\Validator\File\Size',
                             'options' => array(
                                 'min' => 120,
                                 'max' => 5000000,
                             ),
-                        ),
+                        ),*/
                         array(
                             'name' => 'Zend\Validator\File\Extension',
                             'options' => array(
-                                'extension' => 'png',
+                                'extension' => array('png','jpg', 'jpeg')
                             ),
                         ),
                     ),

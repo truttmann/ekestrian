@@ -450,7 +450,7 @@ class LotController extends InitController
             $updateUrl = 'lots/media_update';
             $deleteUrl = 'lots/media_delete';
             $uploadDir = __DIR__.'/../../../../../public/upload/lots/';
-            $uploadUrl = '/upload/lots/';
+            $uploadUrl = $this->getBasePath().'/upload/lots/';
             $minWidth = 1;
             $minHeight = 1;
 
@@ -478,8 +478,8 @@ class LotController extends InitController
         $scriptUrl = 'lots/media_upload';
         $updateUrl = 'lots/media_update';
         $deleteUrl = 'lots/media_delete';
-        $uploadDir = __DIR__.'/../../../../../public/img/lot/';
-        $uploadUrl = '/img/lot/';
+        $uploadDir = __DIR__.'/../../../../../public/upload/lots/';
+        $uploadUrl = $this->getBasePath().'/upload/lots/';
         $minWidth = 1;
         $minHeight = 1;
         
@@ -522,8 +522,8 @@ class LotController extends InitController
         $scriptUrl = 'lots/media_upload';
         $updateUrl = 'lots/media_update';
         $deleteUrl = 'lots/media_delete';
-        $uploadDir = __DIR__.'/../../../../../public/img/lot/';
-        $uploadUrl = $this->getBasePath().'/img/lot/';
+        $uploadDir = __DIR__.'/../../../../../public/upload/lots/';
+        $uploadUrl = $this->getBasePath().'/upload/lots/';
         $minWidth = 1;
         $minHeight = 1;
         

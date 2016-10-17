@@ -111,7 +111,7 @@ class LotForm extends CustomForm{
             'options' => array(
                 'label' => 'Lien video',
             ),
-            'type'  => 'Url',
+            'type'  => 'Text',
             'attributes'=>array('id' => 'lot_form_video_link', 'class'=>'form-control form_input'),
         ));
         $this->add(array(

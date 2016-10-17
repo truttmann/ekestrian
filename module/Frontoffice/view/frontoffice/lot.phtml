@@ -194,14 +194,14 @@
                             <td class="tree-left">&nbsp;</td>
                             <td>&nbsp;</td>
                             <td class="tree-bottom">
-                                <?php if($this->cheval->pere_pere_pere && is_object($this->cheval->pere_pere_pere)){ echo $this->cheval->pere_pere_pere->name ;}?>
+                                <?php if($this->cheval->pere_pere_mere && is_object($this->cheval->pere_pere_mere)){ echo $this->cheval->pere_pere_mere->name ;}?>
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td class="tree-left">&nbsp;</td>
                             <td class="tree-bottom">
-                                <?php if($this->cheval->pere_pere_mere && is_object($this->cheval->pere_pere_mere)){ echo $this->cheval->pere_pere_mere->name ;}?>
+                                <?php if($this->cheval->pere_mere && is_object($this->cheval->pere_mere)){ echo $this->cheval->pere_mere->name ;}?>
                             </td>
                             <td class="tree-left">&nbsp;</td>
                         </tr>
@@ -210,7 +210,7 @@
                             <td class="tree-left">&nbsp;</td>
                             <td class="tree-left">&nbsp;</td>
                             <td class="tree-bottom tree-left">
-                                <?php if($this->cheval->pere_mere && is_object($this->cheval->pere_mere)){ echo $this->cheval->pere_mere->name ;}?>
+                                <?php if($this->cheval->mere_pere_mere && is_object($this->cheval->mere_pere_mere)){ echo $this->cheval->mere_pere_mere->name ;}?>
                             </td>
                         </tr>
                         <tr>
@@ -455,14 +455,13 @@ if ($this->cheval->mere != null) { ?>
             e.preventDefault();
             $('#blueimp-gallery').data('fullScreen', true);
             $('#blueimp-gallery').data('hidePageScrollbars', false);
-            console.log($('#blueimp-gallery').data());
             blueimp.Gallery($('#slider-thumbs a'), $('#blueimp-gallery').data());
         });
 
         if($( 'button[data-toggle="modal"]' ).length != 0) {
             $('.carousel-inner > div, .video_behind').unbind('click').on('click', function(e){
                 e.preventDefault();
-                $( 'button[data-toggle="modal"]' ).trigger("click")
+                $( 'button[data-toggle="modal"]' ).trigger("click");
             });
 
 
