@@ -1,7 +1,7 @@
 <div class="row" style="min-height: 30px;background: white; margin: 0">
     <div class="col-xs-12">
         <div style="padding: 0 2em;">
-            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home').(($this->lang == 1)?"":"en"); ?>"><?php echo(($this->lang == 1)?"FR":"EN"); ?></a></div>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home').(($this->lang_id == 1)?"en":""); ?>"><?php echo (($this->lang_id == 1)?"EN":"FR"); ?></a></div>
             <div style="float: right;line-height: 30px;">|</div>
             <?php if($this->is_membre_co == false) { ?>
             <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre'); ?>"><?php echo $this->translate("Identification", $this->lang_id); ?></a></div>
@@ -13,7 +13,7 @@
             <div style="float: right;line-height: 30px;">|</div>
             <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><a href="<?php echo $this->url('home/membre/edit', array("membre_id" => $this->is_membre_co->client_id)); ?>"><?php echo $this->translate("Mon compte", $this->lang_id); ?></a></div>
             <div style="float: right;line-height: 30px;">|</div>
-            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><?php echo $this->translate("Bienvenue", $this->lang_id); ?> <?php echo $this->is_membre_co->firstname." ".$this->is_membre_co->laststname; ?></div>
+            <div style="float: right;line-height: 30px;padding: 0 30px; font-family: Lato-bold; font-size: 15px"><?php echo $this->translate("Bienvenue", $this->lang_id); ?> <?php echo $this->is_membre_co->lastname." ".$this->is_membre_co->firstname; ?></div>
             <?php } ?>
             <div style="clear:both"></div>
         </div>

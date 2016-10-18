@@ -233,10 +233,12 @@ class MembreController extends InitController
                     $this->_service_locator->get('user_service')->setMembreConnecte($obj);
                     
                     $carte_registration = $this->createUserMangopay($obj, $id);
-                    $this->_service_locator->get('user_service')->setCarteRegistration($carte_registration);
                     
                     $id = $obj->client_id;
                     $this->addSuccess('La sauvegarde a été effectuée avec succès');
+                    return $this->redirect()->toRoute('home/membre/edit_cart', array(
+                        'membre_id' => $id,
+                    ));
                 } catch (Exception $e) {
                     
                     if(empty($id) && is_object($obj)) {
@@ -266,7 +268,7 @@ class MembreController extends InitController
         }else{
             throw new Exception('Aucune donnée envoyée.');
         }
-        return $this->redirect()->toRoute('home/membre/edit_cart', array(
+        return $this->redirect()->toRoute('home/membre/edit', array(
             'membre_id' => $id,
         ));
     }
@@ -294,17 +296,14 @@ class MembreController extends InitController
                 'membre_id' => $this->params()->fromRoute('membre_id'),
             ));
         }
-        
-        /* sauvegarde de l'id de la carte */
-        $obj->mangopay_carte_id = $carte_reg->Id;
-        $clientModel->save($obj);
-            
             
         $this->mainView->setTemplate('frontoffice/member/carte');
         $this->mainView->setVariable('carte_reg', $carte_reg);
         $this->mainView->setVariable('membre_id', $this->params()->fromRoute('membre_id'));
         return $this->mainView;
     }
+    
+    public function carteRetourPreAuthAction(){exit;}
     
     public function carteRegisterAction(){
         $clientModel = $this->getServiceLocator()->get('clientTable');
@@ -341,7 +340,22 @@ class MembreController extends InitController
             $obj->mangopay_card_id = $carte_reg_f->CardId;
             $obj->status = 1;
             $clientModel->save($obj);
+            
+            /* creation de la pré-authentification */
+            if(empty($obj->mangopay_id) || empty($obj->mangopay_wallet_id) || empty($obj->mangopay_carte_id) 
+            || empty($obj->carte_numero) || empty($obj->carte_date) || empty($obj->carte_cle)
+            || empty($obj->carte_data) || empty($obj->carte_accesskeyref)|| empty($obj->mangopay_card_id)) {
+                throw new \Exception("Vous n'avez pas fini la création de votre compte, vos informations bancaires sont erronées.");
+            }
 
+            $res = $this->_service_locator->get('mangopay_service')->makePreAuth($obj);
+            if($res->Status != "SUCCEEDED") {
+                throw new \Exception($res->ResultMessage);
+            }
+            $obj->mangopay_autorisation_id = $res->Id;
+            $clientModel->save($obj);
+            
+            
             $this->addSuccess('L\'édition du compte membre est finie.');
             return $this->redirect()->toRoute("home");
         }catch(\Exception $e) {
@@ -375,9 +389,26 @@ class MembreController extends InitController
             return $this->redirect()->toRoute('home/membre', array());
         }
         
-        $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+        /* On vide toute les données concernant la pré-auth */
+        $obj->mangopay_autorisation_id = null;
+        $clientModel->save($obj);
         
         $this->addSuccess('Connexion réussie');
+        $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+        
+        /* verification de la carte */
+        try{
+           $res = $this->_service_locator->get('mangopay_service')->makePreAuth($obj);
+            if($res->Status != "SUCCEEDED") {
+                throw new \Exception($res->ResultMessage);
+            }
+            $obj->mangopay_autorisation_id = $res->Id;
+            $clientModel->save($obj);
+            
+        }catch(\Exception $e){
+            $this->addError('Erreur lors de la vérification de votre carte : '.$e->getMessage());
+        }       
+        
         return $this->redirect()->toRoute('home');
     }
     
@@ -396,23 +427,31 @@ class MembreController extends InitController
             if(!is_object($mangopay_user)) {
                 throw new \Exception("Membre updated, but error with mangopay : ".$mangopay_user);
             }
+            $obj->mangopay_id = $mangopay_user->Id;
+            $obj = $clientModel->save($obj);
         }
 
         /* creation du wallet user*/
-        if($obj->mangopay_wallet_id == null){
-            $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
-            if(!is_object($result2)) {
-                throw new \Exception("Membre updated, but error with mangopay : ".$result2);
-            }
-            $obj->mangopay_wallet_id = $result2->Id;
-            $obj = $clientModel->save($obj);
+        $result2 = $this->_service_locator->get('mangopay_service')->createWallet($mangopay_user);
+        if(!is_object($result2)) {
+            throw new \Exception("Membre updated, but error with mangopay : ".$result2);
         }
+        $obj->mangopay_wallet_id = $result2->Id;
+        $obj = $clientModel->save($obj);
 
         /* creation de la carte */
         $result3 = $this->_service_locator->get('mangopay_service')->cardRegistration($mangopay_user);
         if(!is_object($result3)) {
             throw new \Exception("Membre updated, but error with mangopay : ".$result3);
         }
+        /* sauvegarde de l'id de la carte */
+        $obj->mangopay_carte_id = $result3->Id;
+        $obj->carte_url = $result3->CardRegistrationURL;
+        $obj->carte_data = $result3->PreregistrationData;
+        $obj->carte_accesskeyref = $result3->AccessKey;
+        $clientModel->save($obj);
+        $this->_service_locator->get('user_service')->setCarteRegistration($result3);
+        
         return $result3;
     }
 }

@@ -104,4 +104,20 @@ class MangopayService
         $cardRegisterPut->RegistrationData = ((!empty($data)) ? 'data=' . $data : 'errorCode=' . $error);
        return $this->api->CardRegistrations->Update($cardRegisterPut);
     }
+    
+    public function makePreAuth(Client $client) {
+        $url = $this->sm
+            ->get('viewhelpermanager')
+            ->get('url');
+        
+        $CardPreAuthorization = new \MangoPay\CardPreAuthorization();
+        $CardPreAuthorization->AuthorId = $client->mangopay_id;
+        $CardPreAuthorization->DebitedFunds = new \MangoPay\Money();
+        $CardPreAuthorization->DebitedFunds->Currency = "EUR";
+        $CardPreAuthorization->DebitedFunds->Amount = 10000;
+        $CardPreAuthorization->SecureMode = "DEFAULT";
+        $CardPreAuthorization->CardId = $client->mangopay_card_id;
+        $CardPreAuthorization->SecureModeReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home');
+        return $this->api->CardPreAuthorizations->Create($CardPreAuthorization);
+    }
 }

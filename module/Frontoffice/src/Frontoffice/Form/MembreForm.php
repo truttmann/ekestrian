@@ -27,7 +27,7 @@ class MembreForm extends CustomForm{
             'options' => array(
                 'label' => '*Civilité',
                 'value_options' => array(
-                    'mme' => 'Mrs',
+                    'mme' => 'Mr',
                     'mr' => 'Mme',
                 ),
             ),
@@ -52,10 +52,10 @@ class MembreForm extends CustomForm{
         $this->add(array(
             'name' => $this->_name_prefix . 'societe',
             'options' => array(
-                'label' => '*Société',
+                'label' => 'Société',
             ),
             'type'  => 'Text',
-            'attributes'=>array('required' => true,'id'=>'client_form_societe' ,'class'=>'form-control form_input'),
+            'attributes'=>array('id'=>'client_form_societe' ,'class'=>'form-control form_input'),
         ));
         $this->add(array(
             'name' => $this->_name_prefix . 'phone_ind',
@@ -96,8 +96,8 @@ class MembreForm extends CustomForm{
             'options' => array(
                 'label' => 'Langue',
                 'value_options' => array(
-                    "anglais" => "Anglais",
                     "francais" => "Français",
+                    "anglais" => "Anglais",
                 )
             ),
             'attributes'=>array('required' => true,'id'=>'client_form_country' ,'class'=>'form-control form_input'),

@@ -129,6 +129,18 @@ return array(
                                     ),
                                 ),
                             ),
+                            'retour_preauth' =>  array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/:membre_id/carte_retour_preauth',
+                                    'constraints' => array(
+                                        'membre_id' => '[0-9]+',
+                                    ),
+                                    'defaults' => array(
+                                        'action'     => 'carteRetourPreAuth',
+                                    ),
+                                ),
+                            ),
                         ),
                     ),                    
                     'partenaire' =>  array(

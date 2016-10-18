@@ -224,15 +224,17 @@ class LotController extends InitController
                 $this->_service_locator->get('user_service')->setMembreConnecte(null);
                 throw new \Exception("Vous n'êtes pas connecté, veuillez d'abord vous connecter.");
             }
-
-            /* appel Banque et pré-auth */
             
+            if(empty($obj_member->mangopay_autorisation_id )){
+                throw new \Exception("Vous n'avez pas d'autorisation de paiement, vérifier vos données bancaires.");
+            }
             /* sauvegarde en bdd */
             $obj = new \Application\Model\ClientAuction();
             $obj->lot_id = $id;
             $obj->client_id = $membre->client_id;
             $obj->value = $_REQUEST['value'];
-            
+            $obj->authorization_id = $obj_member->mangopay_autorisation_id;
+            $obj->card_id = $obj_member->mangopay_card_id;
             $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
             
             

@@ -24,24 +24,29 @@
                                             <input type="hidden" name="data" value="<?php echo $this->carte_reg->PreregistrationData; ?>" />
                                             <input type="hidden" name="accessKeyRef" value="<?php echo $this->carte_reg->AccessKey; ?>" />
                                             <input type="hidden" name="returnURL" value="<?php echo "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$this->url('home/membre/retour_cart', array('membre_id'=>$this->membre_id)); ?>" />
-                                            <div class="col-xs-5" style="text-align: right">
-                                                <?php echo $this->translate("Numéro de carte", $this->lang_id); ?>:
+                                            <div class="row">
+                                                <div class="col-xs-5" style="text-align: right">
+                                                    <?php echo $this->translate("Numéro de carte", $this->lang_id); ?>:
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <input class="form-control form_input" type="text" name="cardNumber" size="20" maxlength="30" value="4970100000000154">
+                                                </div>
                                             </div>
-                                            <div class="col-xs-7">
-                                                <input type="text" name="cardNumber" size="20" maxlength="30" value="4970100000000154">
+                                            <div class="row">
+                                                <div class="col-xs-5" style="text-align: right">
+                                                    <?php echo $this->translate("Date d'expiration", $this->lang_id); ?>:
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <input class="form-control form_input" type="text" name="cardExpirationDate" maxlength="4" size="4" placeholder="MMYY" value="1217">
+                                                </div>
                                             </div>
-                                            <div class="col-xs-5" style="text-align: right">
-                                                <?php echo $this->translate("Date d'expiration", $this->lang_id); ?>:
-                                            </div>
-                                            <div class="col-xs-7">
-                                                <input type="text" name="cardExpirationDate" maxlength="4" size="4" placeholder="MMYY" value="1217">
-                                            </div>
-                                            <div class="col-xs-5" style="text-align: right">
-                                                <?php echo $this->translate("CVV", $this->lang_id); ?>:
-                                            </div>
-                                            <div class="col-xs-7">
-                                                <input type="text" name="cardCvx" size="3" maxlength="5"  value="123">
-                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-5" style="text-align: right">
+                                                    <?php echo $this->translate("CVV", $this->lang_id); ?>:
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <input class="form-control form_input" type="text" name="cardCvx" size="3" maxlength="5"  value="123">
+                                                </div>
                                             <div class="col-xs-12" style="text-align: center">
                                                 <input type="submit" value="Valider" class="next">
                                             </div>

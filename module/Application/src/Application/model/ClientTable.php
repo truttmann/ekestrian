@@ -57,7 +57,6 @@ class ClientTable
     }
     
     public function fetchOneByEmail($email){
-        $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('email' => $email));
         $row = $rowset->current();
         if (!$row) {
@@ -90,10 +89,14 @@ class ClientTable
             "mangopay_wallet_id" => $client->mangopay_wallet_id,
             "mangopay_carte_id" => $client->mangopay_carte_id,
             "mangopay_card_id" => $client->mangopay_card_id,
+            "mangopay_autorisation_id" => $client->mangopay_autorisation_id,
             "carte_numero" => $client->carte_numero,
             "carte_date" => $client->carte_date,
             "carte_cle" => $client->carte_cle,
             "card_id" => $client->card_id,
+            "carte_data" => $client->carte_data,
+            "carte_accesskeyref" => $client->carte_accesskeyref,
+            "carte_url" => $client->carte_url,
             "status" => $client->status
         );
 

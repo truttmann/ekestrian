@@ -31,9 +31,9 @@ $elements = $form->getElements();
                                             if($this->edition == false) {
                                                 echo '</div></div><div class="row"><div class="col-xs-4 text_left_form">Conditions générales</div><div class="col-xs-8 form_body">';
                                                 echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'accepte les conditions de vente ci dessous: <br/><br/>'.
-                                                    'Si je remporte l\'enchère à la clôture des ventes: <br/>'.
+                                                    'Si je remporte l\'enchère à la clôture des ventes : <br/>'.
                                                     '&nbsp;&nbsp;&nbsp;&nbsp;- Je devrais signer le contrat de vente électronique proposé par le vendeur dans la galerie photo du cheval<br/>'.
-                                                    '&nbsp;&nbsp;&nbsp;&nbsp;- Je serai redeveable de la somme enchérie additionnée de 11% de frais de vente sur le montant hors taxes du cheval à laquelle s\'ajoute la TVA relative àmon pays et mon statut.<br/>'.
+                                                    '&nbsp;&nbsp;&nbsp;&nbsp;- Je serai redevable de la somme enchérie additionnée de 11% de frais de vente sur le montant hors taxes du cheval à laquelle s\'ajoute la TVA relative à mon pays et mon statut.<br/>'.
                                                     '<div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
                                             }
                                         } else if($element->getName() == "reglement"){
@@ -42,7 +42,7 @@ $elements = $form->getElements();
                                             }
                                         } else if($element->getName() == "confidence"){
                                             if($this->edition == false) {
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" href="'.$this->url("home/politique_de_confidentialite").'">poilitique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" href="'.$this->url("home/politique_de_confidentialite").'">politique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
                                             }
                                         } else if($element->getName() == "submit"){   
                                                echo "</div></div>";
