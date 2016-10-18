@@ -201,7 +201,7 @@ class Client implements InputFilterAwareInterface
             )));
             $inputFilter->add($factory->createInput(array(
                 'name' => $this->_name_prefix . 'password',
-                'required' => TRUE,
+                'required' => false,
                 'filters' => array(
                     array('name' => 'StripTags'),
                 ),
