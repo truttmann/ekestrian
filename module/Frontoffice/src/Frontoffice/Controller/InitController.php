@@ -70,6 +70,7 @@ class InitController extends AbstractActionController
         )));
         $this->mainView = new ViewModel();        
         $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setVariable("is_membre_co", $this->_service_locator->get('user_service')->isMembreConnecte());
     }
 
     protected function getEnv(){

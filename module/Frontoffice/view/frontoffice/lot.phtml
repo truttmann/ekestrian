@@ -254,9 +254,13 @@
                     <span class="letter-spacing-1" style="font-family: Lato-bold; font-weight:bold;font-size:15pt;line-height:26pt; color: #e97266"><?php echo $this->translate("Enchère actuelle", $this->lang_id); ?> </span>
                 </div>
                 <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558; margin-bottom: 15px">
-                    - <span>€</span> <sup>HT</sup>
+                    <span class="actual_amount_space"><?php echo $this->lot->actual_cost; ?></span> <span>€</span> <sup>HT</sup>
                 </div>
-                <a href="#" id="lien_enchere" ><div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir", $this->lang_id); ?></div></a>
+                <?php if($this->is_membre_co == false) { ?>
+                    <a href="<?php echo $this->url('home/membre'); ?>" ><div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir", $this->lang_id); ?></div></a>
+                <?php } else { ?>
+                    <a href="#" id="lien_enchere" ><div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir", $this->lang_id); ?></div></a>
+                <?php } ?>
             </div>
        </div>
     </div>
@@ -267,6 +271,7 @@
     <div class="row" style="margin: 0">
         <div class="col-xs-12 actual_amount" style="text-align:center"></div>
         <br/>
+        <div class="col-xs-12 success" style="text-align:center; color: green"></div>
         <div class="col-xs-12 alerte" style="text-align:center; color: red"></div>
         <br/>
         <div class="col-xs-12 enchere" style="text-align:center;">
@@ -450,7 +455,23 @@ if ($this->cheval->mere != null) { ?>
         
 
 <script type="text/javascript">
+    
+    function reloadAmount() {
+        $.ajax({
+            url: '<?= $this->url("home/lots/lot/reload_cost", array("enchere_id"=>$this->enchere_id, "lot_id"=>$this->lot_id)) ?>',
+            dataType: 'json',
+            data: {},
+        }).always(function () {
+        }).done(function (result) {
+            setTimeout(reloadAmount, 3000);
+            if(result.status && result.status == 1 && result.data && result.data.amount) {
+                $('.actual_amount_space').empty().html(result.data.amount);
+            }
+        });
+    }
+    
     $(document).ready(function(){
+        reloadAmount();
         $('#slider-thumbs li a').unbind('click').on('click', function(e){
             e.preventDefault();
             $('#blueimp-gallery').data('fullScreen', true);
@@ -489,17 +510,35 @@ if ($this->cheval->mere != null) { ?>
         
         $('.dialog_enchere input[type="button"]').unbind('click').on('click', function(e){
            e.preventDefault();
-           $.ajax({
+            $.ajax({
                 url: '<?= $this->url("home/lots/lot/validation", array("enchere_id"=>$this->enchere_id, "lot_id"=>$this->lot_id)) ?>',
                 dataType: 'json',
                 data: {"value":$('.dialog_enchere select').val()},
             }).always(function () {
             }).done(function (result) {
-                console.log(result);
                 if(result.status && result.status == 1) {
-                    
+                    $('.dialog_enchere .alerte').empty();
+                    $(".dialog_enchere select option").remove();
+                    $('.dialog_enchere .success').empty().html("<?php echo $this->translate("Enchère enregistrée", $this->lang_id); ?>");
+                    /* mise en place de actual_amount */
+                    var actuel = parseFloat((result.data.auction)?result.data.auction.value:result.data.lot.min_price);
+                    $('.dialog_enchere .actual_amount').empty().html("<?php echo $this->translate('Enchère actuelle', $this->lang_id); ?> : "+actuel+" EUR");
+
+                    if(actuel <= result.data.lot.reserve_price){
+                        $('.dialog_enchere .alerte').empty().html("<?php echo $this->translate('Prix de reserve atteint', $this->lang_id); ?>");
+                    }   
+
+                    var pas = parseFloat((result.data.lot.ist_price && result.data.lot.ist_price > 0)?result.data.lot.ist_price : 1);
+                    var i = 1;
+                    while(i != 10) {
+                        actuel = actuel + pas;
+                        $(".dialog_enchere select").append('<option value="'+(actuel)+'">'+(actuel)+'</option>');
+                        i++;
+                    }
+                } else {
+                    $('.dialog_enchere .alerte').empty().html(result.data);
                 }
-            })
+            });
         });
     });
     

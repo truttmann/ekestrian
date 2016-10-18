@@ -219,6 +219,18 @@ return array(
                                             ),
                                         ),
                                     ),
+                                    'reload_cost' =>  array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route'    => '/reload_cost',
+                                            'constraints' => array(
+                                                'membre_id' => '[0-9]+',
+                                            ),
+                                            'defaults' => array(
+                                                'action'     => 'reloadCost',
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),

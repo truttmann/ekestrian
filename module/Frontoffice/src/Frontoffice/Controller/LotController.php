@@ -63,6 +63,10 @@ class LotController extends InitController
         }
         $t->list_image = $tab;
         
+        /* recuperation de l'enchère maximal */
+        $res = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
+        $t->actual_cost = ((!empty($res))?$res->value:$t->min_price);
+        
         $this->mainView->setVariable("lot", $t);
         
         /* recuperation du cheval en question */
@@ -75,6 +79,8 @@ class LotController extends InitController
                 $che->birthday = "";
             }
         }
+        
+        
         
         /* récupération du père */
         $p = null;
@@ -201,6 +207,38 @@ class LotController extends InitController
         return $this->mainView;
     }
     
+    public function reloadCostAction(){
+        $return = array("data" => "", "status" => 0);
+        try {
+            /* recuperation de l'id enchere */
+            $id_e = $this->params()->fromRoute('enchere_id');
+
+            /* verification de l'existance de l'enchère, sinon redirection */
+            $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
+            if(! is_object($en)) {
+                throw new \Exception("unable to find enchere");
+            }
+
+            /* recuperation de l'id lot */
+            $id = $this->params()->fromRoute('lot_id');
+            $t = $this->_service_locator->get('lotTable')->fetchOne($id);
+            if(! is_object($t)) {
+                throw new \Exception("unable to find lot");
+            }
+
+            /* recuperation de l'enchère maximal */
+            $res = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
+            
+            $return['status'] = 1;
+            $return['data'] = array('amount' => ((!empty($res))?$res->value:$t->min_price));
+        }catch(\Exception $e) {
+            $return['status'] = 0;
+            $return['data'] = $e->getMessage();
+        }
+        
+        return new \Zend\View\Model\JsonModel($return);
+    }
+    
     public function validationAction(){
         $return = array('data'=>"", "status" => 0);
         try {
@@ -238,7 +276,9 @@ class LotController extends InitController
             $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
             
             
-            
+            /* récupération de la dernière enchère du lot */
+            $return['data']["lot"] = $t;
+            $return['data']["enchere"] = $en;
             $return['data']["auction"] = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
             $return["status"] = 1;
         
