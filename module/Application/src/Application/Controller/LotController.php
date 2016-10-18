@@ -174,7 +174,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'creation_date',
-                    'clickable'     =>  true,
                     'label'         =>  'Date de création',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -184,7 +183,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'value',
-                    'clickable'     =>  true,
                     'label'         =>  'Prix',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -194,7 +192,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'status',
-                    'clickable'     =>  true,
                     'label'         =>  'Statut',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -204,7 +201,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'firstname',
-                    'clickable'     =>  true,
                     'label'         =>  'Nom',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -214,7 +210,6 @@ class LotController extends InitController
                 ),                
                 array(
                     'code'          =>  'firstname',
-                    'clickable'     =>  true,
                     'label'         =>  'Prénom',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -223,7 +218,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'email',
-                    'clickable'     =>  true,
                     'label'         =>  'Email',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -233,7 +227,6 @@ class LotController extends InitController
                 ),                
                 array(
                     'code'          =>  'phone',
-                    'clickable'     =>  true,
                     'label'         =>  'Tél.',
                     'searchable'    =>  true,
                     'type'          =>  'text',
@@ -242,7 +235,6 @@ class LotController extends InitController
                 ),
                 array(
                     'code'          =>  'libelle',
-                    'clickable'     =>  true,
                     'label'         =>  'Pays',
                     'searchable'    =>  true,
                     'type'          =>  'text',

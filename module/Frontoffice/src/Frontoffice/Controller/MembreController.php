@@ -218,7 +218,30 @@ class MembreController extends InitController
                     )
                 ));
             }
+            if($data['type'] == "pro" && (!isset($data['societe']) ||empty($data['societe']))) {
+                $form->setMessages(array(
+                    'societe' => array(
+                         'Le nom de la société est obligatoire pour les professionnels'
+                    )
+                ));
+            }
+            
             /* TODO : verification du non doublon d'email */
+            $t = $this->_service_locator->get('user_service')->isMembreConnecte();
+            if($id == null || $t->email != $data['email']) {
+                try{
+                    $this->_service_locator->get('clientTable')->fetchOneByEmail($data['email']);
+                    
+                    /* si nous somme toujours ici, cela signifie que la fonction a trouvée un client avec cet email */
+                    $form->setMessages(array(
+                        'email' => array(
+                             'L\'adresse mail saisie est déjà utilisée, veuillez en saisir une autre'
+                        )
+                    ));
+                }catch(\Exception $e) {}
+            }
+            
+            
             if ($form->isValid() && empty($form->getMessages())) {
                 try {
                     // sauvegarde de l'heure de mea
@@ -256,8 +279,8 @@ class MembreController extends InitController
             }else{
                 $this->addError('La sauvegarde a échouée');
                 if($messages = $form->getMessages()){
-                    foreach($messages as $message){
-                        $this->addError($message);
+                    foreach($messages as $key => $message){
+                        $this->addError($key." : ".(is_array($message)?current($message):$message));
                     }
                 }
                 $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $form->getMessages()));

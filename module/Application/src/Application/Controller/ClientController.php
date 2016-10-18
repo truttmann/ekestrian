@@ -193,8 +193,21 @@ class ClientController extends InitController
     }
     
     public function saveAction() {
+        $clientModel = $this->getServiceLocator()->get('clientTable');
+                    
         $id = $this->params()->fromRoute('client_id');
         if($data = $this->getRequest()->getPost()){
+            $data['condition_vente'] = 1;
+            $data['reglement'] = 1;
+            $data['confidence'] = 1;
+            
+            if(empty($data['password'])) {
+                if(!empty($data['client_id'])) {
+                    $obj = $clientModel->fetchOne($data['client_id']);
+                }
+                $data['password'] = $data['password_confirm'] = $obj->password;
+            }
+            
             $obj = new \Application\Model\Client();
             
             $form = $this->getServiceLocator()->get('FormElementManager')->get("client_edit");
@@ -202,10 +215,47 @@ class ClientController extends InitController
             $form->initForm();
             $form->setInputFilter($obj->getInputFilter());
             $form->setData($data);
-            if ($form->isValid()) {
+            
+            /* Verificaton que le mot de passe et sa confirmation sont bien identique */
+            if(!empty($data['password']) && $data['password'] != $data['password_confirm']) {
+                $form->setMessages(array(
+                    'password_confirm' => array(
+                         'La validation de votre mot de passe n\'est pas conforme'
+                    )
+                ));
+            }
+            if(!isset($data['condition_vente'])) {
+                $form->setMessages(array(
+                    'condition_vente' => array(
+                        'Vous devez cocher la case'
+                    )
+                ));
+            }
+            if(!isset($data['reglement'])) {
+                $form->setMessages(array(
+                    'reglement' => array(
+                        'Vous devez cocher la case'
+                    )
+                ));
+            }
+            if(!isset($data['confidence'])) {
+                $form->setMessages(array(
+                    'confidence' => array(
+                        'Vous devez cocher la case'
+                    )
+                ));
+            }
+            if($data['type'] == "pro" && (!isset($data['societe']) || empty($data['societe']))) {
+                $form->setMessages(array(
+                    'societe' => array(
+                         'Le nom de la société est obligatoire pour les professionnels'
+                    )
+                ));
+            }
+            
+            if ($form->isValid() && empty($form->getMessages())) {
                 try {
                     // sauvegarde de l'heure de mea
-                    $clientModel = $this->getServiceLocator()->get('clientTable');
                     if(!empty($data['client_id'])) {
                         $obj = $clientModel->fetchOne($data['client_id']);
                     }
@@ -219,8 +269,8 @@ class ClientController extends InitController
             }else{
                 $this->addError('La sauvegarde a échouée');
                 if($messages = $form->getMessages()){
-                    foreach($messages as $message){
-                        $this->addError($message);
+                    foreach($messages as $key => $message){
+                        $this->addError($key." : ".(is_array($message)?current($message):$message));
                     }
                 }
                 $this->getServiceLocator()->get('user_service')->setInfoForm(array($data, $form->getMessages()));

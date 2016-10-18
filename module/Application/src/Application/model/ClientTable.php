@@ -83,6 +83,7 @@ class ClientTable
             "phone" => $client->phone,
             "birthday" => $client->birthday,
             "langue" => $client->langue,
+            "type" => $client->type,
             "country_id" => $client->country_id,
             "first_connexion" => $client->first_connexion,
             "mangopay_id" => $client->mangopay_id,

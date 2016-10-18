@@ -11,9 +11,41 @@ $elements = $form->getElements();
                 <i class="fa fa-shopping-cart"></i><?php echo $this->form_title ?>
             </div>
         </div>
-        <div class="portlet-body form">
+        <div class="portlet-body form" id="form-client-edit">
             <?php foreach ($elements as $element): 
-                echo "<div style='height: auto'>".$this->formRow($form->get($element->getName())).' <div style="clear: both">&nbsp;</div></div>';
+                if($element->getName() == "phone_ind") {
+                    echo '<div class="form_ele">'.$this->formRow($form->get($element->getName()));
+                } else if($element->getName() == "phone"){
+                    echo $this->formRow($form->get($element->getName())).' <div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                } else if($element->getName() == "condition_vente"){
+                    /*if($this->edition == false) {
+                        echo "<div class='form_ele' style='padding-left: 30%;'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'accepte les conditions de vente ci dessous: <br/><br/>'.
+                            'Si je remporte l\'enchère à la clôture des ventes : <br/>'.
+                            '&nbsp;&nbsp;&nbsp;&nbsp;- Je devrais signer le contrat de vente électronique proposé par le vendeur dans la galerie photo du cheval<br/>'.
+                            '&nbsp;&nbsp;&nbsp;&nbsp;- Je serai redevable de la somme enchérie additionnée de 11% de frais de vente sur le montant hors taxes du cheval à laquelle s\'ajoute la TVA relative à mon pays et mon statut.<br/>'.
+                            '<div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
+                    }*/
+                } else if($element->getName() == "reglement"){
+                    /*if($this->edition == false) {
+                        echo "<div class='form_ele' style='padding-left: 30%;'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'affirme avoir lu et accepté <a style="text-decoration: underline;" href="">le règlement des ventes aux enchères</a><div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
+                    }*/
+                } else if($element->getName() == "confidence"){
+                    /*if($this->edition == false) {
+                        echo "<div class='form_ele' style='padding-left: 30%;'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" href="'.$this->url("home/politique_de_confidentialite").'">politique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                    }*/
+                } else if($element->getName() == "password"){
+                    if($this->edition == false) {
+                        echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'</div>';
+                    }
+                } else if($element->getName() == "password_confirm"){
+                    if($this->edition == false) {
+                        echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'</div>';
+                    }
+                } else if($element->getName() == "submit"){   
+                       echo "<div class='row submit'>".$this->formRow($form->get($element->getName()))."</div>";
+                } else {
+                    echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).' <div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                }
             endforeach;
             ?>
         </div>
