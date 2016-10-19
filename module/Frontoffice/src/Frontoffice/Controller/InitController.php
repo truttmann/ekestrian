@@ -55,10 +55,10 @@ class InitController extends AbstractActionController
         $routeMatch = $router->match($request);
         switch($routeMatch->getParam('lang')) {
             case 'fr': 
-                $this->lang_id = 1;
+                $this->lang_id = 'fr';
                 break;
             case 'en':
-                $this->lang_id = 2;
+                $this->lang_id = 'en';
                 break;
         }
         

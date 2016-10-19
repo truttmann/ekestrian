@@ -52,7 +52,7 @@ $items = array(
                     $link = null;
 
                     if($item['route']){
-                            $link = $this->url($item['route']);
+                            $link = $this->url($item['route'], array('lang'=>$this->lang_id));
                     }else{
                         $link = '#';
                     }

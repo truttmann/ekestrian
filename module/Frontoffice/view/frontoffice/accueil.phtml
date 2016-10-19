@@ -23,7 +23,7 @@
                         <div class="col-md-4" style="margin-bottom: 3.5em;"></div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
                             <div class="img-wrapper">
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
                                     <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
                                 </a>
                             </div>
@@ -33,7 +33,7 @@
                                 <ul>
                                     <li><?php echo $this->translate($this->encheres[$i]->description, $this->lang_id); ?></li>
                                 </ul>
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
                             </div>
                         </div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;"></div>
@@ -42,7 +42,7 @@
                 ?>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
                             <div class="img-wrapper">
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
                                     <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
                                 </a>
                             </div>
@@ -52,13 +52,13 @@
                                 <ul>
                                     <li><?php echo $this->translate($this->encheres[$i]->description, $this->lang_id); ?></li>
                                 </ul>
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
                             </div>
                         </div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
                             <?php if($i +1 <= count($this->encheres)) { ?>
                             <div class="img-wrapper">
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
                                     <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
                                 </a>
                             </div>
@@ -68,14 +68,14 @@
                                 <ul>
                                     <li><?php echo $this->translate($this->encheres[$i+1]->description, $this->lang_id); ?></li>
                                 </ul>
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
                             </div>
                             <?php } ?>
                         </div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
                             <?php if($i +2 <= count($this->encheres)) { ?>
                             <div class="img-wrapper">
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>">
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
                                     <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
                                 </a>
                             </div>
@@ -85,7 +85,7 @@
                                 <ul>
                                     <li><?php echo $this->translate($this->encheres[$i+2]->description, $this->lang_id); ?></li>
                                 </ul>
-                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
+                                <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>" class="btn-ekestrian-alt consult-catalogue"><?php echo $this->translate("Consulter le catalogue", $this->lang_id); ?></a>
                             </div>
                             <?php } ?>
                         </div>

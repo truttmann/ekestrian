@@ -2,7 +2,7 @@
     <div class="shell">
         <div class="section-inner">
             <header class="section-head">
-                <h2 class="letter-spacing-10" style="margin-bottom: 35px;font-family: Lato; font-size: 23pt; line-height: 18pt; color: #dbdbd9;"><?php echo (($this->enchere)?$this->enchere->title:""); ?></h2>
+                <h2 class="letter-spacing-10" style="margin-bottom: 35px;font-family: Lato; font-size: 23pt; line-height: 18pt; color: #dbdbd9;"><?php echo $this->translate((($this->enchere)?$this->enchere->title:""), $this->lang_id); ?></h2>
                 <img src="<?php echo $this->basePath() ?>/images/section-concept-filet.png" alt="" id="concept-filet">
             </header>
         </div>
@@ -50,7 +50,7 @@
                 <div class="col-xs-12 margin">
                     <div class="col-md-3 ux-hover margin">
                         <div class="img-wrapper">
-                            <a href="<?php echo $this->url("home/lots/lot", array("enchere_id" => $lot->enchere_id, "lot_id" => $lot->lot_id)); ?>">
+                            <a href="<?php echo $this->url("home/lots/lot", array("enchere_id" => $lot->enchere_id, "lot_id" => $lot->lot_id, 'lang'=>$this->lang_id)); ?>">
                                 <!-- img src="@lot.Image" alt="" class="zoom" -->
                                 <img src="<?php echo $this->basePath().$lot->image_url; ?>" alt="Photo non trouv&eacute;e" onerror="imgError(this)" class="zoom">
                             </a>
@@ -117,7 +117,7 @@
                                     </div>-->
                                     <div class="btn-container">
                                         <div class="btn-ekestrian-alt">
-                                            <a href="<?php echo $this->url("home/lots/lot", array("enchere_id" => $lot->enchere_id, "lot_id" => $lot->lot_id)); ?>" style="font-family: Lato; font-weight:normal;font-style: normal; font-size:12pt; color:#e76558">
+                                            <a href="<?php echo $this->url("home/lots/lot", array("enchere_id" => $lot->enchere_id, "lot_id" => $lot->lot_id, 'lang'=>$this->lang_id)); ?>" style="font-family: Lato; font-weight:normal;font-style: normal; font-size:12pt; color:#e76558">
                                                 <?php echo $this->translate("Voir ce lot", $this->lang_id); ?>
                                             </a>
                                         </div>

@@ -26,7 +26,7 @@ class MembreController extends InitController
         
         /* si l'utilisateur est déja connecté on le redirige vers la home */
         if($this->_service_locator->get('user_service')->isMembreConnecte()) {
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home', array('lang' => $this->lang_id));
         }
         
         $viewModel = new ViewModel();
@@ -37,19 +37,19 @@ class MembreController extends InitController
     
     public function logoutAction(){
         $this->_service_locator->get('user_service')->setMembreConnecte(null);
-        return $this->redirect()->toRoute("home");
+        return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
     }
     
     public function listenchereAction(){
         /* si l'utilisateur est déja connecté on le redirige vers la home */
         $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
         if($membre == false) {
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home', array('lang' => $this->lang_id));
         }
         
         if($membre->client_id != $this->params()->fromRoute('membre_id')) {
             $this->_service_locator->get('user_service')->setMembreConnecte(null);
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home', array('lang' => $this->lang_id));
         }
         
         parent::initListJs();
@@ -105,13 +105,13 @@ class MembreController extends InitController
     public function editAction(){
         /* modification accessible que si nous sommes en mode connecté */
         if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
-            return $this->redirect()->toRoute("home/membre");
+            return $this->redirect()->toRoute("home/membre", array('lang' => $this->lang_id));
         }
         /* Si nous tentons de modifier quelqu'un d'autre que nous */
         if($this->params()->fromRoute('membre_id') != null){
             $t = $this->_service_locator->get('user_service')->isMembreConnecte();
             if($t->client_id != $this->params()->fromRoute('membre_id')) {
-                return $this->redirect()->toRoute("home");
+                return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
             }
         }
         parent::initListJs();
@@ -166,13 +166,13 @@ class MembreController extends InitController
             
             /* modification accessible que si nous sommes en mode connecté */
             if($id != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
-                return $this->redirect()->toRoute("home/membre");
+                return $this->redirect()->toRoute("home/membre", array('lang' => $this->lang_id));
             }
             /* Si nous tentons de modifier quelqu'un d'autre que nous */
             if($id != null){
                 $t = $this->_service_locator->get('user_service')->isMembreConnecte();
                 if($t->client_id != $id) {
-                    return $this->redirect()->toRoute("home");
+                    return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
                 }
             }
             
@@ -261,6 +261,7 @@ class MembreController extends InitController
                     $this->addSuccess('La sauvegarde a été effectuée avec succès');
                     return $this->redirect()->toRoute('home/membre/edit_cart', array(
                         'membre_id' => $id,
+						'lang' => $this->lang_id
                     ));
                 } catch (Exception $e) {
                     
@@ -274,6 +275,7 @@ class MembreController extends InitController
                     $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $e->getMessage()));
                     return $this->redirect()->toRoute('home/membre/edit', array(
                         'membre_id' => $id,
+						'lang' => $this->lang_id
                     ));
                 }
             }else{
@@ -286,6 +288,7 @@ class MembreController extends InitController
                 $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $form->getMessages()));
                 return $this->redirect()->toRoute('home/membre/edit', array(
                     'membre_id' => $id,
+		    		'lang' => $this->lang_id
                 ));
             }
         }else{
@@ -293,19 +296,20 @@ class MembreController extends InitController
         }
         return $this->redirect()->toRoute('home/membre/edit', array(
             'membre_id' => $id,
+            'lang' => $this->lang_id
         ));
     }
     
     public function carteAction(){
         /* modification accessible que si nous sommes en mode connecté */
         if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
-            return $this->redirect()->toRoute("home/membre");
+            return $this->redirect()->toRoute("home/membre", array('lang' => $this->lang_id));
         }
         /* Si nous tentons de modifier quelqu'un d'autre que nous */
         if($this->params()->fromRoute('membre_id') != null){
             $t = $this->_service_locator->get('user_service')->isMembreConnecte();
             if($t->client_id != $this->params()->fromRoute('membre_id')) {
-                return $this->redirect()->toRoute("home");
+                return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
             }
         }
         
@@ -317,6 +321,7 @@ class MembreController extends InitController
             $this->addError("No carte registration en cours");
             return $this->redirect()->toRoute('home/membre/edit', array(
                 'membre_id' => $this->params()->fromRoute('membre_id'),
+   				'lang' => $this->lang_id
             ));
         }
             
@@ -344,13 +349,13 @@ class MembreController extends InitController
     public function carteRetourAction(){
         /* modification accessible que si nous sommes en mode connecté */
         if($this->params()->fromRoute('membre_id') != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
-            return $this->redirect()->toRoute("home/membre");
+            return $this->redirect()->toRoute("home/membre", array('lang' => $this->lang_id));
         }
         /* Si nous tentons de modifier quelqu'un d'autre que nous */
         if($this->params()->fromRoute('membre_id') != null){
             $t = $this->_service_locator->get('user_service')->isMembreConnecte();
             if($t->client_id != $this->params()->fromRoute('membre_id')) {
-                return $this->redirect()->toRoute("home");
+                return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
             }
         }
         
@@ -380,11 +385,12 @@ class MembreController extends InitController
             
             
             $this->addSuccess('L\'édition du compte membre est finie.');
-            return $this->redirect()->toRoute("home");
+            return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
         }catch(\Exception $e) {
             $this->addError($e->getMessage());
             return $this->redirect()->toRoute('home/membre/edit', array(
                 'membre_id' => $this->params()->fromRoute('membre_id'),
+				'lang' => $this->lang_id
             ));
         }
     }
@@ -393,7 +399,7 @@ class MembreController extends InitController
         if(!isset($_POST['email']) || !isset($_POST['password']) 
             || empty($_POST['email']) || empty($_POST['password'])) {
             $this->addError('Le formulaire n\'est pas valide');
-            return $this->redirect()->toRoute('home/membre', array());
+            return $this->redirect()->toRoute('home/membre', array('lang' => $this->lang_id));
         }
         
         $clientModel = $this->getServiceLocator()->get('clientTable');
@@ -404,12 +410,12 @@ class MembreController extends InitController
         
         if(! is_object($obj)){
             $this->addError('Login ou mot de passe invalide');
-            return $this->redirect()->toRoute('home/membre', array());
+            return $this->redirect()->toRoute('home/membre', array('lang' => $this->lang_id));
         }
         
         if($obj->password != $_POST['password']) {
             $this->addError('Login ou mot de passe invalide');
-            return $this->redirect()->toRoute('home/membre', array());
+            return $this->redirect()->toRoute('home/membre', array('lang' => $this->lang_id));
         }
         
         /* On vide toute les données concernant la pré-auth */
@@ -432,7 +438,7 @@ class MembreController extends InitController
             $this->addError('Erreur lors de la vérification de votre carte : '.$e->getMessage());
         }       
         
-        return $this->redirect()->toRoute('home');
+        return $this->redirect()->toRoute('home', array('lang' => $this->lang_id));
     }
     
     private function createUserMangopay($obj, $id) {

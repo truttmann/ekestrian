@@ -54,19 +54,19 @@ class VendeurController extends InitController
             array(
                 array(
                     'code'          =>  'lastname',
-                    'label'         =>  'Nom',
-                    'searchable'    =>  true,
-                    'type'          =>  'text',
-                    'width'         =>  '25',
-                    'placeholder'   =>  'Nom',
-                ),
-                array(
-                    'code'          =>  'firstname',
                     'label'         =>  'Prénom',
                     'searchable'    =>  true,
                     'type'          =>  'text',
                     'width'         =>  '25',
                     'placeholder'   =>  'Prénom',
+                ),
+                array(
+                    'code'          =>  'firstname',
+                    'label'         =>  'Nom',
+                    'searchable'    =>  true,
+                    'type'          =>  'text',
+                    'width'         =>  '25',
+                    'placeholder'   =>  'Nom',
                 ),
                 array(
                     'code'          =>  'email',

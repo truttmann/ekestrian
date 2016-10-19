@@ -81,19 +81,19 @@ class ClientController extends InitController
                 ),
                 array(
                     'code'          =>  'lastname',
-                    'label'         =>  'Nom',
-                    'searchable'    =>  true,
-                    'type'          =>  'text',
-                    'width'         =>  '20',
-                    'placeholder'   =>  'Nom',
-                ),
-                array(
-                    'code'          =>  'firstname',
                     'label'         =>  'Prénom',
                     'searchable'    =>  true,
                     'type'          =>  'text',
-                    'width'         =>  '15',
+                    'width'         =>  '20',
                     'placeholder'   =>  'Prénom',
+                ),
+                array(
+                    'code'          =>  'firstname',
+                    'label'         =>  'Nom',
+                    'searchable'    =>  true,
+                    'type'          =>  'text',
+                    'width'         =>  '15',
+                    'placeholder'   =>  'Nom',
                 ),
                 array(
                     'code'          =>  'status',

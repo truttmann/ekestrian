@@ -10,18 +10,18 @@ namespace Frontoffice\Helper\Factory;
 class TranslateFactory extends \Zend\View\Helper\AbstractHelper {
     protected $count = 0;
 
-    public function __invoke($code, $langue_id = 1)
+    public function __invoke($code, $langue_id = "fr")
     {
         $sm = $this->getView()->getHelperPluginManager()->getServiceLocator();
         $res = null;
         
         try {
-            $res = $sm->get('translateTable')->fetchOne($code, $langue_id);
+            $res = $sm->get('translateTable')->fetchOne($code, (($langue_id == "fr")?1:2));
             
         } catch(\Exception $e) {
             $obj = new \Application\Model\Translate();
             $obj->code = $code;
-            $obj->langue_id = $langue_id;
+            $obj->langue_id = (($langue_id == "fr")?1:2);
             $sm->get('translateTable')->save($obj);
         }
         return (($res == null || empty($res->value))?$code:$res->value);
