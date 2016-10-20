@@ -565,7 +565,16 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
-
+                'get-happen-use' => array(
+                    'options' => array(
+                        'route' => 'check-enchere [--verbose|-v]', 
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Application\Controller',
+                            'controller' => 'Encheres',
+                            'action' => 'command'
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

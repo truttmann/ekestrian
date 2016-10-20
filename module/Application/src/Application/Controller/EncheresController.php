@@ -12,6 +12,7 @@ namespace Application\Controller;
 
 use Zend\View\Model\ViewModel;
 use Application\Controller\InitController;
+use Zend\Console\Request as ConsoleRequest;
 
 class EncheresController extends InitController
 {
@@ -266,5 +267,115 @@ class EncheresController extends InitController
         return $this->redirect()->toRoute('encheres/edit', array(
             'enchere_id' => $id,
         ));
+    }
+    
+    public function commandAction(){
+        $request = $this->getRequest();
+ 
+        // Make sure that we are running in a console and the user has not tricked our
+        // application into running this action from a public web server.
+        if (!$request instanceof ConsoleRequest){
+            throw new \RuntimeException('You can only use this action from a console!');
+        }
+ 
+        // Get system service name  from console and check if the user used --verbose or -v flag
+        $verbose = $request->getParam('verbose');
+        if (!$verbose) {
+            $verbose = $request->getParam('v');
+        }
+ 
+        if($verbose){
+            echo "/* ********************************************** */ \r\n";
+            echo "Début de la cloture des enchères \r\n";
+            echo "/* ********************************************** */ \r\n";
+        }
+        
+        /* liste des enchères */
+        $ls = $this->getServiceLocator()->get('enchereTable')->fetchAll(array("status" => 1));
+        $date = new \DateTime();
+        
+        foreach ($ls as $l) {
+            $d = \DateTime::createFromFormat('Y-m-d H:i:s', $l->end_date);
+            if($date >= $d) {
+                if($verbose){
+                    echo "Desactivation de l'enchere ".$l->enchere_id." \r\n";
+                }
+                $l->status = 2;
+                $this->getServiceLocator()->get('enchereTable')->save($l);
+                
+                
+                /* desactivation de tous les lots rattaches */
+                $ts = $this->getServiceLocator()->get('lotTable')->fetchAll(array("status" => 1, "enchere_id" => $l->enchere_id));
+                foreach($ts as $t) {
+                    if($verbose){
+                        echo "Desactivation du lot ".$t->lot_id." \r\n";
+                    }
+                    $t->status = 2;
+                    $this->getServiceLocator()->get('lotTable')->save($t);
+                    
+                    /* recherche s'il y a des enchères sur ce lot, si oui, envoi des mails */
+                    $cas = $this->getServiceLocator()->get('clientauctionTable')->fetchAll(array("lot_id"=>$l->lot_id), "value DESC");
+                    $listC = array();
+                    foreach($cas as $ca) {
+                        $c = null;
+                        try {
+                            $c = $this->getServiceLocator()->get('clientTable')->fetchOne($ca->client_id);
+                        }catch(\Exception $e){}
+                        if(!is_object($c)) {
+                            continue;
+                        }
+                        
+                        /* si nous sommes déjà passé pour ce client, on passe au suivant */
+                        if(in_array($c->client_id, $listC)) {
+                            continue;
+                        }
+                        /* si nous sommes dans le premier cas, donc l'enchère la plus haute, la persnne remporte l'enchère */
+                        if(empty($listC)) {
+                            $listC[] = $c->client_id;
+                            $ca->win = 1;
+                            $this->getServiceLocator()->get('clientauctionTable')->save($ca);
+                            
+                            $this->getServiceLocator()->get('user_service')->sendMailUserWinEnchere($ca);
+                        } else  {
+                            $ca->win = 0;
+                            $this->getServiceLocator()->get('clientauctionTable')->save($ca);
+                        }
+                    }
+                }
+            }
+        }
+        
+        if($verbose){
+            echo "/* ********************************************** */ \r\n";
+            echo "Début de l'ouverture des enchères \r\n";
+            echo "/* ********************************************** */ \r\n";
+        }
+        
+        /* liste des enchères */
+        $ls = $this->getServiceLocator()->get('enchereTable')->fetchAll(array("status" => 0));
+        $date = new \DateTime();
+        
+        foreach ($ls as $l) {
+            $d = \DateTime::createFromFormat('Y-m-d H:i:s', $l->start_date);
+            if($date >= $d) {
+                if($verbose){
+                    echo "Activation de l'enchere ".$l->enchere_id." \r\n";
+                }
+                $l->status = 1;
+                $this->getServiceLocator()->get('enchereTable')->save($l);
+                
+                
+                /* desactivation de tous les lots rattaches */
+                $ts = $this->getServiceLocator()->get('lotTable')->fetchAll(array("enchere_id" => $l->enchere_id));
+                foreach($ts as $t) {
+                    if($verbose){
+                        echo "Activation du lot ".$t->lot_id." \r\n";
+                    }
+                    $t->status = 1;
+                    $this->getServiceLocator()->get('lotTable')->save($t);
+                }
+            }
+        }
+        exit;
     }
 }

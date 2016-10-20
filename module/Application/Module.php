@@ -33,8 +33,14 @@ use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
 use Zend\Session\SessionManager;
 use Zend\ModuleManager\Feature\FormElementProviderInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
-class Module implements FormElementProviderInterface
+class Module implements FormElementProviderInterface, 
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ConsoleUsageProviderInterface
 {
     public function getConfig()
     {
@@ -331,4 +337,15 @@ class Module implements FormElementProviderInterface
         );
     }
 
+    public function getConsoleUsage(Console $console)
+    {
+    return array(
+            // Describe available commands
+            'check-enchere'    => 'Update enchere status by end date',
+ 
+            // Describe expected parameters
+            array('--verbose|-v','(optional) turn on verbose mode'),
+ 
+    );
+    }
 }

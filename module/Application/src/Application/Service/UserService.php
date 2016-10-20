@@ -407,5 +407,45 @@ class UserService
 
         return "ok";
     }
+    
+    public function sendMailUserWinEnchere(\Application\Model\ClientAuction $client) {
+        
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+        
+        $c = $this->sm->get('clientTable')->fetchOne($client->client_id);
+        
+        $o = "";
+        try{
+        $t = $this->sm->get('lotTable')->fetchOne($client->lot_id);
+        $o = $t->title;
+        }catch(\Exception $e){}
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        "Nous avons le plaisir de vous informer que vous avez remporté l'enchère concernant le lot ".$o.", pour la somme de ".$client->value."€.<br/>".
+        "Vous allez bientôt recevoir un contract qu'il faudra signer élèctroniquement, et le montant de l'enchère va vous être prélever sur votre carte bancaire.<br/><br/>".    
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($c->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Nouvelle enchère")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
+    }
 
 }
