@@ -1,15 +1,15 @@
 <?php
-namespace Frontoffice\Controller\Factory;
+namespace Application\Controller\Factory;
 
-class LotsControllerFactory implements \Zend\ServiceManager\FactoryInterface {
+class TranslateControllerFactory implements \Zend\ServiceManager\FactoryInterface {
     public function __invoke(\Interop\Container\ContainerInterface $container, $name, array
 $options = null) {
         $parentLocator = $container->getServiceLocator();
-        return new \Frontoffice\Controller\LotsController( $parentLocator);
+        return new \Application\Controller\TranslateController( $parentLocator);
     }
 
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $container)
     {
-        return $this($container, \Frontoffice\Controller\LotsController::class);
+        return $this($container, \Application\Controller\TranslateController::class);
     }
 }

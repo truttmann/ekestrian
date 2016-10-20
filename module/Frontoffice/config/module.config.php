@@ -279,13 +279,6 @@ return array(
             'translator' => 'MvcTranslator',
         ),
         'factories' => array(
-            'logger' => function($sm){
-                $logger = Application\Service\LoggerApp::getInstance();
-                return $logger;
-            },
-            'user_service' => function($sm) { 
-				return new Application\Service\UserService($sm); 
-			}
         ),
     ),
     'controllers' => array(

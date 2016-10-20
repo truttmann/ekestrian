@@ -10,6 +10,6 @@ $options = null) {
 
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $container)
     {
-        return $this($container, \Application\Controller\IndexController::class);
+        return $this($container, \Frontoffice\Controller\IndexController::class);
     }
 }

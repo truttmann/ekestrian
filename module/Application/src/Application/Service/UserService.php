@@ -14,7 +14,8 @@ require_once dirname(dirname(dirname(__DIR__))).'/config/constantes.php';
 
 class UserService
 {
-	private $sm = null;
+    protected $sm;
+
 
 	/**
 	* Constructor
@@ -399,6 +400,45 @@ class UserService
             ->addTo($c->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
             ->setSubject("Elite Auction - Nouvelle enchère")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
+    }
+    
+    public function sendMailUserLooseEnchere(\Application\Model\ClientAuction $client) {
+        
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+        
+        $c = $this->sm->get('clientTable')->fetchOne($client->client_id);
+        
+        $o = "";
+        try{
+        $t = $this->sm->get('lotTable')->fetchOne($client->lot_id);
+        $o = $t->title;
+        }catch(\Exception $e){}
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        "Votre enchère de ".$client->value."€ pour le lot ".$o." vient d'être dépassée. N'hésitez pas à retourner sur notre site afin de réaliser une autre enchère pour ce lot, en cliquant directement sur ce <a href='".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/lots/lot', array('enchere_id'=>$t->enchere_id,"lot_id"=>$t->lot_id))."'>lien</a><br/><br/>".
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($c->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Enchère depassée")
             ->setBody($body)
             ->setEncoding("UTF-8");
 

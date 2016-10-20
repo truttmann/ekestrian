@@ -53,7 +53,7 @@ class LotController extends InitController
         } catch(\Exception $e) {}
         
         if(! is_object($t) || $t->status !=1) {
-	    	$this->addError('Enchère non valide');
+	    	$this->addError('Lot non valide');
             return $this->redirect()->toRoute('home');
         }
 
@@ -257,7 +257,7 @@ class LotController extends InitController
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
 
             if(!is_object($t) || $t->status != 1) {
-				throw new \Exception('Enchère non valide');
+				throw new \Exception('Lot non valide');
 		    }
 
             /* verification de la connection du membre */
@@ -276,6 +276,10 @@ class LotController extends InitController
             if(empty($obj_member->mangopay_autorisation_id )){
                 throw new \Exception("Vous n'avez pas d'autorisation de paiement, vérifier vos données bancaires.");
             }
+            
+            /* recuperation de l'eventuelle ancienne plus grosse enchère */
+            $ca = $this->_service_locator->get('clientauctionTable')->getLastEnchere($t);
+            
             /* sauvegarde en bdd */
             $obj = new \Application\Model\ClientAuction();
             $obj->lot_id = $id;
@@ -287,6 +291,8 @@ class LotController extends InitController
             
             /* Envoi du mail */
             $this->_service_locator->get('user_service')->sendMailUserNewEnchere($obj);
+            $this->_service_locator->get('user_service')->sendMailUserLooseEnchere($ca);
+            
             
             /* récupération de la dernière enchère du lot */
             $return['data']["lot"] = $t;
@@ -319,7 +325,7 @@ class LotController extends InitController
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
 
 	 	    if(!is_object($t) || $t->status != 1) {
-				throw new \Exception('Enchère non valide');
+				throw new \Exception('Lot non valide');
 		    }
 
             /* verification de la connection du membre */

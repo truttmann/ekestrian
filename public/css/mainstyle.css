@@ -6935,6 +6935,7 @@ section#section-lots > div.shell > div:last-child {
 }
 .part_ident {
     float: right;
+    height: 100%;
     width: 70%;
     background-color:#f2f2f2;
     padding: 10px;
@@ -6942,6 +6943,7 @@ section#section-lots > div.shell > div:last-child {
 .part_crea {
     background: #69686c;
     width: 70%;
+    height: 100%;
     padding: 10px;
     color: white;
 }

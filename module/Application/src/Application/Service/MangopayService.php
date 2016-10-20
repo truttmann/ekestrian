@@ -13,7 +13,7 @@ class MangopayService
 {
 	private $sm = null;
     private $api = null;
-
+    
 	/**
 	* Constructor
 	*/

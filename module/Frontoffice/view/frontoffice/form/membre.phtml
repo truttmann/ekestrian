@@ -38,11 +38,11 @@ $elements = $form->getElements();
                                             }
                                         } else if($element->getName() == "reglement"){
                                             if($this->edition == false) {
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'affirme avoir lu et accepté <a style="text-decoration: underline;" href="">le règlement des ventes aux enchères</a><div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'affirme avoir lu et accepté <a style="text-decoration: underline;"  target="_blank" href="">le règlement des ventes aux enchères</a><div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
                                             }
                                         } else if($element->getName() == "confidence"){
                                             if($this->edition == false) {
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" href="'.$this->url("home/politique_de_confidentialite").'">politique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" target="_blank" href="'.$this->url("home/politique_de_confidentialite").'">politique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" target="_blank" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
                                             }
                                         } else if($element->getName() == "password"){
                                             if($this->edition == false) {

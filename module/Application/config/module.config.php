@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/back',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                        'controller' => 'Application/Index',
                         'action'     => 'index',
                     ),
                 ),
@@ -25,7 +25,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/clients',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Client',
+                        'controller' => 'Application/Client',
                         'action'     => 'list',
                     ),
                 ),
@@ -74,7 +74,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/translate',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Translate',
+                        'controller' => 'Application/Translate',
                         'action'     => 'list',
                     ),
                 ),
@@ -123,7 +123,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/sellers',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Vendeur',
+                        'controller' => 'Application/Vendeur',
                         'action'     => 'list',
                     ),
                 ),
@@ -172,7 +172,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/chevaux',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Chevaux',
+                        'controller' => 'Application/Chevaux',
                         'action'     => 'list',
                     ),
                 ),
@@ -221,7 +221,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/encheres',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Encheres',
+                        'controller' => 'Application/Encheres',
                         'action'     => 'list',
                     ),
                 ),
@@ -273,7 +273,7 @@ return array(
                         'enchere_id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                    'controller' => 'Application\Controller\Lot',
+                    'controller' => 'Application/Lot',
                     'action'     => 'list',
                     ),
                 ),
@@ -384,7 +384,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/newsletter',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Newsletter',
+                        'controller' => 'Application/Newsletter',
                         'action'     => 'list',
                     ),
                 ),
@@ -429,7 +429,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/login',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Login',
+                        'controller' => 'Application/Login',
                         'action'     => 'login',
                     ),
                 ),
@@ -440,7 +440,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/savelogin',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Login',
+                        'controller' => 'Application/Login',
                         'action'     => 'savelogin',
                     ),
                 ),
@@ -451,7 +451,7 @@ return array(
                 'options' => array(
                     'route'    => '/back/logout',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Login',
+                        'controller' => 'Application/Login',
                         'action'     => 'logout',
                     ),
                 ),
@@ -468,7 +468,7 @@ return array(
                     'route'    => '/back/application',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'Application/Index',
                         'action'        => 'index',
                     ),
                 ),
@@ -499,16 +499,9 @@ return array(
             'translator' => 'MvcTranslator',
         ),
         'factories' => array(
-            'logger' => function($sm){
-                $logger = Application\Service\LoggerApp::getInstance();
-                return $logger;
-            },
-            'user_service' => function($sm) { 
-				return new Application\Service\UserService($sm); 
-			},
-            'mangopay_service' => function($sm) { 
-				return new Application\Service\MangopayService($sm); 
-			}
+            'logger' => 'Application\Service\Factory\LoggerServiceFactory',
+            'user_service' => 'Application\Service\Factory\UserServiceFactory',
+            'mangopay_service' => 'Application\Service\Factory\MangopayServiceFactory',
             /*'Aclplugin' => function($sm) {
                 return new Application\Plugin\Aclplugin($sm);
             },*/
@@ -525,16 +518,16 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Login' => 'Application\Controller\LoginController',
-            'Application\Controller\Chevaux' => 'Application\Controller\ChevauxController',
-            'Application\Controller\Vendeur' => 'Application\Controller\VendeurController',
-            'Application\Controller\Client' => 'Application\Controller\ClientController',
-            'Application\Controller\Encheres' => 'Application\Controller\EncheresController',
-            'Application\Controller\Lot' => 'Application\Controller\LotController',
-            'Application\Controller\Newsletter' => 'Application\Controller\NewsletterController',
-            'Application\Controller\Translate' => 'Application\Controller\TranslateController',
+        'factories' => array(
+            'Application/Chevaux' => 'Application\Controller\Factory\ChevauxControllerFactory',
+            'Application/Client' => 'Application\Controller\Factory\ClientControllerFactory',
+            'Application/Encheres' => 'Application\Controller\Factory\EncheresControllerFactory',
+            'Application/Index' => 'Application\Controller\Factory\IndexControllerFactory',
+            'Application/Login' => 'Application\Controller\Factory\LoginControllerFactory',
+            'Application/Lot' => 'Application\Controller\Factory\LotControllerFactory',
+            'Application/Newsletter' => 'Application\Controller\Factory\NewsletterControllerFactory',
+            'Application/Translate' => 'Application\Controller\Factory\TranslateControllerFactory',
+            'Application/Vendeur' => 'Application\Controller\Factory\VendeurControllerFactory',
         ),
     ),
     'view_manager' => array(

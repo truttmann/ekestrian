@@ -90,7 +90,7 @@ class ClientAuctionTable
             "value" => $auction->value,
             "card_id" => $auction->card_id,
             "authorization_id" => $auction->authorization_id,
-            "win" => $auction->win,
+            "win" => (($auction->win == 1)?$auction->win:0),
         );
 
         $id = (int)$auction->user_auction_id;
