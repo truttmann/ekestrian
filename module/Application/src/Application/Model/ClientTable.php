@@ -64,6 +64,15 @@ class ClientTable
         }
         return $row;
     }
+    
+    public function fetchOneByToken($token){
+        $rowset = $this->tableGateway->select(array('token' => $token));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $token");
+        }
+        return $row;
+    }
 
 
     /**
@@ -84,6 +93,7 @@ class ClientTable
             "birthday" => $client->birthday,
             "langue" => $client->langue,
             "type" => $client->type,
+            "token" => $client->token,
             "country_id" => $client->country_id,
             "first_connexion" => $client->first_connexion,
             "mangopay_id" => $client->mangopay_id,

@@ -113,3 +113,72 @@ div#cke_translate_form_code, div#cke_cheval_form_desc, div#cke_translate_form_va
     width: 65% !important;
     float: left !important;
 }
+
+
+
+#form-client-edit .form_input {
+    float: left;
+    margin: 5px 0 !important;
+}
+#form-client-edit select#client_form_phone_ind {
+    width: 15% !important;
+}
+#form-client-edit input#client_form_phone {
+    width: 50% !important;
+}
+#form-client-edit label {
+    float: left;
+    width: 30% !important;
+    margin: 5px 0px;
+    /* padding-left: 3%;*/
+    font-weight: 500;
+}
+#form-client-edit fieldset legend{
+    float: left;
+    width: 30%;
+    margin: 5px 0px;
+    /* padding-left: 3%;*/
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+}
+#form-client-edit fieldset input.form_input {
+    border: none !important;
+    width: 20px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    vertical-align: top;
+    height: 20px;
+}
+#form-client-edit input.form_input.input_checkbox {
+    border: none !important;
+    width: 20px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    vertical-align: top;
+    height: 20px;
+}
+
+#form-client-edit .submit{
+    text-align: center;
+    margin-top: 60px;
+}
+
+#form-client-edit input#submitbutton{
+    padding: 5px;
+}
+
+#form-client-edit ul {
+    float: left;
+    width: 100%;
+    color: red;
+    padding-left: 30%;
+}
+#form-client-edit legend {
+    padding-left: 3%;
+}
+
+#form-client-edit .form_ele {
+    width: 100%;
+    clear: both;
+}

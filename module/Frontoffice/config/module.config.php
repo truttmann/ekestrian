@@ -25,6 +25,36 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'validation_creation'=>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route'    => '/validation_creation',
+                            'defaults' => array(
+                                'controller' => 'Membre',
+                                'action'     => 'validationCreation',
+                            ),
+                        ),
+                    ),
+                    'validation_membre'=>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route'    => '/validation_membre/:token',
+                            'defaults' => array(
+                                'controller' => 'Membre',
+                                'action'     => 'validationAccount',
+                            ),
+                        ),
+                    ),
+                    'forgotpassword'=>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route'    => '/forgotpassword',
+                            'defaults' => array(
+                                'controller' => 'Membre',
+                                'action'     => 'forgotpassword',
+                            ),
+                        ),
+                    ),
                     'membre' =>  array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(

@@ -37,7 +37,8 @@ class LotController extends InitController
             $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
         } catch(\Exception $e) {}
         
-        if(! is_object($en)) {
+        if(! is_object($en) || $en->status !=1) {
+	    	$this->addError('Enchère non valide');
             return $this->redirect()->toRoute('home');
         }
         $this->mainView->setVariable("enchere", $en);
@@ -51,7 +52,8 @@ class LotController extends InitController
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
         } catch(\Exception $e) {}
         
-        if(! is_object($t)) {
+        if(! is_object($t) || $t->status !=1) {
+	    	$this->addError('Enchère non valide');
             return $this->redirect()->toRoute('home');
         }
 
@@ -246,9 +248,17 @@ class LotController extends InitController
             $id_e = $this->params()->fromRoute('enchere_id');
             $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
 
+		    if(!is_object($en) || $en->status !=1) {
+				throw new \Exception('Enchère non valide');
+		    }
+
             /* vérification de l'existance du lot */
             $id = $this->params()->fromRoute('lot_id');
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
+
+            if(!is_object($t) || $t->status != 1) {
+				throw new \Exception('Enchère non valide');
+		    }
 
             /* verification de la connection du membre */
             $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
@@ -275,6 +285,8 @@ class LotController extends InitController
             $obj->card_id = $obj_member->mangopay_card_id;
             $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
             
+            /* Envoi du mail */
+            $this->_service_locator->get('user_service')->sendMailUserNewEnchere($obj);
             
             /* récupération de la dernière enchère du lot */
             $return['data']["lot"] = $t;
@@ -298,9 +310,17 @@ class LotController extends InitController
             $id_e = $this->params()->fromRoute('enchere_id');
             $en = $this->_service_locator->get('enchereTable')->fetchOne($id_e);
 
+		    if(!is_object($en) || $en->status != 1) {
+				throw new \Exception('Enchère non valide');
+		    }
+
             /* vérification de l'existance du lot */
             $id = $this->params()->fromRoute('lot_id');
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
+
+	 	    if(!is_object($t) || $t->status != 1) {
+				throw new \Exception('Enchère non valide');
+		    }
 
             /* verification de la connection du membre */
             $membre = $this->_service_locator->get('user_service')->isMembreConnecte();

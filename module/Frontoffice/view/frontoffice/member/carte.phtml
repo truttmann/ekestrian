@@ -63,31 +63,5 @@
 </div>
 
 <script type="text/javascript">
-    $('form').unbind('submit').on('submit', function(e) {
-        // this code prevents form from actually being submitted
-        e.preventDefault();
-        e.returnValue = false;
-
-        var $form = $(this);
-        var _this = this;
-
-        $.ajax({ 
-            type: 'post',
-            url: "<?php echo $this->url("home/membre/register_cart", array("membre_id" => $this->membre_id)) ?>", 
-            data: $form.serialize(), // context will be "this" in your handlers
-            success: function() { // your success handler
-             
-            },
-            error: function() { // your error handler
-            
-            },
-            complete: function() { 
-                // make sure that you are no longer handling the submit event; clear handler
-                $(_this).off('submit');
-                
-                // actually submit the form
-                $(_this).submit();
-            }
-        });
-    });
+    
 </script>

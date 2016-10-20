@@ -519,7 +519,7 @@ if ($this->cheval->mere != null) { ?>
                 if(result.status && result.status == 1) {
                     $('.dialog_enchere .alerte').empty();
                     $(".dialog_enchere select option").remove();
-                    $('.dialog_enchere .success').empty().html("<?php echo $this->translate("Enchère enregistrée", $this->lang_id); ?>");
+                    $('.dialog_enchere .success').empty().html("<?php echo $this->translate("Enchère enregistrée, un mail de confirmation vient de vous être envoyé", $this->lang_id); ?>");
                     /* mise en place de actual_amount */
                     var actuel = parseFloat((result.data.auction)?result.data.auction.value:result.data.lot.min_price);
                     $('.dialog_enchere .actual_amount').empty().html("<?php echo $this->translate('Enchère actuelle', $this->lang_id); ?> : "+actuel+" EUR");

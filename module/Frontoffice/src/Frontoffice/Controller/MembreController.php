@@ -21,6 +21,47 @@ class MembreController extends InitController
         parent::__construct();
     }
 
+    public function validationCreationAction(){
+        parent::initListJs();
+        $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setTemplate('frontoffice/member/validation_creation');
+        return $this->mainView;
+    }
+    
+    public function forgotpasswordAction(){
+        parent::initListJs();
+        if($data = $this->getRequest()->getPost() && isset($_POST['email'])) {
+            $obj = $this->_service_locator->get('clientTable')->fetchOneByEmail($_POST['email']);
+            if(is_object($obj)) {
+                $this->_service_locator->get('user_service')->sendMailUserPassword($obj);
+            }
+            $this->addSuccess("Si vous êtes bien membre, un email vient de vous être envoyé");
+        }
+        
+        $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setTemplate('frontoffice/member/forgotpassword');
+        return $this->mainView;
+    }
+    
+    public function validationAccountAction(){
+        try {
+            $token = $this->params()->fromRoute('token');
+            
+            $obj = $this->_service_locator->get('clientTable')->fetchOneByToken($token);
+            $obj->token = null;
+            $obj->status = 1;
+            $obj = $this->_service_locator->get('clientTable')->save($obj);
+            
+            $this->_service_locator->get('user_service')->sendMailBienvenu($obj);
+            
+            $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+            $this->addSuccess("Bienvenu ".$obj->lastname." ".$obj->firstname." sur votre espace membre de la plate-forme Elite Auction");
+        } catch (Exception $ex) {
+           $this->addError($e->getMessage());
+        }
+        return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
+    }
+    
     public function authentificationAction(){
         parent::initListJs();
         
@@ -257,6 +298,13 @@ class MembreController extends InitController
                     
                     $carte_registration = $this->createUserMangopay($obj, $id);
                     
+                    if(empty($id)){
+                        $this->getServiceLocator()->get('user_service')->sendMailUserCreation($obj);
+                        return $this->redirect()->toRoute('home/validation_creation', array(
+                            'lang' => $this->lang_id
+                        ));
+                    }
+                    
                     $id = $obj->client_id;
                     $this->addSuccess('La sauvegarde a été effectuée avec succès');
                     return $this->redirect()->toRoute('home/membre/edit_cart', array(
@@ -264,7 +312,7 @@ class MembreController extends InitController
 						'lang' => $this->lang_id
                     ));
                 } catch (Exception $e) {
-                    
+                    var_dump($e->getMessage());exit;
                     if(empty($id) && is_object($obj)) {
                         $clientModel = $this->getServiceLocator()->get('clientTable');
                         $clientModel->delete($obj);
@@ -334,7 +382,7 @@ class MembreController extends InitController
     public function carteRetourPreAuthAction(){exit;}
     
     public function carteRegisterAction(){
-        $clientModel = $this->getServiceLocator()->get('clientTable');
+        /*$clientModel = $this->getServiceLocator()->get('clientTable');
         $obj = $clientModel->fetchOne($this->params()->fromRoute('membre_id'));
         if(is_object($obj)) {
             $obj->carte_numero = $_POST['cardNumber'];
@@ -343,7 +391,7 @@ class MembreController extends InitController
             $clientModel->save($obj);
         }
         echo "OK";
-        exit;
+        exit;*/
     }
     
     public function carteRetourAction(){
@@ -370,9 +418,7 @@ class MembreController extends InitController
             $clientModel->save($obj);
             
             /* creation de la pré-authentification */
-            if(empty($obj->mangopay_id) || empty($obj->mangopay_wallet_id) || empty($obj->mangopay_carte_id) 
-            || empty($obj->carte_numero) || empty($obj->carte_date) || empty($obj->carte_cle)
-            || empty($obj->carte_data) || empty($obj->carte_accesskeyref)|| empty($obj->mangopay_card_id)) {
+            if(empty($obj->mangopay_id) || empty($obj->mangopay_wallet_id) || empty($obj->mangopay_carte_id) || empty($obj->mangopay_card_id)) {
                 throw new \Exception("Vous n'avez pas fini la création de votre compte, vos informations bancaires sont erronées.");
             }
 

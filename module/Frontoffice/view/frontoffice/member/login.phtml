@@ -9,8 +9,8 @@
                             <div><input class="input_member_login" type='text' name="email" placeholder="Votre email" /></div>
                             <div><input class="input_member_login" type='password' name="password" placeholder="Votre mot de passe" /></div>
                             <div><input type="checkbox" value="souvenir"> <?php echo $this->translate("Se souvenir de moi", $this->lang_id); ?></div>
-                            <a href="#" ><div class="btn_connection_member"><?php echo $this->translate("Se connecter", $this->lang_id); ?></div></a>
-                            <div><a href=""><?php echo $this->translate("J'ai oublié mon mot de passe", $this->lang_id); ?></a></div>
+                            <a class="valid" href="#" ><div class="btn_connection_member"><?php echo $this->translate("Se connecter", $this->lang_id); ?></div></a>
+                            <div><a href="<?php echo $this->url('home/forgotpassword', array('lang' => $this->lang_id)); ?>"><?php echo $this->translate("J'ai oublié mon mot de passe", $this->lang_id); ?></a></div>
                         </form>
                     </div>
                 </div> 
@@ -27,7 +27,7 @@
 </div>
 
 <script type="text/javascript">
-    $('#member_login a').unbind('click').on('click', function(e){
+    $('#member_login a.valid').unbind('click').on('click', function(e){
         e.preventDefault();
         $(this).parents('form').submit();
     });

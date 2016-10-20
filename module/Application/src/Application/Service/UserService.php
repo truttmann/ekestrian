@@ -5,6 +5,10 @@ use Zend\Session\Config\SessionConfig;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 use Zend\Crypt\BlockCipher;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mail\Transport\Sendmail as SendmailTransport;
+use Zend\Mime\Part;
 
 require_once dirname(dirname(dirname(__DIR__))).'/config/constantes.php';
 
@@ -257,6 +261,151 @@ class UserService
         $blockCipher2 = BlockCipher::factory('mcrypt', array('algo' => 'aes'));
         $blockCipher2->setKey(CRYPT_COOKIE_KEY);
         return $blockCipher2->decrypt($chaine);
+    }
+    
+    public function sendMailUserCreation(\Application\Model\Client $client) {
+        $client->token = hash('SHA1', md5(date('Y-m-d H:i:s').$client->client_id));
+        $this->sm->get('clientTable')->save($client);
+        
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        "Nous vous remercions de vous être inscrit sur Elite Auctions.<br/>".
+        "Afin de confirmer votre inscription, merci de cliquer sur le lien suivant : <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/validation_membre', array('token'=>$client->token))."'>ACTIVATION</a><br/>".
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($client->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Création de compte")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
+    }
+    
+    public function sendMailBienvenu(\Application\Model\Client $client) {
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        "Nous sommes ravi de vous compter parmi nos membres d'Elite Auctions.<br/>".
+        "Vous pourrez accéder à toutes les enchère sur la page suivante : <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home', array('token'=>$client->token))."'>SITE</a><br/>".
+        "Vous pourrez également modifier vos informations à tous moment en allant sur votre compte: <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/membre/edit', array('membre_id'=>$client->client_id))."'>MON COMPTE</a> <br/><br/>".
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($client->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Bienvenu")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
+    }
+    
+    
+    
+    public function sendMailUserPassword(\Application\Model\Client $client) {
+        
+        $client->password = substr(str_replace(" ", "", hash('SHA1', md5(date('Y-m-d H:i:s').$client->client_id))), 0, 8);
+        $this->sm->get('clientTable')->save($client);
+        
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        "Vous avez demander un nouveau mot de passe pour accéder au site web ELite Auction.<br/>".
+        "Voici votre nouveau mot de passe : ".$client->password."<br/>".
+        "Vous pourrez également modifier vos informations à tous moment en allant sur votre compte: <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/membre/edit', array('membre_id'=>$client->client_id))."'>MON COMPTE</a> <br/><br/>".
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($client->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Mot de passe oublié")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
+    }
+    
+    public function sendMailUserNewEnchere(\Application\Model\ClientAuction $client) {
+        
+        $vhm = $this->sm->get('viewhelpermanager');
+        $url = $vhm->get('url');
+        
+        $c = $this->sm->get('clientTable')->fetchOne($client->client_id);
+        
+        $o = "";
+        try{
+        $t = $this->sm->get('lotTable')->fetchOne($client->lot_id);
+        $o = $t->title;
+        }catch(\Exception $e){}
+        
+        /* envoi du mail */
+        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        "Nous vous confirmons la prise en compte de votre enchère sur le site ELite Auction, pour le lot ".$o." et pour la somme de ".$client->value."€.<br/>".
+        "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
+        "Bien cordialement ";
+
+        $html = new Part($htmlMarkup);
+        $html->type = "text/html";
+
+        $body = new MimeMessage();
+        $body->setParts(array(/*$text, */$html));
+
+        $message = new Message();
+        $message->addFrom("contact@eliteauction.com", "Elite Auction")
+            ->addTo($c->email)
+            ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
+            ->setSubject("Elite Auction - Nouvelle enchère")
+            ->setBody($body)
+            ->setEncoding("UTF-8");
+
+        $transport = new SendmailTransport();
+        $transport->send($message);
+
+        return "ok";
     }
 
 }

@@ -37,7 +37,8 @@ class LotsController extends InitController
             $t = $this->_service_locator->get('enchereTable')->fetchOne($id);
         } catch(\Exception $e) {}
         
-        if(! is_object($t)) {
+        if(! is_object($t) || $t->status != 1) {
+	    	$this->addError('Enchère non valide');
             return $this->redirect()->toRoute('home');
         }
         $viewModel->setVariable("enchere", $t);
@@ -60,7 +61,7 @@ class LotsController extends InitController
             /* récupération de la mère */
             $m = null;
             try{
-                if(is_object($che) && $che->father_id != null){
+                if(is_object($che) && $che->mother_id != null){
                     $m = $this->_service_locator->get('chevalTable')->fetchOne($che->mother_id);
                 }
             } catch (Exception $ex) {}
