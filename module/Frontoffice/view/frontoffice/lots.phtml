@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="time"> @lot.RemainingTime </div -->
                                     <div class="btn-container" style="margin-top: 15px">
-                                        <?php if($this->can_enchere == true) { ?>
+                                        <?php if($this->can_enchere == true && $lot->cloture == 0) { ?>
                                             <?php if($this->is_membre_co == false) { ?>
                                                 <a href="<?php echo $this->url('home/membre', array('lang'=>$this->lang_id)); ?>">
                                                     <div class="mb5 btn btn-ekestrian-fill" style="font-family: Lato; font-weight:regular; font-size:12pt; color:white">

@@ -217,10 +217,11 @@ class LotController extends InitController
         $d = new \DateTime();
         $d2 = \DateTime::createFromFormat("Y-m-d H:i:s", $en->start_date);
         $display = false;
-        if($d2 != false && $d > $d2){
+        if($d2 != false && $d > $d2 && $t->cloture == 0){
             $display = true;
         }
         $this->mainView->setVariable("can_enchere", $display);
+        $this->mainView->setVariable("is_cloture", $t->cloture);
         
         return $this->mainView;
     }
@@ -283,6 +284,11 @@ class LotController extends InitController
 				throw new \Exception('Enchère non valide');
 		    }
 
+            /* verification de la non cloture du lot */
+            if($t->cloture == 1) {
+				throw new \Exception('Enchère non valide');
+		    }
+            
             /* verification de la connection du membre */
             $membre = $this->_service_locator->get('user_service')->isMembreConnecte();
             if($membre ==  false) {

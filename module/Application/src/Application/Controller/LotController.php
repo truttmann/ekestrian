@@ -64,7 +64,7 @@ class LotController extends InitController
                     'searchable'    =>  true,
                     'sortable'      =>  true,
                     'type'          =>  'text',
-                    'width'         =>  '50',
+                    'width'         =>  '40',
                     'placeholder'   =>  'Titre',
                 ),
                 array(
@@ -89,6 +89,12 @@ class LotController extends InitController
                 array(
                     'code'          =>  'status',
                     'label'         =>  'Actif',
+                    'type'          =>  'boolean',
+                    'width'         =>  '10',
+                ),
+                array(
+                    'code'          =>  'cloture',
+                    'label'         =>  'Clôturé',
                     'type'          =>  'boolean',
                     'width'         =>  '10',
                 ),
@@ -119,6 +125,14 @@ class LotController extends InitController
                         array(
                             'route'     =>  'lots/delete',
                             'label'     =>  'Supprimer',
+                            'matching_params'    =>  array(
+                                'lot_id',
+                                'enchere_id'
+                            )
+                        ),
+                        array(
+                            'route'     =>  'lots/cloture',
+                            'label'     =>  'Clôturer',
                             'matching_params'    =>  array(
                                 'lot_id',
                                 'enchere_id'
@@ -338,6 +352,27 @@ class LotController extends InitController
                 $this->addSuccess('La suppression a été effectuée avec succès');
             }catch(\Exception $e) {
                 $this->addError('La sauvegarde a échouée, veuillez vérifier qu\'il n\'y a plus de données rattachés(paiement...)');
+            }  
+        } 
+        return $this->redirect()->toRoute('lots', array(
+            'enchere_id' => $id_enchere,
+            'lot_id' => $id,
+        ));
+    }
+    
+    public function clotureAction(){
+        $id_enchere = $this->params()->fromRoute('enchere_id');
+        $id = $this->params()->fromRoute('lot_id');
+        
+        if ($id && $id_enchere) {
+            try{
+                $items = $this->getServiceLocator()->get('lotTable');
+                $c = $items->fetchOne($id);
+                $c->cloture = 1;
+                $items->save($c);
+                $this->addSuccess('La suppression a été effectuée avec succès');
+            }catch(\Exception $e) {
+                $this->addError($e->getMessage());
             }  
         } 
         return $this->redirect()->toRoute('lots', array(

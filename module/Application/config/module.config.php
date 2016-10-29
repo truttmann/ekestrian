@@ -315,6 +315,18 @@ return array(
                             ),
                         ),
                     ),
+                    "cloture" => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/cloture/:lot_id',
+                            'constraints' => array(
+                                'lot_id' => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'action'     => 'cloture',
+                            ),
+                        ),
+                    ),
                     "encheres" => array(
                         'type'    => 'Segment',
                         'options' => array(

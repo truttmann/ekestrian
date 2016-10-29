@@ -263,6 +263,10 @@
                     <?php } else { ?>
                         <a href="#" id="lien_enchere" ><div class="btn btn-ekestrian-fill" style="margin-bottom: 20px;"><?php echo $this->translate("Enchérir", $this->lang_id); ?></div></a>
                     <?php } ?>
+                <?php } else if ($this->is_cloture == 1) { ?>
+                    <div class="price col-xs-12 margin"  style="font-family: Lato-bold; font-weight:regular; font-size:20pt; line-height: 21pt;color:#e76558">
+                        <span class="letter-spacing-1" style="font-family: Lato-bold; font-weight:bold;font-size:15pt;line-height:26pt; color: #e97266"><?php echo $this->translate("Enchère CLOSE", $this->lang_id); ?> </span>
+                    </div>
                 <?php } ?>
             </div>
        </div>
