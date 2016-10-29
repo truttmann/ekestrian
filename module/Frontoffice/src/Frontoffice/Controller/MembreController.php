@@ -56,7 +56,7 @@ class MembreController extends InitController
             
             $carte_registration = $this->createUserMangopay($obj, $obj->client_id);
             
-            $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+            $this->_service_locator->get('user_service')->setMembreConnecte($obj->id);
             $this->addSuccess("Bienvenue ".$obj->lastname." ".$obj->firstname." sur votre espace membre de la plate-forme Elite Auction");
         } catch (Exception $ex) {
            $this->addError($e->getMessage());
@@ -310,23 +310,25 @@ class MembreController extends InitController
                     $obj->status = 0;
                     $obj = $clientModel->save($obj);
                     
-                    $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+                    $this->_service_locator->get('user_service')->setMembreConnecte($obj->client_id);
                     
                     $carte_registration = $this->createUserMangopay($obj, $id);
                     
                     if(empty($id)){
                         $this->getServiceLocator()->get('user_service')->sendMailUserCreation($obj, $obj->langue);
-                        return $this->redirect()->toRoute('home/validation_creation', array(
+                        $data_url = array(
                             'lang' => $this->lang_id
-                        ));
+                        );
+                        return $this->redirect()->toRoute('home/validation_creation', $data_url);
                     }
                     
                     $id = $obj->client_id;
                     $this->addSuccess('La sauvegarde a été effectuée avec succès');
-                    return $this->redirect()->toRoute('home/membre/edit_cart', array(
+                    $data_url = array(
                         'membre_id' => $id,
 						'lang' => $this->lang_id
-                    ));
+                    );
+                    return $this->redirect()->toRoute('home/membre/edit_cart', $data_url);
                 } catch (Exception $e) {
                     $data['birthday'] = $save_date;
 					if(empty($id) && is_object($obj)) {
@@ -337,10 +339,11 @@ class MembreController extends InitController
                     $this->addError('La sauvegarde a échouée');
                     $this->addError($e->getMessage());
                     $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $e->getMessage()));
-                    return $this->redirect()->toRoute('home/membre/edit', array(
+                    $data_url = array(
                         'membre_id' => $id,
 						'lang' => $this->lang_id
-                    ));
+                    );
+                    return $this->redirect()->toRoute('home/membre/edit', $data_url);
                 }
             }else{
                 $this->addError('La sauvegarde a échouée');
@@ -351,23 +354,26 @@ class MembreController extends InitController
                 }
                 $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $form->getMessages()));
                 if(!empty($id)) {
-					return $this->redirect()->toRoute('home/membre/edit', array(
-						'membre_id' => $id,
+					$data_url = array(
+                        'membre_id' => $id,
 						'lang' => $this->lang_id
-					));
+                    );
+                    return $this->redirect()->toRoute('home/membre/edit', $data_url);
 				} else {
-					return $this->redirect()->toRoute('home/membre/edit', array(
-						'lang' => $this->lang_id
-					));
+                    $data_url = array(
+                        'lang' => $this->lang_id
+                    );
+					return $this->redirect()->toRoute('home/membre/edit', $data_url);
 				}
             }
         }else{
             throw new Exception('Aucune donnée envoyée.');
         }
-        return $this->redirect()->toRoute('home/membre/edit', array(
+        $data_url = array(
             'membre_id' => $id,
             'lang' => $this->lang_id
-        ));
+        );
+        return $this->redirect()->toRoute('home/membre/edit', $data_url);
     }
     
     public function carteAction(){
@@ -491,7 +497,7 @@ class MembreController extends InitController
         $clientModel->save($obj);
         
         $this->addSuccess('Connexion réussie');
-        $this->_service_locator->get('user_service')->setMembreConnecte($obj);
+        $this->_service_locator->get('user_service')->setMembreConnecte($obj->id);
         
         /* verification de la carte */
         try{

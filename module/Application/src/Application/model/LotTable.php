@@ -91,6 +91,7 @@ class LotTable
             "cheval_id" => $lot->cheval_id ,
             "number" => $lot->number ,
             "status" => $lot->status ,
+            "cloture" => $lot->cloture ,
             "video_link" => $lot->video_link ,
             "reserve_price" => $lot->reserve_price ,
             "ist_price" => $lot->ist_price ,
