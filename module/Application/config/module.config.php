@@ -562,8 +562,7 @@ return array(
                     'options' => array(
                         'route' => 'check-enchere [--verbose|-v]', 
                         'defaults' => array(
-                            '__NAMESPACE__' => 'Application\Controller',
-                            'controller' => 'Encheres',
+                            'controller' => 'Application/Encheres',
                             'action' => 'command'
                         ),
                     ),

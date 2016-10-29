@@ -103,8 +103,8 @@ class ClientForm extends CustomForm{
             'options' => array(
                 'label' => 'Langue',
                 'value_options' => array(
-                    "francais" => "Français",
-                    "anglais" => "Anglais",
+                    "fr" => "Français",
+                    "en" => "Anglais",
                 )
             ),
             'attributes'=>array('required' => true,'id'=>'client_form_country' ,'class'=>'form-control form_input'),

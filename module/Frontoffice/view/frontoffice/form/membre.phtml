@@ -1,3 +1,4 @@
+
 <?php
 
 $form = $this->form;
@@ -13,15 +14,15 @@ $elements = $form->getElements();
                     <div class="portlet box green-haze">
                         <div class="portlet-title" style="text-align: center; margin: 40px 0 20px 0;">
                             <h1 class="caption" style="font-size: 30px;font-family: Lato-bold;margin-top: 0px;">
-                                Inscrivez-vous sur EKESTRIAN
+                                <?php echo $this->translate("Inscrivez-vous sur EKESTRIAN", $this->lang_id); ?>
                             </h1>
-                            <h2 class="sous-titre" >C'est gratuit et cela ne prend que 30 secondes</h2>
+                            <h2 class="sous-titre" ><?php echo $this->translate("C'est gratuit et cela ne prend que 30 secondes", $this->lang_id); ?></h2>
                         </div>
                         <div class="portlet-body form">
                             <div class="row">
-                                <div class="col-xs-4 text_left_form">Vos informations personnelles</div>
+                                <div class="col-xs-4 text_left_form"><?php echo $this->translate("Vos informations personnelles", $this->lang_id); ?></div>
                                 <div class="col-xs-8 form_body">
-                                    <div class='form_ele' style="    padding: 5px 0;">* Champs obligatoires<div style="clear: both; height: 1px;">&nbsp;</div></div>
+                                    <div class='form_ele' style="    padding: 5px 0;"><?php echo $this->translate("* Champs obligatoires", $this->lang_id); ?><div style="clear: both; height: 1px;">&nbsp;</div></div>
                                     <?php foreach ($elements as $element): 
                                         if($element->getName() == "phone_ind") {
                                             echo '<div class="form_ele">'.$this->formRow($form->get($element->getName()));
@@ -29,20 +30,16 @@ $elements = $form->getElements();
                                             echo $this->formRow($form->get($element->getName())).' <div style="clear: both; height: 1px;">&nbsp;</div></div>';
                                         } else if($element->getName() == "condition_vente"){
                                             if($this->edition == false) {
-                                                echo '</div></div><div class="row"><div class="col-xs-4 text_left_form">Conditions générales</div><div class="col-xs-8 form_body">';
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'accepte les conditions de vente ci dessous: <br/><br/>'.
-                                                    'Si je remporte l\'enchère à la clôture des ventes : <br/>'.
-                                                    '&nbsp;&nbsp;&nbsp;&nbsp;- Je devrais signer le contrat de vente électronique proposé par le vendeur dans la galerie photo du cheval<br/>'.
-                                                    '&nbsp;&nbsp;&nbsp;&nbsp;- Je serai redevable de la somme enchérie additionnée de 11% de frais de vente sur le montant hors taxes du cheval à laquelle s\'ajoute la TVA relative à mon pays et mon statut.<br/>'.
-                                                    '<div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
+                                                echo '</div></div><div class="row"><div class="col-xs-4 text_left_form">'.$this->translate("Conditions générales", $this->lang_id).'</div><div class="col-xs-8 form_body">';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName()))./*$this->translate("Conditions_générales_text_inscription", $this->lang_id).*/'&nbsp;&nbsp;&nbsp;&nbsp;'.$this->translate("En cochant cette case j'accepte les conditions de vente ci dessous: <br/><br/>Si je remporte l'enchère à la clôture des ventes : <br/>&nbsp;&nbsp;&nbsp;&nbsp;- Je devrais signer le contrat de vente électronique proposé par le vendeur dans la galerie photo du cheval<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Je serai redevable de la somme enchérie additionnée de 11% de frais de vente sur le montant hors taxes du cheval à laquelle s'ajoute la TVA relative à mon pays et mon statut<br/><div style=\"clear: both; height: 1px;\">&nbsp;</div>", $this->lang_id).'</div><br/>';
                                             }
                                         } else if($element->getName() == "reglement"){
                                             if($this->edition == false) {
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;En cochant cette case j\'affirme avoir lu et accepté <a style="text-decoration: underline;"  target="_blank" href="">le règlement des ventes aux enchères</a><div style="clear: both; height: 1px;">&nbsp;</div></div><br/>';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName()))./*$this->translate("reglement_text_inscription", $this->lang_id)*/'&nbsp;&nbsp;&nbsp;&nbsp;'.$this->translate("En cochant cette case j'affirme avoir lu et accepté <a style=\"text-decoration: underline;\"  target=\"_blank\" href=\"\">le règlement des ventes aux enchères</a><div style=\"clear: both; height: 1px;\">&nbsp;</div>", $this->lang_id).'</div><br/>';
                                             }
                                         } else if($element->getName() == "confidence"){
                                             if($this->edition == false) {
-                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).'&nbsp;&nbsp;&nbsp;&nbsp;* J\'ai pris connaissance de la <a style="text-decoration: underline;" target="_blank" href="'.$this->url("home/politique_de_confidentialite").'">politique de confidentialité</a> et j\'accepte les <a style="text-decoration: underline;" target="_blank" href="'.$this->url("home/cgu").'">conditions d\'utilisation</a><div style="clear: both; height: 1px;">&nbsp;</div></div>';
+                                                echo "<div class='form_ele'>".$this->formRow($form->get($element->getName()))./*$this->translate("confidence_text_inscription", $this->lang_id)*/'&nbsp;&nbsp;&nbsp;&nbsp;'.$this->translate("* J'ai pris connaissance de la <a style=\"text-decoration: underline;\" target=\"_blank\" href=\"http://eliteauctions.ekestrian.ovh/en/MentionsLegales\">politique de confidentialité</a> et j'accepte les <a style=\"text-decoration: underline;\" target=\"_blank\" href=\"http://eliteauctions.ekestrian.ovh/en/cgu\">conditions d'utilisation</a><div style=\"clear: both; height: 1px;\">&nbsp;</div>", $this->lang_id).'</div><br/>';
                                             }
                                         } else if($element->getName() == "password"){
                                             if($this->edition == false) {
@@ -57,7 +54,7 @@ $elements = $form->getElements();
                                                echo "<div class='row submit'>".$this->formRow($form->get($element->getName()))."</div>";
                                         } else {
                                             if($element->getName() == "email") {
-                                                echo '</div></div><div class="row"><div class="col-xs-4 text_left_form">Vos identifiants</div><div class="col-xs-8 form_body">';
+                                                echo '</div></div><div class="row"><div class="col-xs-4 text_left_form">'.$this->translate("Vos identifiants", $this->lang_id).'</div><div class="col-xs-8 form_body">';
                                             }
 
                                             echo "<div class='form_ele'>".$this->formRow($form->get($element->getName())).' <div style="clear: both; height: 1px;">&nbsp;</div></div>';
@@ -75,7 +72,35 @@ $elements = $form->getElements();
 </div>
 <script>
     jQuery(document).ready(function() {
-
+		$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+		$.datepicker.setDefaults({
+			altField: "#datepicker",
+			closeText: 'Fermer',
+			prevText: 'Précédent',
+			nextText: 'Suivant',
+			currentText: 'Aujourd\'hui',
+			monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+			monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+			dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+			dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+			weekHeader: 'Sem.',
+		});
+		
+		$('#client_form_birthday').datepicker({
+			closeText: 'Fermer',
+			prevText: 'Précédent',
+			nextText: 'Suivant',
+			currentText: 'Aujourd\'hui',
+			monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+			monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+			dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+			dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+			weekHeader: 'Sem.',
+			format: 'dd/mm/yyyy',
+			altFormat: "yyyy-mm-dd"
+		});
     });
 </script>
 

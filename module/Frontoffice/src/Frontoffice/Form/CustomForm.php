@@ -21,6 +21,7 @@ class CustomForm extends Form{
     protected $_name_prefix = '';
     protected $_template = '';
     protected $_service_locator = null;
+    protected $lang_id = "fr";
 
     public function setNamePrefix($prefix){
         $this->_name_prefix = $prefix;
@@ -76,6 +77,10 @@ class CustomForm extends Form{
             throw new \Exception('Sl empty.');
         }
         return $this->_service_locator;
+    }
+    
+    public function setLang($l){
+        $this->lang_id = $l;
     }
 }
 

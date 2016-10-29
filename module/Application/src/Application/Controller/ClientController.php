@@ -186,8 +186,13 @@ class ClientController extends InitController
         if ($id = $this->params()->fromRoute('client_id')) {
             $items = $this->getServiceLocator()->get('clientTable');
             $c = $items->fetchOne($id);
-            $items->delete($c);
-            $this->addSuccess('La suppression a été effectuée avec succès');
+            try{
+		    $items->delete($c);
+		    $this->addSuccess('La suppression a été effectuée avec succès');
+	    }catch(\Exception $e) {
+		    $this->addError('La suppression est impossible, ce menbre a déjà emis des enchères');
+	    }
+            
         } 
         return $this->redirect()->toRoute('clients', array());
     }

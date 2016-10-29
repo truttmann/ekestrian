@@ -22,10 +22,10 @@ class MangopayService
         $this->api = new \MangoPay\MangoPayApi();
 
         // configuration
-        $this->api->Config->ClientId = 'sdk-unit-tests';
-        $this->api->Config->ClientPassword = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju';
+        $this->api->Config->ClientId = /*'sdk-unit-tests';//*/'ekestrianauction';
+        $this->api->Config->ClientPassword = /*'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'*/'xPFug2oGP5dr0yGsuOqtUq30oW8Pe2oEjpTSTtr4ajq8L0JcHU';
         $this->api->Config->TemporaryFolder = __DIR__.'/../temp_mangopay/';
-        //$api->Config->BaseUrl = 'https://api.mangopay.com';//uncomment this to use the production environment
+        $this->api->Config->BaseUrl = 'https://api.mangopay.com';//uncomment this to use the production environment
 
         //uncomment any of the following to use a custom value (these are all entirely optional)
         //$api->Config->CurlResponseTimeout = 20;//The cURL response timeout in seconds (its 30 by default)

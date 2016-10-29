@@ -34,8 +34,8 @@ class LotController extends InitController
         
         $filters = $list->getFilters();
         $order = $list->getOrder();
-
-        $list->addLinks(
+		
+		$list->addLinks(
             array(
                 array(
                     'label' => 'Nouveau',
@@ -47,7 +47,7 @@ class LotController extends InitController
             )
         );
 
-        $items = $items->fetchAllPaginate($filters['filters'], $order);
+        $items = $items->fetchAllPaginate($filters['filters'], $order, $enchere_id);
         $items->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
         $nbr = (isset($filters['nbr_results_per_page']))?$filters['nbr_results_per_page']:20;
         $items->setItemCountPerPage($nbr);
@@ -72,7 +72,7 @@ class LotController extends InitController
                     'clickable'     =>  true,
                     'route'         => 'lots/edit',
                     'matching_params'   => array("enchere_id", "lot_id"),
-                    'label'         =>  'Prix de départ',
+                    'label'         =>  'Prix dép.',
                     'searchable'    =>  true,
                     'type'          =>  'text',
                     'width'         =>  '15',
@@ -82,9 +82,9 @@ class LotController extends InitController
                 array(
                     'code'          =>  'number',
                     'sortable'      =>  true,
-                    'label'         =>  'Position',
+                    'label'         =>  'Pos.',
                     'type'          =>  'text',
-                    'width'         =>  '5',
+                    'width'         =>  '10',
                 ),
                 array(
                     'code'          =>  'status',
@@ -98,7 +98,7 @@ class LotController extends InitController
                     'label'         =>  'Actions',
                     'searchable'    =>  false,
                     'type'          =>  'link',
-                    'width'         =>  '20',
+                    'width'         =>  '15',
                     'items'         =>  array(
                         array(
                             'route'     =>  'lots/edit',

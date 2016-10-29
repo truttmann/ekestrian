@@ -33,7 +33,7 @@ class MembreController extends InitController
         if($data = $this->getRequest()->getPost() && isset($_POST['email'])) {
             $obj = $this->_service_locator->get('clientTable')->fetchOneByEmail($_POST['email']);
             if(is_object($obj)) {
-                $this->_service_locator->get('user_service')->sendMailUserPassword($obj);
+                $this->_service_locator->get('user_service')->sendMailUserPassword($obj, $this->lang_id);
             }
             $this->addSuccess("Si vous êtes bien membre, un email vient de vous être envoyé");
         }
@@ -52,14 +52,16 @@ class MembreController extends InitController
             $obj->status = 1;
             $obj = $this->_service_locator->get('clientTable')->save($obj);
             
-            $this->_service_locator->get('user_service')->sendMailBienvenu($obj);
+            $this->_service_locator->get('user_service')->sendMailBienvenu($obj, $obj->langue);
+            
+            $carte_registration = $this->createUserMangopay($obj, $obj->client_id);
             
             $this->_service_locator->get('user_service')->setMembreConnecte($obj);
-            $this->addSuccess("Bienvenu ".$obj->lastname." ".$obj->firstname." sur votre espace membre de la plate-forme Elite Auction");
+            $this->addSuccess("Bienvenue ".$obj->lastname." ".$obj->firstname." sur votre espace membre de la plate-forme Elite Auction");
         } catch (Exception $ex) {
            $this->addError($e->getMessage());
         }
-        return $this->redirect()->toRoute("home", array('lang' => $this->lang_id));
+        return $this->redirect()->toRoute("home/membre/edit_cart", array('lang' => $this->lang_id, "membre_id" => $obj->client_id));
     }
     
     public function authentificationAction(){
@@ -70,10 +72,9 @@ class MembreController extends InitController
             return $this->redirect()->toRoute('home', array('lang' => $this->lang_id));
         }
         
-        $viewModel = new ViewModel();
-        $viewModel->setVariable("lang_id", $this->lang_id);
-        $viewModel->setTemplate('frontoffice/member/login');
-        return $viewModel;
+        $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setTemplate('frontoffice/member/login');
+        return $this->mainView;
     }
     
     public function logoutAction(){
@@ -95,9 +96,8 @@ class MembreController extends InitController
         
         parent::initListJs();
         
-        $viewModel = new ViewModel();
-        $viewModel->setVariable("lang_id", $this->lang_id);
-        $viewModel->setTemplate('frontoffice/lots');
+        $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setTemplate('frontoffice/lots');
         
         /* recuperation de l'id enchere */
         $id = $this->params()->fromRoute('enchere_id');
@@ -138,9 +138,9 @@ class MembreController extends InitController
             
             $e[] = $i;
         }
-        $viewModel->setVariable("lots", $e);
+        $this->mainView->setVariable("lots", $e);
         
-        return $viewModel;
+        return $this->mainView;
     }
     
     public function editAction(){
@@ -177,6 +177,7 @@ class MembreController extends InitController
 
         $form = $this->getServiceLocator()->get('FormElementManager')->get("membre_edit");
         $form->setServiceLocator($this->getServiceLocator());
+        $form->setLang($this->lang_id);
         $form->initForm();
         
         $t = $this->getServiceLocator()->get('user_service')->getInfoFormMembre();
@@ -190,6 +191,7 @@ class MembreController extends InitController
 
         $FormViewModel = new ViewModel();
         $FormViewModel->setTemplate('frontoffice/form/membre');
+        $FormViewModel->setVariable('lang_id', $this->lang_id);	
         $FormViewModel->setVariable('form', $form);
         $FormViewModel->setVariable('edition', ((is_numeric($id))?true:false));
         $FormViewModel->setVariable('form_title', 'Création compte Membre');
@@ -204,6 +206,13 @@ class MembreController extends InitController
     public function saveAction() {
         if($data = $this->getRequest()->getPost()){
             $id = $data['client_id'];
+			
+			/* remise au format de la date */
+			$save_date = $data['birthday'];
+			$t = explode('/', $data['birthday']);
+			if(count($t) == 3) {
+				$data['birthday'] = $t[2].'-'.$t[1].'-'.$t[0];
+			}
             
             /* modification accessible que si nous sommes en mode connecté */
             if($id != null && !$this->_service_locator->get('user_service')->isMembreConnecte()){
@@ -259,6 +268,13 @@ class MembreController extends InitController
                     )
                 ));
             }
+			if(count(explode('-', $data['birthday'])) != 3) {
+                $form->setMessages(array(
+                    'birthday' => array(
+                        'La date de naissance est mal formée (dd/mm/yyy)'
+                    )
+                ));
+            }
             if($data['type'] == "pro" && (!isset($data['societe']) ||empty($data['societe']))) {
                 $form->setMessages(array(
                     'societe' => array(
@@ -299,7 +315,7 @@ class MembreController extends InitController
                     $carte_registration = $this->createUserMangopay($obj, $id);
                     
                     if(empty($id)){
-                        $this->getServiceLocator()->get('user_service')->sendMailUserCreation($obj);
+                        $this->getServiceLocator()->get('user_service')->sendMailUserCreation($obj, $obj->langue);
                         return $this->redirect()->toRoute('home/validation_creation', array(
                             'lang' => $this->lang_id
                         ));
@@ -312,8 +328,8 @@ class MembreController extends InitController
 						'lang' => $this->lang_id
                     ));
                 } catch (Exception $e) {
-                    var_dump($e->getMessage());exit;
-                    if(empty($id) && is_object($obj)) {
+                    $data['birthday'] = $save_date;
+					if(empty($id) && is_object($obj)) {
                         $clientModel = $this->getServiceLocator()->get('clientTable');
                         $clientModel->delete($obj);
                     }
@@ -334,10 +350,16 @@ class MembreController extends InitController
                     }
                 }
                 $this->getServiceLocator()->get('user_service')->setInfoFormMembre(array($data, $form->getMessages()));
-                return $this->redirect()->toRoute('home/membre/edit', array(
-                    'membre_id' => $id,
-		    		'lang' => $this->lang_id
-                ));
+                if(!empty($id)) {
+					return $this->redirect()->toRoute('home/membre/edit', array(
+						'membre_id' => $id,
+						'lang' => $this->lang_id
+					));
+				} else {
+					return $this->redirect()->toRoute('home/membre/edit', array(
+						'lang' => $this->lang_id
+					));
+				}
             }
         }else{
             throw new Exception('Aucune donnée envoyée.');

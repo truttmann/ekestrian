@@ -119,7 +119,8 @@ class InitController extends AbstractActionController
             ->appendFile('/js/jquery.elevateZoom.min.js')
             ->appendFile('/js/light/jquery.mousewheel.min.js')
             ->appendFile('/js/jquery.blueimp-gallery.min.js')
-            ->appendFile('/js/jquery-ui.min.js');
+            ->appendFile('/js/jquery-ui.min.js')
+			->appendFile('/js/bootstrap-datepicker.js');
     }
 
     protected function initListJs(){
@@ -357,17 +358,19 @@ class InitController extends AbstractActionController
 
     public function setMessage($type, $messages){
 
-        if(!isset($this->_messages[$type]))
+        if(!isset($this->_messages[$type])) {
             $this->_messages[$type] = array();
+        }
 
-        if(!is_array($messages))
-            $messages = array($messages);
+        if(!is_array($messages)) {
+            $messages = array($this->_service_locator->get('user_service')->translate($messages, $this->lang_id));
+        }
 
         foreach($messages as $message){
-            $this->_messages[$type][] = $message;
+            $this->_messages[$type][] = $this->_service_locator->get('user_service')->translate($message, $this->lang_id);
         }
         
-        $this->_service_locator->get('user_service')->setMessages($this->_messages);
+        $this->_service_locator->get('user_service')->setMessages($this->_service_locator->get('user_service')->translate($this->_messages, $this->lang_id));
         return $this;
     }
 

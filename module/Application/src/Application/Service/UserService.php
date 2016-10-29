@@ -264,7 +264,7 @@ class UserService
         return $blockCipher2->decrypt($chaine);
     }
     
-    public function sendMailUserCreation(\Application\Model\Client $client) {
+    public function sendMailUserCreation(\Application\Model\Client $client, $lang) {
         $client->token = hash('SHA1', md5(date('Y-m-d H:i:s').$client->client_id));
         $this->sm->get('clientTable')->save($client);
         
@@ -273,11 +273,11 @@ class UserService
 
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_creation", $lang)."<a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/validation_membre', array('token'=>$client->token))."'>ACTIVATION</a>".$this->translate("corps_mail_creation2", $lang);/*"Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
         "Nous vous remercions de vous être inscrit sur Elite Auctions.<br/>".
         "Afin de confirmer votre inscription, merci de cliquer sur le lien suivant : <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/validation_membre', array('token'=>$client->token))."'>ACTIVATION</a><br/>".
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement ";*/
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -289,7 +289,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($client->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Création de compte")
+            ->setSubject($this->translate("subject_mail_creation", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -299,18 +299,18 @@ class UserService
         return "ok";
     }
     
-    public function sendMailBienvenu(\Application\Model\Client $client) {
+    public function sendMailBienvenu(\Application\Model\Client $client, $lang) {
         $vhm = $this->sm->get('viewhelpermanager');
         $url = $vhm->get('url');
 
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_bienvenue", $lang);/*.$client->lastname." ".$client->firstname.$this->translate("corps_mail_bienvenue2", $lang);//"Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
         "Nous sommes ravi de vous compter parmi nos membres d'Elite Auctions.<br/>".
         "Vous pourrez accéder à toutes les enchère sur la page suivante : <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home', array('token'=>$client->token))."'>SITE</a><br/>".
         "Vous pourrez également modifier vos informations à tous moment en allant sur votre compte: <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/membre/edit', array('membre_id'=>$client->client_id))."'>MON COMPTE</a> <br/><br/>".
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement ";*/
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -322,7 +322,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($client->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Bienvenu")
+            ->setSubject($this->translate("subject_mail_bienvenue", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -334,7 +334,7 @@ class UserService
     
     
     
-    public function sendMailUserPassword(\Application\Model\Client $client) {
+    public function sendMailUserPassword(\Application\Model\Client $client, $lang) {
         
         $client->password = substr(str_replace(" ", "", hash('SHA1', md5(date('Y-m-d H:i:s').$client->client_id))), 0, 8);
         $this->sm->get('clientTable')->save($client);
@@ -343,12 +343,12 @@ class UserService
         $url = $vhm->get('url');
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_password", $lang).$client->password.$this->translate("corps_mail_password2", $lang);/*"Bonjour ".$client->lastname." ".$client->firstname.",<br/><br/>".
         "Vous avez demander un nouveau mot de passe pour accéder au site web ELite Auction.<br/>".
         "Voici votre nouveau mot de passe : ".$client->password."<br/>".
         "Vous pourrez également modifier vos informations à tous moment en allant sur votre compte: <a href='"."http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/membre/edit', array('membre_id'=>$client->client_id))."'>MON COMPTE</a> <br/><br/>".
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement ";*/
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -360,7 +360,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($client->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Mot de passe oublié")
+            ->setSubject($this->translate("subject_mail_password", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -370,7 +370,7 @@ class UserService
         return "ok";
     }
     
-    public function sendMailUserNewEnchere(\Application\Model\ClientAuction $client) {
+    public function sendMailUserNewEnchere(\Application\Model\ClientAuction $client, $lang) {
         
         $vhm = $this->sm->get('viewhelpermanager');
         $url = $vhm->get('url');
@@ -384,10 +384,10 @@ class UserService
         }catch(\Exception $e){}
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_new_enchere", $lang).$o.$this->translate("corps_mail_new_enchere2", $lang)/*"Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
         "Nous vous confirmons la prise en compte de votre enchère sur le site ELite Auction, pour le lot ".$o." et pour la somme de ".$client->value."€.<br/>".
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement "*/;
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -399,7 +399,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($c->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Nouvelle enchère")
+            ->setSubject($this->translate("subject_mail_new_enchere", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -409,7 +409,7 @@ class UserService
         return "ok";
     }
     
-    public function sendMailUserLooseEnchere(\Application\Model\ClientAuction $client) {
+    public function sendMailUserLooseEnchere(\Application\Model\ClientAuction $client, $lang) {
         
         $vhm = $this->sm->get('viewhelpermanager');
         $url = $vhm->get('url');
@@ -423,10 +423,10 @@ class UserService
         }catch(\Exception $e){}
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_enchere_perdu", $lang).$client->value.$this->translate("corps_mail_enchere_perdu2", $lang).$o.$this->translate("corps_mail_enchere_perdu3", $lang)/*"Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
         "Votre enchère de ".$client->value."€ pour le lot ".$o." vient d'être dépassée. N'hésitez pas à retourner sur notre site afin de réaliser une autre enchère pour ce lot, en cliquant directement sur ce <a href='".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"].$url('home/lots/lot', array('enchere_id'=>$t->enchere_id,"lot_id"=>$t->lot_id))."'>lien</a><br/><br/>".
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement "*/;
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -438,7 +438,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($c->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Enchère depassée")
+            ->setSubject($this->translate("subject_mail_enchere_perdu", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -448,7 +448,7 @@ class UserService
         return "ok";
     }
     
-    public function sendMailUserWinEnchere(\Application\Model\ClientAuction $client) {
+    public function sendMailUserWinEnchere(\Application\Model\ClientAuction $client, $lang) {
         
         $vhm = $this->sm->get('viewhelpermanager');
         $url = $vhm->get('url');
@@ -462,11 +462,11 @@ class UserService
         }catch(\Exception $e){}
         
         /* envoi du mail */
-        $htmlMarkup = "Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
+        $htmlMarkup = $this->translate("corps_mail_enchere_remportee", $lang).$o.$this->translate("corps_mail_enchere_remportee2", $lang)/*"Bonjour ".$c->lastname." ".$c->firstname.",<br/><br/>".
         "Nous avons le plaisir de vous informer que vous avez remporté l'enchère concernant le lot ".$o.", pour la somme de ".$client->value."€.<br/>".
         "Vous allez bientôt recevoir un contract qu'il faudra signer élèctroniquement, et le montant de l'enchère va vous être prélever sur votre carte bancaire.<br/><br/>".    
         "Pour toute question vous pouvez nous contacter par email support@eliteauction.com<br/><br/>".
-        "Bien cordialement ";
+        "Bien cordialement "*/;
 
         $html = new Part($htmlMarkup);
         $html->type = "text/html";
@@ -478,7 +478,7 @@ class UserService
         $message->addFrom("contact@eliteauction.com", "Elite Auction")
             ->addTo($c->email)
             ->addReplyTo("no-replay@eliteauction.com", "Elite Auction")
-            ->setSubject("Elite Auction - Nouvelle enchère")
+            ->setSubject($this->translate("subject_mail_enchere_remportee", $lang))
             ->setBody($body)
             ->setEncoding("UTF-8");
 
@@ -486,6 +486,23 @@ class UserService
         $transport->send($message);
 
         return "ok";
+    }
+    
+    
+    public function translate($code, $langue_id = "fr")
+    {
+        $res = null;
+        try {
+            $res = $this->sm->get('translateTable')->fetchOne($code, (($langue_id == "fr")?1:2));
+            
+        } catch(\Exception $e) {
+            $obj = new \Application\Model\Translate();
+            $obj->code = $code;
+            $obj->langue_id = (($langue_id == "fr")?1:2);
+            $this->sm->get('translateTable')->save($obj);
+        }
+        return (($res == null || empty($res->value))?$code:$res->value);
+        
     }
 
 }

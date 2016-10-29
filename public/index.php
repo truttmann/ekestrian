@@ -4,10 +4,6 @@
  * to the application root now.
  */
 
-if ( isset($_SERVER['HTTP_X_BROCELIA_DEBUG']) && in_array('phpinfo', explode(',', $_SERVER['HTTP_X_BROCELIA_DEBUG'])) ) {
-phpinfo();
-exit;
-}
 set_time_limit(0);
 chdir(dirname(__DIR__));
 

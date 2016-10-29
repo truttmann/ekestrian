@@ -15,14 +15,15 @@ License: You must have a valid license purchased only from themeforest(the above
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="<?= Locale::getPrimaryLanguage(Locale::getDefault())?>" class="no-js">
+<html lang="<?php echo $this->lang_id.'-'.strtoupper($this->lang_id); ?>" class="no-js">
     <head>
+           <base target="_self" href="<?php echo "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]; ?>" target="_blank">
     <?php echo $this->headMeta()
         ->appendName('viewport', 'width=device-width, initial-scale=1.0')
         ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
     ?>
         <meta charset="utf-8">
-        <?php echo $this->headTitle($this->translate('Back Office Ekestrian', $this->lang_id))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('Elite Auction Ekestrian', $this->lang_id))->setSeparator(' - ')->setAutoEscape(false) ?>
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link rel="shortcut icon" type="image/x-icon" href="http://www.ekestrian.com/ekestrian/images/favicon.png" />
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
@@ -34,6 +35,7 @@ License: You must have a valid license purchased only from themeforest(the above
             echo $this->headLink()->appendStylesheet($this->basePath() . '/css/lightgallery.css'); 
             echo $this->headLink()->appendStylesheet($this->basePath() . '/css/blueimp-gallery.min.css'); 
             echo $this->headLink()->appendStylesheet($this->basePath() . '/css/jquery-ui.min.css'); 
+			echo $this->headLink()->appendStylesheet($this->basePath() . '/css/bootstrap-datepicker3.css'); 
         ?>
         <!-- END THEME STYLES -->
 

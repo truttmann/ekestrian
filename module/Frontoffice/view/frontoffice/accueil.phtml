@@ -56,10 +56,10 @@
                             </div>
                         </div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
-                            <?php if($i +1 <= count($this->encheres)) { ?>
+                            <?php if($i +1 <= count($this->encheres)) { $i++;?>
                             <div class="img-wrapper">
                                 <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
-                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
                                 </a>
                             </div>
                             <div class="col-md-12 margin">
@@ -73,10 +73,10 @@
                             <?php } ?>
                         </div>
                         <div class="col-md-4" style="margin-bottom: 3.5em;">
-                            <?php if($i +2 <= count($this->encheres)) { ?>
+                            <?php if($i +2 <= count($this->encheres)) { $i++;?>
                             <div class="img-wrapper">
                                 <a href="<?php echo $this->url("home/lots", array("enchere_id" =>$this->encheres[$i]->enchere_id, 'lang'=>$this->lang_id)); ?>">
-                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?> alt="">
+                                    <img src="<?php echo $this->basePath().$this->encheres[$i]->image_url ?>" alt="">
                                 </a>
                             </div>
                             <div class="col-md-12 margin">

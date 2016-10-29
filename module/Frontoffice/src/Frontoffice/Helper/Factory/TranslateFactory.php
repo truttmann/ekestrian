@@ -19,10 +19,12 @@ class TranslateFactory extends \Zend\View\Helper\AbstractHelper {
             $res = $sm->get('translateTable')->fetchOne($code, (($langue_id == "fr")?1:2));
             
         } catch(\Exception $e) {
-            $obj = new \Application\Model\Translate();
-            $obj->code = $code;
-            $obj->langue_id = (($langue_id == "fr")?1:2);
-            $sm->get('translateTable')->save($obj);
+	    if(! empty($code)){
+            	$obj = new \Application\Model\Translate();
+           	$obj->code = $code;
+            	$obj->langue_id = (($langue_id == "fr")?1:2);
+            	$sm->get('translateTable')->save($obj);
+	    }
         }
         return (($res == null || empty($res->value))?$code:$res->value);
         

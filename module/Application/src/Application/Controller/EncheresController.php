@@ -235,6 +235,8 @@ class EncheresController extends InitController
                     if(!empty($data['enchere_id'])) {
                         $obj = $enchereModel->fetchOne($data['enchere_id']);
                     }
+		    $data['start_date'] =  substr(str_replace('T', ' ', $data['start_date']),0,  16).':00';
+		    $data['end_date'] =  substr(str_replace('T', ' ', $data['end_date']),0,  16).':00';
                     
                     $obj->exchangeArray($data);
                     
@@ -335,7 +337,7 @@ class EncheresController extends InitController
                             $ca->win = 1;
                             $this->getServiceLocator()->get('clientauctionTable')->save($ca);
                             
-                            $this->getServiceLocator()->get('user_service')->sendMailUserWinEnchere($ca);
+                            $this->getServiceLocator()->get('user_service')->sendMailUserWinEnchere($ca, $c->langue);
                         } else  {
                             $ca->win = 0;
                             $this->getServiceLocator()->get('clientauctionTable')->save($ca);

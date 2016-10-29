@@ -80,7 +80,7 @@ class TranslateController extends InitController
                 array(
                     'code'          =>  'libelle',
                     'label'         =>  'Langue',
-                    'searchable'    =>  true,
+                    'searchable'    =>  false,
                     'type'          =>  'text',
                     'width'         =>  '20',
                     'placeholder'   =>  'Nom',

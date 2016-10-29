@@ -1,3 +1,4 @@
+
 <section id="section-banner" style="margin-top: 0px;">
     <div class="shell">
         <div class="section-inner">
@@ -64,8 +65,8 @@
                             $i = 0;
                             if($this->lot->image_url != "" ){ ?>
                                 <li class="col-sm-12" style="padding: 0px">
-                                    <a href="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" class="thumbnail" id="carousel-selector-0" data-gallery>
-                                        <img src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" alt="" >
+                                    <a href="<?php echo ((!empty($this->basePath()))?$this->basePath()."/":"").$this->lot->image_url; ?>" class="thumbnail" id="carousel-selector-0" data-gallery>
+                                        <img src="<?php echo ((!empty($this->basePath()))?$this->basePath()."/":"").$this->lot->image_url; ?>" alt="" >
                                     </a>
                                 </li>
                             <?php 
@@ -87,7 +88,7 @@
                             ?>
                                     <li class="col-sm-12" style="padding: 0px; display: none">
                                         <a href="<?php echo $image; ?>" class="thumbnail" id="carousel-selector-<?php echo $i; ?>" data-gallery>
-                                            <?php /*!-- img src="<?php echo $image; ?>" alt="" -- */ ?>>
+                                            <?php /*!--img src="<?php echo $image; ?>" alt="" -- */ ?>
                                         </a>
                                     </li>
                             <?php 
@@ -105,8 +106,8 @@
                                     <div class="carousel slide" id="carousel-horse">
                                         <!-- Carousel items -->
                                         <div class="carousel-inner">
-                                            <div class="item active" data-slide-number="1" data-src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>">
-                                                <img src="<?php echo $this->basePath() ?>/<?php echo $this->lot->image_url; ?>" alt="" style="width: 100%;">
+                                            <div class="item active" data-slide-number="1" data-src="<?php echo ((!empty($this->basePath()))?$this->basePath()."/":"").$this->lot->image_url; ?>">
+                                                <img src="<?php echo ((!empty($this->basePath()))?$this->basePath()."/":"").$this->lot->image_url; ?>" alt="" style="width: 100%;">
                                             </div>
                                         </div>
 										<!-- div class="carousel-inner">
@@ -290,6 +291,11 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="dialog_validation_enchere">
+    <div class="row" style="margin: 0">
+        <div class="col-xs-12 content" style="text-align:center"></div>
     </div>
 </div>
 
@@ -486,14 +492,14 @@ if ($this->cheval->mere != null) { ?>
             });
 
 
-            $('.carousel-inner > div').unbind('mouseover').on('mouseover', function(e){
+            /*$('.carousel-inner > div').unbind('mouseover').on('mouseover', function(e){*/
                 $('.carousel-inner > div').attr('style', "background-color: black; opacity: 0.5; z-index: 1001");
                 $('.video_behind').show();
-            });
+            /*});
             $('.carousel-inner > div').unbind('mouseout').on('mouseout', function(e){
                 $('.carousel-inner > div').attr('style', "");
                 $('.video_behind').hide();
-            });
+            });*/
             $('#carousel-bounding-box').unbind('click').on('click', function(e){
                 e.preventDefault();
             });
@@ -503,6 +509,12 @@ if ($this->cheval->mere != null) { ?>
         }
         
         $('.dialog_enchere').dialog({
+            autoOpen: false,
+            minWidth: 500,
+            minHeight: 310
+        });
+
+	$('.dialog_validation_enchere').dialog({
             autoOpen: false,
             minWidth: 500,
             minHeight: 310
@@ -517,10 +529,10 @@ if ($this->cheval->mere != null) { ?>
             }).always(function () {
             }).done(function (result) {
                 if(result.status && result.status == 1) {
-                    $('.dialog_enchere .alerte').empty();
+                    /*$('.dialog_enchere .alerte').empty();
                     $(".dialog_enchere select option").remove();
                     $('.dialog_enchere .success').empty().html("<?php echo $this->translate("Enchère enregistrée, un mail de confirmation vient de vous être envoyé", $this->lang_id); ?>");
-                    /* mise en place de actual_amount */
+                    /* mise en place de actual_amount *\/
                     var actuel = parseFloat((result.data.auction)?result.data.auction.value:result.data.lot.min_price);
                     $('.dialog_enchere .actual_amount').empty().html("<?php echo $this->translate('Enchère actuelle', $this->lang_id); ?> : "+actuel+" EUR");
 
@@ -534,7 +546,11 @@ if ($this->cheval->mere != null) { ?>
                         actuel = actuel + pas;
                         $(".dialog_enchere select").append('<option value="'+(actuel)+'">'+(actuel)+'</option>');
                         i++;
-                    }
+                    }*/
+					$('.dialog_enchere').dialog('close');
+					$('.dialog_validation_enchere .content').empty().html("<?php echo $this->translate("Enchère enregistrée, un mail de confirmation vient de vous être envoyé à l'adresse : ", $this->lang_id); ?>"+result.data.email);
+					$('.dialog_validation_enchere').dialog('open');
+					setTimeout(function(){ $('.dialog_validation_enchere').dialog('close'); }, 10000);
                 } else {
                     $('.dialog_enchere .alerte').empty().html(result.data);
                 }

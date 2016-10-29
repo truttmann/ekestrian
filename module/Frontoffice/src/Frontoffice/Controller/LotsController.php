@@ -24,9 +24,8 @@ class LotsController extends InitController
     public function indexAction(){
         parent::initListJs();
         
-        $viewModel = new ViewModel();
-        $viewModel->setVariable("lang_id", $this->lang_id);
-        $viewModel->setTemplate('frontoffice/lots');
+        $this->mainView->setVariable("lang_id", $this->lang_id);
+        $this->mainView->setTemplate('frontoffice/lots');
         
         /* recuperation de l'id enchere */
         $id = $this->params()->fromRoute('enchere_id');
@@ -41,7 +40,7 @@ class LotsController extends InitController
 	    	$this->addError('Enchère non valide');
             return $this->redirect()->toRoute('home');
         }
-        $viewModel->setVariable("enchere", $t);
+        $this->mainView->setVariable("enchere", $t);
         
         /* récupération des lots */
         $e = array();
@@ -79,8 +78,8 @@ class LotsController extends InitController
             
             $e[] = $i;
         }
-        $viewModel->setVariable("lots", $e);
+        $this->mainView->setVariable("lots", $e); 
         
-        return $viewModel;
+        return $this->mainView;
     }
 }

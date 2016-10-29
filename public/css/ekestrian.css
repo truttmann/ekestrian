@@ -182,3 +182,8 @@ div#cke_translate_form_code, div#cke_cheval_form_desc, div#cke_translate_form_va
     width: 100%;
     clear: both;
 }
+
+.table-container table a {
+    float: left;
+    margin: 5px;
+}		

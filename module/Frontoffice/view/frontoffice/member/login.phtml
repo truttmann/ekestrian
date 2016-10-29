@@ -6,8 +6,8 @@
                     <div class="part_ident">
                         <form id="member_login" method="POST" action="<?php echo $this->url('home/membre/login'); ?>">
                             <div class="tite_member_login"><?php echo $this->translate("Identifiez-vous", $this->lang_id); ?></div>
-                            <div><input class="input_member_login" type='text' name="email" placeholder="Votre email" /></div>
-                            <div><input class="input_member_login" type='password' name="password" placeholder="Votre mot de passe" /></div>
+                            <div><input class="input_member_login" type='text' name="email" placeholder="<?php echo $this->translate("Votre email", $this->lang_id); ?>" /></div>
+                            <div><input class="input_member_login" type='password' name="password" placeholder="<?php echo $this->translate("Votre mot de passe", $this->lang_id); ?>" /></div>
                             <div><input type="checkbox" value="souvenir"> <?php echo $this->translate("Se souvenir de moi", $this->lang_id); ?></div>
                             <a class="valid" href="#" ><div class="btn_connection_member"><?php echo $this->translate("Se connecter", $this->lang_id); ?></div></a>
                             <div><a href="<?php echo $this->url('home/forgotpassword', array('lang' => $this->lang_id)); ?>"><?php echo $this->translate("J'ai oublié mon mot de passe", $this->lang_id); ?></a></div>
@@ -18,7 +18,7 @@
                     <div class="part_crea">
                         <div class="tite_member_login"><?php echo $this->translate("Inscrivez-vous", $this->lang_id); ?></div>
                         <div><?php echo $this->translate("Créer votre compte pour gérer vos lots favoris, vous inscrire aux ventes et commencer à enchérir dès maintenant sur des foals d'exception", $this->lang_id); ?></div>
-                        <a href="<?php echo $this->url('home/membre/edit'); ?>"><div class="btn_connection_member"><?php echo $this->translate("S'inscrire maintenant", $this->lang_id); ?></div></a>
+                        <a target="_self" href="<?php echo $this->url('home/membre/edit', array('lang' => $this->lang_id)); ?>"><div class="btn_connection_member"><?php echo $this->translate("S'inscrire maintenant", $this->lang_id); ?></div></a>
                     </div>
                 </div> 
             </div>  

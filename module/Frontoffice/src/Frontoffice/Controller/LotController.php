@@ -53,7 +53,7 @@ class LotController extends InitController
         } catch(\Exception $e) {}
         
         if(! is_object($t) || $t->status !=1) {
-	    	$this->addError('Lot non valide');
+	    	$this->addError('Enchère non valide');
             return $this->redirect()->toRoute('home');
         }
 
@@ -185,7 +185,13 @@ class LotController extends InitController
                 $mpp = $this->_service_locator->get('chevalTable')->fetchOne($pp->mother_id);
             }
         } catch (Exception $ex) {}
-        
+         /* récupération de la mère de la mère de la mère de la mère */
+        $mmmm = null;
+        try{
+            if(is_object($m) && is_object($mm) && is_object($mmm) && $mmm->mother_id != null){
+                $mmmm = $this->_service_locator->get('chevalTable')->fetchOne($mmm->mother_id);
+            }
+        } catch (Exception $ex) {}
         
         
         $che->pere = $p;
@@ -203,6 +209,7 @@ class LotController extends InitController
         $che->pere_pere_pere = $ppp;
         $che->mere_mere_pere = $mmp;
         $che->pere_mere_pere = $pmp;
+        $che->mere_mere_mere_mere = $mmmm;
         
         $this->mainView->setVariable("cheval", $che);
         
@@ -257,7 +264,7 @@ class LotController extends InitController
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
 
             if(!is_object($t) || $t->status != 1) {
-				throw new \Exception('Lot non valide');
+				throw new \Exception('Enchère non valide');
 		    }
 
             /* verification de la connection du membre */
@@ -290,12 +297,17 @@ class LotController extends InitController
             $obj = $this->_service_locator->get('clientAuctionTable')->save($obj);
             
             /* Envoi du mail */
-            $this->_service_locator->get('user_service')->sendMailUserNewEnchere($obj);
-            $this->_service_locator->get('user_service')->sendMailUserLooseEnchere($ca);
+            $this->_service_locator->get('user_service')->sendMailUserNewEnchere($obj, $membre->langue);
+           
+            if($ca != null) {
+				$temp_membre = $this->_service_locator->get('clientTable')->fetchOne($ca->client_id);
+                $this->_service_locator->get('user_service')->sendMailUserLooseEnchere($ca, $temp_membre->langue);
+            }
             
             
             /* récupération de la dernière enchère du lot */
             $return['data']["lot"] = $t;
+			$return['data']['email'] = $membre->email;
             $return['data']["enchere"] = $en;
             $return['data']["auction"] = $this->_service_locator->get('clientAuctionTable')->getLastEnchere($t);
             $return["status"] = 1;
@@ -325,7 +337,7 @@ class LotController extends InitController
             $t = $this->_service_locator->get('lotTable')->fetchOne($id);
 
 	 	    if(!is_object($t) || $t->status != 1) {
-				throw new \Exception('Lot non valide');
+				throw new \Exception('Enchère non valide');
 		    }
 
             /* verification de la connection du membre */
@@ -356,3 +368,4 @@ class LotController extends InitController
         return new \Zend\View\Model\JsonModel($return);
     }
 }
+	

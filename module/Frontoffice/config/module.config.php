@@ -25,6 +25,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'newsletter'=>  array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal', 
+                        'options' => array(
+                            'route'    => '/newsletter_add',
+                            'defaults' => array(
+                                'controller' => 'Newsletter',
+                                'action'     => 'add',
+                            ),
+                        ),
+                    ),
                     'validation_creation'=>  array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
@@ -279,6 +289,9 @@ return array(
             'translator' => 'MvcTranslator',
         ),
         'factories' => array(
+			'logger' => 'Application\Service\Factory\LoggerServiceFactory',
+            'user_service' => 'Application\Service\Factory\UserServiceFactory',
+            'mangopay_service' => 'Application\Service\Factory\MangopayServiceFactory',
         ),
     ),
     'controllers' => array(
@@ -290,6 +303,7 @@ return array(
             'CGU' => 'Frontoffice\Controller\Factory\CGUControllerFactory',
             'PolitiqueDeConfidentialite' => 'Frontoffice\Controller\Factory\PolitiqueDeConfidentialiteControllerFactory',
             'Membre' => 'Frontoffice\Controller\Factory\MembreControllerFactory',
+            'Newsletter' => 'Frontoffice\Controller\Factory\NewsletterControllerFactory',
         ),
     ),
     'view_manager' => array(

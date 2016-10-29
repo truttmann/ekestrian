@@ -108,13 +108,24 @@
                                         </span>
                                     </div>
                                     <div class="time"> @lot.RemainingTime </div -->
-                                    <!--<div class="btn-container" style="margin-top: 15px">
-                                        <a href="@Url.Action("lot","auction",new { id = lot.Id })">
-                                            <div class="mb5 btn btn-ekestrian-fill" style="font-family: Lato; font-weight:regular; font-size:12pt; color:white">
-                                                @Ekestrian.Language.Lots.Resource.BidLinkText
-                                            </div>
-                                        </a>
-                                    </div>-->
+                                    <div class="btn-container" style="margin-top: 15px">
+                                        <?php if($this->is_membre_co == false) { ?>
+											<a href="<?php echo $this->url('home/membre', array('lang'=>$this->lang_id)); ?>">
+												<div class="mb5 btn btn-ekestrian-fill" style="font-family: Lato; font-weight:regular; font-size:12pt; color:white">
+													<?php echo $this->translate("Enchérir", $this->lang_id); ?>
+												</div>
+											</a>
+										<?php } else { ?>
+											<a href="#" id="lien_enchere" data-enchere-id="<?php echo $lot->enchere_id; ?>" data-lot-id="<?php echo $lot->lot_id; ?>" >
+												<div class="mb5 btn btn-ekestrian-fill" style="font-family: Lato; font-weight:regular; font-size:12pt; color:white">
+													<?php echo $this->translate("Enchérir", $this->lang_id); ?>
+												</div>
+											</a>
+											
+										<?php } ?>
+										
+										
+                                    </div>
                                     <div class="btn-container">
                                         <div class="btn-ekestrian-alt">
                                             <a href="<?php echo $this->url("home/lots/lot", array("enchere_id" => $lot->enchere_id, "lot_id" => $lot->lot_id, 'lang'=>$this->lang_id)); ?>" style="font-family: Lato; font-weight:normal;font-style: normal; font-size:12pt; color:#e76558">
@@ -130,6 +141,36 @@
             </div>
         <?php } ?>
     </div>
+	<div class="dialog_enchere" style="font-family: Lato">
+		<div class="row" style="margin: 0">
+			<div class="col-xs-12 actual_amount" style="text-align:center"></div>
+			<br/>
+			<div class="col-xs-12 success" style="text-align:center; color: green"></div>
+			<div class="col-xs-12 alerte" style="text-align:center; color: red"></div>
+			<br/>
+			<div class="col-xs-12 enchere" style="text-align:center;">
+				<div class="col-xs-10 enchere" style="text-align:center;float: none; margin: auto; border: solid 1px black">
+					<div class="col-xs-12"style="z-index: 1001;background: white;margin-top: -10px;margin-bottom: 20px;"><?php echo $this->translate("PLACER UNE ENCH&Egrave;RE", $this->lang_id); ?></div>
+					<div class="row" style="padding-bottom: 10px;">
+						<div class="col-xs-12">
+							<div class="col-xs-5" style="padding: 0px;">
+								<select name="amount" style="height: 24px;"></select>
+							</div>
+							<div class="col-xs-2" style="padding: 0px;line-height: 24px;">EUR</div>
+							<div class="col-xs-5" style="padding: 0px">
+								<input type="button" value="ENCH&Egrave;RIR" style="background: transparent;border: solid 1px black;padding: 2px;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="dialog_validation_enchere" style="font-family: Lato">
+		<div class="row" style="margin: 0">
+			<div class="col-xs-12 content" style="text-align:center"></div>
+		</div>
+	</div>
 </section>
 
 <!-- section class="section" id="section-other-lots" style="margin: 0 50px; margin-top: 25px; background: white;">
@@ -160,4 +201,92 @@
     function imgError(el){
         $(el).remove();
     }   
+	
+    
+    $(document).ready(function(){
+        $('.dialog_enchere').dialog({
+            autoOpen: false,
+            minWidth: 500,
+            minHeight: 310
+        });
+		
+		$('.dialog_validation_enchere').dialog({
+            autoOpen: false,
+            minWidth: 500,
+            minHeight: 310
+        });
+        
+        $('.dialog_enchere input[type="button"]').unbind('click').on('click', function(e){
+            var el = this;
+			e.preventDefault();
+            $.ajax({
+                url: '/<?php echo $this->lang_id; ?>/enchere/'+$(el).attr('data-enchere-id')+'/lot/'+$(el).attr('data-lot-id')+'/validation',
+                dataType: 'json',
+                data: {"value":$('.dialog_enchere select').val()},
+            }).always(function () {
+            }).done(function (result) {
+                if(result.status && result.status == 1) {
+                    /*$('.dialog_enchere .alerte').empty();
+                    $(".dialog_enchere select option").remove();
+                    $('.dialog_enchere .success').empty().html("<?php echo $this->translate("Enchère enregistrée, un mail de confirmation vient de vous être envoyé", $this->lang_id); ?>");
+                    /* mise en place de actual_amount *\/
+                    var actuel = parseFloat((result.data.auction)?result.data.auction.value:result.data.lot.min_price);
+                    $('.dialog_enchere .actual_amount').empty().html("<?php echo $this->translate('Enchère actuelle', $this->lang_id); ?> : "+actuel+" EUR");
+
+                    if(actuel <= result.data.lot.reserve_price){
+                        $('.dialog_enchere .alerte').empty().html("<?php echo $this->translate('Prix de reserve atteint', $this->lang_id); ?>");
+                    }   
+
+                    var pas = parseFloat((result.data.lot.ist_price && result.data.lot.ist_price > 0)?result.data.lot.ist_price : 1);
+                    var i = 1;
+                    while(i != 10) {
+                        actuel = actuel + pas;
+                        $(".dialog_enchere select").append('<option value="'+(actuel)+'">'+(actuel)+'</option>');
+                        i++;
+                    }*/
+					$('.dialog_enchere').dialog('close');
+					$('.dialog_validation_enchere .content').empty().html("<?php echo $this->translate("Enchère enregistrée, un mail de confirmation vient de vous être envoyé à l'adresse : ", $this->lang_id); ?>"+result.data.email);
+					$('.dialog_validation_enchere').dialog('open');
+					setTimeout(function(){ $('.dialog_validation_enchere').dialog('close'); }, 10000);
+                } else {
+                    $('.dialog_enchere .alerte').empty().html(result.data);
+                }
+            });
+        });
+    });
+    
+    /* Mise en place de l'enchère */
+    $('#lien_enchere').unbind('click').on('click', function(e){
+	    e.preventDefault();
+		var el = this;
+		$.ajax({
+            url: '/<?php echo $this->lang_id; ?>/enchere/'+$(el).attr('data-enchere-id')+'/lot/'+$(el).attr('data-lot-id')+'/information',
+            dataType: 'json',
+            context: $(this)[0]
+        }).always(function () {
+        }).done(function (result) {
+            if(result.status && result.status == 1) {
+                /* mise en place de actual_amount */
+                var actuel = parseFloat((result.data.auction)?result.data.auction.value:result.data.lot.min_price);
+                $('.dialog_enchere .actual_amount').empty().html("<?php echo $this->translate('Enchère actuelle', $this->lang_id); ?> : "+actuel+" EUR");
+
+                if(actuel <= result.data.lot.reserve_price){
+                    $('.dialog_enchere .alerte').empty().html("<?php echo $this->translate('Prix de reserve atteint', $this->lang_id); ?>");
+                }   
+
+                var pas = parseFloat((result.data.lot.ist_price && result.data.lot.ist_price > 0)?result.data.lot.ist_price : 1);
+                var i = 1;
+                while(i != 10) {
+                    actuel = actuel + pas;
+                    $(".dialog_enchere select").append('<option value="'+(actuel)+'">'+(actuel)+'</option>');
+                    i++;
+                }
+				$('.dialog_enchere input[type="button"]').attr('data-enchere-id', $(el).attr('data-enchere-id'));
+				$('.dialog_enchere input[type="button"]').attr('data-lot-id', $(el).attr('data-lot-id'));
+                $('.dialog_enchere').dialog('open');
+            } else {
+                alert(result.data);
+            }
+        });
+    });
 </script>

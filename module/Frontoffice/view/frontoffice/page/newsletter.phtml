@@ -11,7 +11,7 @@
                         <div class="form-group">
                             <input type="email" data-bind="value:email" class="form-control" id="email" placeholder="<?php echo $this->translate("Inscrivez votre adresse mail...", $this->lang_id); ?>">
                         </div>
-                        <button type="button" class="btn btn-ekestrian-fill" data-bind="click:register"><?php echo $this->translate("Envoyer", $this->lang_id); ?></button>
+                        <button type="button" class="btn btn-ekestrian-fill newsletter_save" data-bind="click:register"><?php echo $this->translate("Envoyer", $this->lang_id); ?></button>
                         <div data-bind="text:alertMessage" ></div>
                     </form>
                 </div>
@@ -19,5 +19,37 @@
         </div>
     </div>
 </section>	
+<div class="dialog_validation_newsletter">
+    <div class="row" style="margin: 0">
+        <div class="col-xs-12 content" style="text-align:center"></div>
+    </div>
+</div>
 
 
+<script type="text/javascript">
+    $('.dialog_validation_newsletter').dialog({
+        autoOpen: false,
+        minWidth: 500,
+        minHeight: 310
+    });
+    
+    $(document).ready(function(){
+        $('.newsletter_save').unbind('click').on('click', function(){
+            if($('#ekestrian-newsletter #email').val() != "") {
+                $.ajax({
+                    url: '<?= $this->url("home/newsletter", array("lang"=>$this->lang_id)) ?>',
+                    dataType: 'json',
+                    data: {"email":$('#ekestrian-newsletter #email').val()},
+					method: 'post',
+                }).always(function () {
+					$('.dialog_validation_newsletter .content').empty().html('<?php echo $this->translate("Votre demande a été enregistrée", $this->lang_id); ?>');
+                    $('.dialog_validation_newsletter').dialog('open');                
+                    setTimeout(function(){ $('.dialog_validation_newsletter').dialog('close'); }, 3000);
+					$('#ekestrian-newsletter #email').val("");
+                }).done(function (result) {
+                    
+                });
+            }
+        });
+    });
+</script>

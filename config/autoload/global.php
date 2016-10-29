@@ -14,9 +14,9 @@
 return array(
     'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=ekestrian;host=localhost',
-        'username'       => 'root',
-        'password'       => '',
+        'dsn'            => 'mysql:dbname=ekestriajsencher;host=ekestriajsencher.mysql.db',
+        'username'       => 'ekestriajsencher',
+        'password'       => 'Enchere1',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
