@@ -42,6 +42,15 @@ class LotsController extends InitController
         }
         $this->mainView->setVariable("enchere", $t);
         
+        /* verification que l'enchere est démarrée */
+        $d = new \DateTime();
+        $d2 = \DateTime::createFromFormat("Y-m-d H:i:s", $t->start_date);
+        $display = false;
+        if($d2 != false && $d > $d2){
+            $display = true;
+        }
+        $this->mainView->setVariable("can_enchere", $display);
+        
         /* récupération des lots */
         $e = array();
         $l = $this->_service_locator->get('lotTable')->fetchAll(array("enchere_id" => $id, "status" => 1),  'number');

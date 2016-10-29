@@ -213,6 +213,15 @@ class LotController extends InitController
         
         $this->mainView->setVariable("cheval", $che);
         
+        /* verification que l'enchere est démarrée */
+        $d = new \DateTime();
+        $d2 = \DateTime::createFromFormat("Y-m-d H:i:s", $en->start_date);
+        $display = false;
+        if($d2 != false && $d > $d2){
+            $display = true;
+        }
+        $this->mainView->setVariable("can_enchere", $display);
+        
         return $this->mainView;
     }
     
@@ -258,6 +267,13 @@ class LotController extends InitController
 		    if(!is_object($en) || $en->status !=1) {
 				throw new \Exception('Enchère non valide');
 		    }
+            
+            /* verification que l'enchere est démarrée */
+            $d = new \DateTime();
+            $d2 = \DateTime::createFromFormat("Y-m-d H:i:s", $en->start_date);
+            if($d2 == false || $d < $d2) {
+                throw new \Exception('Enchère non valide');
+            }
 
             /* vérification de l'existance du lot */
             $id = $this->params()->fromRoute('lot_id');
