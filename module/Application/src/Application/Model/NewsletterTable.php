@@ -4,6 +4,7 @@ namespace Application\Model;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
+use Zend\Code\Reflection;
 
 class NewsletterTable
 {
@@ -111,7 +112,8 @@ class NewsletterTable
         }
 
         if (!$this->prototype instanceof \ArrayObject) {
-            $prototype = $this->prototype->getAttributesNames();
+            $this->prototype = new Newsletter();
+			$prototype = $this->prototype->getAttributesNames();
         } else {
             $select->where($filters);
             return;

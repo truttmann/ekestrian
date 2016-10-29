@@ -8,8 +8,15 @@ use Zend\InputFilter\InputFilterInterface;
 
 class Newsletter  implements InputFilterAwareInterface
 {
-     public $newsletter_id;
-     public $email;
+    /**
+	* @var
+	*/
+    public $newsletter_id;
+	
+	/**
+	* @var
+	*/
+    public $email;
 
     public function __construct(){}
 

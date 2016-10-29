@@ -45,13 +45,15 @@ class LotTable
     * list all object
     * @return resultSet
     */
-    public function fetchAllPaginate($filters = array(), $order = null)
+    public function fetchAllPaginate($filters = array(), $order = null, $enchere_id = null)
     {
         $select = new Select($this->tableGateway->getTable());
         
         $this->setFiltersToSelect($select, $filters);
 
         $this->setOrderToSelect($select, $order);
+		
+		$select->where(array('enchere_id' => $enchere_id));
 
         return $this->getPaginator($select);
     }

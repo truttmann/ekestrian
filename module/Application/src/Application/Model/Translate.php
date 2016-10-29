@@ -21,7 +21,7 @@ class Translate  implements InputFilterAwareInterface
      * @var
      */
     public $value;
-    
+	
     public $inputFilter;
 
     public function __construct(){}

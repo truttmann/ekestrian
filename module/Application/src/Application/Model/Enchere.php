@@ -21,6 +21,18 @@ class Enchere  implements InputFilterAwareInterface
      * @var
      */
     public $birthday;
+	/**
+     * @var
+     */
+    public $title;
+	/**
+     * @var
+     */
+    public $start_date;
+	/**
+     * @var
+     */
+    public $end_date;
     
     public $inputFilter;
 

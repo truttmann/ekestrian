@@ -20,8 +20,21 @@ class Lot  implements InputFilterAwareInterface
     /**
      * @var
      */
+	public $title;
+    /**
+     * @var
+     */
     public $birthday;
-    
+    /**
+     * @var
+     */
+    public $min_price;
+	/**
+     * @var
+     */
+    public $enchere_id;
+	
+	
     public $inputFilter;
 
     public function __construct(){}
